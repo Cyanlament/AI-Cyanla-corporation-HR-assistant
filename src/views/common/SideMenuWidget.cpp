@@ -85,7 +85,7 @@ void SideMenuWidget::setupUI()
     m_logoLabel->setAlignment(Qt::AlignCenter);
     m_logoLabel->setStyleSheet("font-size: 48px; padding: 20px;");
     
-    m_titleLabel = new QLabel("智慧客服系统");
+    m_titleLabel = new QLabel("青蓝公司HR制度智能问答系统");
     m_titleLabel->setAlignment(Qt::AlignCenter);
     m_titleLabel->setStyleSheet("font-size: 18px; padding-bottom: 30px;");
     
@@ -125,15 +125,15 @@ void SideMenuWidget::setupUI()
 
 void SideMenuWidget::setupvisitorMenu()
 {
-    addMenuItem("💬 智能分诊", "chat", MenuAction::visitorChat);
+    addMenuItem("💬 智能HR", "chat", MenuAction::visitorChat);
     addMenuItem("❓ 常见问题", "faq", MenuAction::visitorAppointment);
-    addMenuItem("🗺️ 院内导航", "map", MenuAction::visitorMap);
+    addMenuItem("🗺️ 公司内导航", "map", MenuAction::visitorMap);
 }
 
 void SideMenuWidget::setupStaffMenu()
 {
     addMenuItem("💬 客服管理", "chat_manage", MenuAction::StaffChatManage);
-    addMenuItem("👥 患者列表", "visitor_list", MenuAction::StaffvisitorList);
+    addMenuItem("👥 访客列表", "visitor_list", MenuAction::StaffvisitorList);
     addMenuItem("📚 知识库", "knowledge", MenuAction::StaffKnowledge);
 }
 

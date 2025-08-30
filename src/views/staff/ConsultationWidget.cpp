@@ -15,9 +15,9 @@ void ConsultationWidget::setupUI()
     // 聊天列表
     m_chatList = new QListWidget;
     m_chatList->setMaximumWidth(250);
-    m_chatList->addItem("患者001 - 咨询挂号");
-    m_chatList->addItem("患者002 - 检查报告");
-    m_chatList->addItem("患者003 - 用药咨询");
+    m_chatList->addItem("访客001 - 咨询挂号");
+    m_chatList->addItem("访客002 - 检查报告");
+    m_chatList->addItem("访客003 - 用药咨询");
     
     // 聊天区域
     m_chatArea = new QWidget;
@@ -25,7 +25,7 @@ void ConsultationWidget::setupUI()
     
     m_messageArea = new QTextEdit;
     m_messageArea->setReadOnly(true);
-    m_messageArea->setPlaceholderText("选择患者开始咨询...");
+    m_messageArea->setPlaceholderText("选择访客开始咨询...");
     
     m_inputLayout = new QHBoxLayout;
     m_inputEdit = new QTextEdit;

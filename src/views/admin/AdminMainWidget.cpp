@@ -35,7 +35,7 @@ void AdminMainWidget::setupUI()
     // m_tabWidget->addTab(m_systemStatsWidget, "📊 系统统计");
     // m_tabWidget->addTab(m_systemConfigWidget, "⚙️ 系统配置");
     //modify
-    m_tabWidget->addTab(m_systemConfigWidget, "科室管理");
+    m_tabWidget->addTab(m_systemConfigWidget, "部门管理");
     //modify
     // m_tabWidget->addTab(m_auditLogWidget, "审计日志");
     

@@ -69,7 +69,7 @@ void KnowledgeBaseWidget::loadKnowledgeBase()
     medical->setText(0, "就医指南");
     
     QTreeWidgetItem* department = new QTreeWidgetItem(medical);
-    department->setText(0, "科室介绍");
+    department->setText(0, "部门介绍");
     
     QTreeWidgetItem* examination = new QTreeWidgetItem(medical);
     examination->setText(0, "检查项目");

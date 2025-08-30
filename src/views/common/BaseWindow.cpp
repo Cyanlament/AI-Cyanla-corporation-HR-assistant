@@ -31,7 +31,7 @@ BaseWindow::~BaseWindow()
 
 void BaseWindow::setupUI()
 {
-    setWindowTitle("医院智慧客服系统");
+    setWindowTitle("青蓝公司HR制度智能问答系统");
     setMinimumSize(1200, 800);
     resize(1400, 900);
     

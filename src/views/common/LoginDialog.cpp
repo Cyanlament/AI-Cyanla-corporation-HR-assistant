@@ -15,7 +15,7 @@ LoginDialog::LoginDialog(QWidget *parent)
     : QDialog(parent)
     , m_loginSuccess(false)
 {
-    setWindowTitle("医院智慧客服系统登录");
+    setWindowTitle("青蓝公司HR制度智能问答系统");
     setFixedSize(800, 600);
     setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     setAttribute(Qt::WA_TranslucentBackground, false);
@@ -50,11 +50,11 @@ void LoginDialog::setupUI()
     m_logoLabel->setAlignment(Qt::AlignCenter);
     m_logoLabel->setObjectName("logoLabel");
     
-    m_titleLabel = new QLabel("医院智慧客服系统");
+    m_titleLabel = new QLabel("青蓝公司HR制度智能问答系统");
     m_titleLabel->setAlignment(Qt::AlignCenter);
     m_titleLabel->setObjectName("titleLabel");
     
-    m_subtitleLabel = new QLabel("医院智慧客服系统");
+    m_subtitleLabel = new QLabel("青蓝公司HR制度智能问答系统");
     m_subtitleLabel->setAlignment(Qt::AlignCenter);
     m_subtitleLabel->setObjectName("subtitleLabel");
     
@@ -71,9 +71,9 @@ void LoginDialog::setupUI()
     m_roleLabel = new QLabel("登录身份:");
     m_roleLabel->setObjectName("inputLabel");
     m_roleCombo = new QComboBox;
-    m_roleCombo->addItem("患者", "患者");
-    // m_roleCombo->addItem("客服", "客服");
-    // m_roleCombo->addItem("管理员", "管理员");
+    m_roleCombo->addItem("访客", "访客");
+    m_roleCombo->addItem("客服", "客服");
+    m_roleCombo->addItem("管理员", "管理员");
     m_roleCombo->setObjectName("roleCombo");
     connect(m_roleCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), 
             this, &LoginDialog::onRoleChanged);
@@ -103,7 +103,7 @@ void LoginDialog::setupUI()
     m_inputLayout->addWidget(m_usernameEdit, 1, 1);
     m_inputLayout->addWidget(m_passwordLabel, 2, 0);
     m_inputLayout->addWidget(m_passwordEdit, 2, 1);
-    // m_inputLayout->addWidget(m_rememberCheck, 3, 1);
+    m_inputLayout->addWidget(m_rememberCheck, 3, 1);
     
     // 按钮区域
     m_buttonFrame = new QFrame;
@@ -141,9 +141,9 @@ void LoginDialog::setupUI()
     m_messageLabel->hide();
     
     // 组装布局
-    // m_frameLayout->addWidget(m_logoLabel);
+    m_frameLayout->addWidget(m_logoLabel);
     m_frameLayout->addWidget(m_titleLabel);
-    // m_frameLayout->addWidget(m_subtitleLabel);
+    m_frameLayout->addWidget(m_subtitleLabel);
     m_frameLayout->addSpacing(10);
     m_frameLayout->addWidget(m_inputFrame);
     m_frameLayout->addWidget(m_buttonFrame);
@@ -152,12 +152,7 @@ void LoginDialog::setupUI()
     
     m_mainLayout->addWidget(m_loginFrame);
 }
-// QFrame#inputFrame {
-//     background-color: #f8f9fa;
-// border: 1px solid #dee2e6;
-//     border-radius: 10px;
-// padding: 10px;
-// }
+
 
 void LoginDialog::setupStyles()
 {
@@ -175,18 +170,25 @@ void LoginDialog::setupStyles()
         QLabel#logoLabel {
             font-size: 64px;
             color: #2c3e50;
+            margin: 20px;
+        }
+
+        // QFrame#inputFrame {
+        //     background-color: #f8f9fa;
+        // border: 1px solid #dee2e6;
+        //     border-radius: 1px;
+        // padding: 1px;
+        // }
+
+        QLabel#titleLabel {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2c3e50;
             margin: 10px;
         }
         
-        QLabel#titleLabel {
-            font-size: 32px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin: 5px;
-        }
-        
         QLabel#subtitleLabel {
-            font-size: 14px;
+            font-size: 12px;
             color: #6c757d;
             margin: 5px;
         }

@@ -21,7 +21,7 @@ public:
 
 private slots:
     void onDepartmentChanged();
-    void onDoctorSelected();
+    void onSephirahSelected();
     void onDateSelected(const QDate& date);
     void onTimeSlotSelected();
     void makeAppointment();
@@ -29,20 +29,20 @@ private slots:
 private:
     void setupUI();
     void loadDepartments();
-    void loadDoctors();
+    void loadSephirahs();
     void loadTimeSlots();
     void updateAppointmentInfo();
 
 private:
     QVBoxLayout* m_mainLayout;
     
-    // 科室选择
+    // 部门选择
     QGroupBox* m_departmentGroup;
     QComboBox* m_departmentCombo;
     
-    // 医生选择
-    QGroupBox* m_doctorGroup;
-    QListWidget* m_doctorList;
+    // 部长选择
+    QGroupBox* m_sephirahGroup;
+    QListWidget* m_sephirahList;
     
     // 日期选择
     QGroupBox* m_dateGroup;
@@ -52,14 +52,14 @@ private:
     QGroupBox* m_timeGroup;
     QListWidget* m_timeList;
     
-    // 预约信息
+    // 面试预约信息
     QGroupBox* m_infoGroup;
     QLabel* m_appointmentInfo;
     QPushButton* m_confirmButton;
     
     // 当前选择
     QString m_selectedDepartment;
-    QString m_selectedDoctor;
+    QString m_selectedSephirah;
     QDate m_selectedDate;
     QString m_selectedTime;
 };

@@ -22,10 +22,10 @@
 #include <QMouseEvent>
 #include <QToolTip>
 
-// 科室信息结构体
+// 部门信息结构体
 struct DepartmentInfo {
-    QString name;           // 科室名称
-    QString description;    // 科室描述
+    QString name;           // 部门名称
+    QString description;    // 部门描述
     QString location;       // 位置描述
     QString hours;          // 开放时间
     QString phone;          // 联系电话
@@ -36,13 +36,13 @@ struct DepartmentInfo {
 };
 
 // 自定义地图绘制Widget
-class HospitalMapWidget : public QWidget
+class CompanyMapWidget : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY(double pulseOpacity READ pulseOpacity WRITE setPulseOpacity)
 
 public:
-    explicit HospitalMapWidget(QWidget* parent = nullptr);
+    explicit CompanyMapWidget(QWidget* parent = nullptr);
     
     void setDepartments(const QMap<QString, DepartmentInfo>& departments);
     void highlightDepartment(const QString& departmentName);
@@ -166,7 +166,7 @@ private:
     QComboBox* m_floorCombo;
     QPushButton* m_btnClearSearch;
     
-    // 科室列表
+    // 部门列表
     QGroupBox* m_departmentGroup;
     QListWidget* m_departmentList;
     QLabel* m_listInfo;
@@ -193,7 +193,7 @@ private:
     
     // 地图区域
     QScrollArea* m_mapScrollArea;
-    HospitalMapWidget* m_mapWidget;
+    CompanyMapWidget* m_mapWidget;
     
     // 信息面板
     QGroupBox* m_infoGroup;

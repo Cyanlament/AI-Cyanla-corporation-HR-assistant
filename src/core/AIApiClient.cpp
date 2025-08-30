@@ -96,10 +96,10 @@ void AIApiClient::sendTriageRequest(const QString& userInput, const QString& con
     
     m_timeoutTimer->start();
     
-    qDebug() << "发送智能分诊请求:" << userInput;
+    qDebug() << "发送智能HR请求:" << userInput;
 }
 
-void AIApiClient::sendSymptomAnalysis(const QString& symptoms, int age, const QString& gender)
+void AIApiClient::sendSymptomAnalysis(const QString& qualities, int age, const QString& gender)
 {
     if (m_currentReply) {
         qDebug() << "请求正在进行中，忽略新请求";
@@ -109,8 +109,8 @@ void AIApiClient::sendSymptomAnalysis(const QString& symptoms, int age, const QS
     m_currentRequestType = SymptomRequest;
     emit requestStarted();
     
-    QString systemPrompt = createSymptomPrompt(symptoms, age, gender);
-    QJsonObject requestBody = createRequestBody(systemPrompt, symptoms);
+    QString systemPrompt = createSymptomPrompt(qualities, age, gender);
+    QJsonObject requestBody = createRequestBody(systemPrompt, qualities);
     
     QNetworkRequest request = createApiRequest();
     
@@ -126,10 +126,10 @@ void AIApiClient::sendSymptomAnalysis(const QString& symptoms, int age, const QS
     
     m_timeoutTimer->start();
     
-    qDebug() << "发送症状分析请求:" << symptoms;
+    qDebug() << "发送症状分析请求:" << qualities;
 }
 
-void AIApiClient::sendDepartmentRecommendation(const QString& symptoms, const QString& analysis)
+void AIApiClient::sendDepartmentRecommendation(const QString& qualities, const QString& analysis)
 {
     if (m_currentReply) {
         qDebug() << "请求正在进行中，忽略新请求";
@@ -139,8 +139,8 @@ void AIApiClient::sendDepartmentRecommendation(const QString& symptoms, const QS
     m_currentRequestType = DepartmentRequest;
     emit requestStarted();
     
-    QString systemPrompt = createDepartmentPrompt(symptoms, analysis);
-    QJsonObject requestBody = createRequestBody(systemPrompt, symptoms);
+    QString systemPrompt = createDepartmentPrompt(qualities, analysis);
+    QJsonObject requestBody = createRequestBody(systemPrompt, qualities);
     
     QNetworkRequest request = createApiRequest();
     
@@ -156,7 +156,7 @@ void AIApiClient::sendDepartmentRecommendation(const QString& symptoms, const QS
     
     m_timeoutTimer->start();
     
-    qDebug() << "发送科室推荐请求:" << symptoms;
+    qDebug() << "发送部门推荐请求:" << qualities;
 }
 
 QNetworkRequest AIApiClient::createApiRequest()
@@ -248,7 +248,7 @@ QString AIApiClient::createTriagePrompt(const QString& userInput, const QString&
     return prompt;
 }
 
-QString AIApiClient::createSymptomPrompt(const QString& symptoms, int age, const QString& gender)
+QString AIApiClient::createSymptomPrompt(const QString& qualities, int age, const QString& gender)
 {
     QString prompt = R"(
 你是一个专业的休假政策专家，请根据员工的具体情况提供准确的休假政策解答。
@@ -275,10 +275,10 @@ QString AIApiClient::createSymptomPrompt(const QString& symptoms, int age, const
 请基于公司最新的休假政策回答，确保信息准确。
 )";
 
-    return prompt.arg(symptoms);
+    return prompt.arg(qualities);
 }
 
-QString AIApiClient::createDepartmentPrompt(const QString& symptoms, const QString& analysis)
+QString AIApiClient::createDepartmentPrompt(const QString& qualities, const QString& analysis)
 {
     QString prompt = R"(
 你是一个专业的员工福利专家，请根据员工的职级提供准确的福利政策解答。
@@ -287,7 +287,7 @@ QString AIApiClient::createDepartmentPrompt(const QString& symptoms, const QStri
 问题：%1
 )";
 
-    return prompt.arg(symptoms, analysis);
+    return prompt.arg(qualities, analysis);
 }
 
 void AIApiClient::handleTriageResponse()
@@ -305,7 +305,7 @@ void AIApiClient::handleTriageResponse()
         QByteArray data = reply->readAll();
         QJsonDocument doc = QJsonDocument::fromJson(data);
         
-        qDebug() << "收到分诊响应:" << doc.toJson(QJsonDocument::Compact);
+        qDebug() << "收到HR响应:" << doc.toJson(QJsonDocument::Compact);
         
         AIDiagnosisResult result = parseApiResponse(doc);
         m_isConnected = true;
@@ -342,7 +342,7 @@ void AIApiClient::handleSymptomResponse()
         AIDiagnosisResult result = parseApiResponse(doc);
         m_isConnected = true;
         emit connectionStatusChanged(true);
-        emit symptomAnalysisReceived(result);
+        emit qualityAnalysisReceived(result);
         
     } else {
         QString error = QString("症状分析请求失败: %1").arg(reply->errorString());
@@ -375,7 +375,7 @@ void AIApiClient::handleDepartmentResponse()
         emit departmentRecommendationReceived(result);
         
     } else {
-        QString error = QString("科室推荐请求失败: %1").arg(reply->errorString());
+        QString error = QString("部门推荐请求失败: %1").arg(reply->errorString());
         m_lastError = error;
         emit apiError(error);
     }
@@ -427,10 +427,10 @@ void AIApiClient::parseAIResponseContent(AIDiagnosisResult& result)
         result.emergencyLevel = "low";
     }
     
-    // 提取科室推荐
-    QStringList departments = {"内科", "外科", "妇科", "儿科", "皮肤科", "眼科", "耳鼻喉科", 
-                              "口腔科", "骨科", "神经内科", "心内科", "消化内科", "呼吸内科", 
-                              "内分泌科", "泌尿外科", "胸外科", "神经外科", "整形外科", "急诊科"};
+    // 提取部门推荐
+    QStringList departments = {"控制部", "福利部", "妇科", "培训部", "皮肤科", "眼科", "耳鼻喉科", 
+                              "口腔科", "骨科", "神经控制部", "心控制部", "消化控制部", "呼吸控制部", 
+                              "内分泌科", "泌尿福利部", "胸福利部", "神经福利部", "整形福利部", "惩戒部"};
     
     for (const QString& dept : departments) {
         if (content.contains(dept)) {

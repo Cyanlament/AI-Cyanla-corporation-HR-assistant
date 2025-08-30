@@ -13,7 +13,7 @@
 #include <QGroupBox>
 #include <QFrame>
 
-#include "HospitalNavigationWidget.h"
+#include "CompanyNavigationWidget.h"
 #include "../../core/ChatStorage.h"
 #include "UIStyleManager.h"
 
@@ -45,7 +45,7 @@ private:
     QTabWidget *m_tabWidget;
     
     // 导航系统相关
-    HospitalNavigationWidget *m_navigationWidget;
+    CompanyNavigationWidget *m_navigationWidget;
     
     // 聊天存储相关
     ChatStorage *m_chatStorage;

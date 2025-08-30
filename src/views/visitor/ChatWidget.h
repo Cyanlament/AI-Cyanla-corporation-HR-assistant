@@ -29,7 +29,7 @@ enum class MessageType {
     QuickReply      // 快捷回复
 };
 
-// AI分诊消息结构体
+// AIHR消息结构体
 struct AIMessage {
     QString content;
     MessageType type;
@@ -37,13 +37,13 @@ struct AIMessage {
     QString sessionId;
 };
 
-// 分诊建议结构体
+// HR建议结构体
 struct TriageAdvice {
-    QString department;     // 推荐科室
+    QString department;     // 推荐部门
     QString reason;         // 推荐理由
     QString action;         // 建议操作
     bool needAppointment;   // 是否需要预约
-    bool needEmergency;     // 是否紧急
+    bool fitness;     // 合适程度
 };
 
 class ChatWidget : public QWidget
@@ -95,7 +95,7 @@ private:
     void displayMessage(const AIMessage& message);
     void scrollToBottom();
     
-    // AI分诊逻辑
+    // AIHR逻辑
     TriageAdvice analyzeSymptoms(const QString& userInput);
     QString generateAIResponse(const QString& userInput);
     void processTriageAdvice(const TriageAdvice& advice);
@@ -167,9 +167,9 @@ private:
     QString m_currentSessionId;
     QSqlDatabase m_database;
     
-    // 分诊相关
-    QStringList m_departments;   // 科室列表
-    QMap<QString, QStringList> m_symptomKeywords; // 症状关键词映射
+    // HR相关
+    QStringList m_departments;   // 部门列表
+    QMap<QString, QStringList> m_qualityKeywords; // 品质关键词映射
     
     // 状态管理
     bool m_isInitialized;

@@ -227,17 +227,17 @@ void AuditLogWidget::loadChatLogs()
     // 加载聊天日志的示例实现
     m_chatTable->setRowCount(3);
     m_chatTable->setItem(0, 0, new QTableWidgetItem("2024-01-15 14:30"));
-    m_chatTable->setItem(0, 1, new QTableWidgetItem("患者001"));
+    m_chatTable->setItem(0, 1, new QTableWidgetItem("访客001"));
     m_chatTable->setItem(0, 2, new QTableWidgetItem("AI客服"));
     m_chatTable->setItem(0, 3, new QTableWidgetItem("咨询挂号流程..."));
     
     m_chatTable->setItem(1, 0, new QTableWidgetItem("2024-01-15 14:25"));
-    m_chatTable->setItem(1, 1, new QTableWidgetItem("患者002"));
+    m_chatTable->setItem(1, 1, new QTableWidgetItem("访客002"));
     m_chatTable->setItem(1, 2, new QTableWidgetItem("客服001"));
     m_chatTable->setItem(1, 3, new QTableWidgetItem("询问检查结果..."));
     
     m_chatTable->setItem(2, 0, new QTableWidgetItem("2024-01-15 14:20"));
-    m_chatTable->setItem(2, 1, new QTableWidgetItem("患者003"));
+    m_chatTable->setItem(2, 1, new QTableWidgetItem("访客003"));
     m_chatTable->setItem(2, 2, new QTableWidgetItem("AI客服"));
     m_chatTable->setItem(2, 3, new QTableWidgetItem("药品使用说明..."));
     

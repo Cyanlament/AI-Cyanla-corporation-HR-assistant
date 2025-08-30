@@ -96,7 +96,7 @@ void UserManageWidget::setupUI()
     
     QLabel* roleLabel = new QLabel("角色:");
     m_roleFilter = new QComboBox;
-    m_roleFilter->addItems({"全部", "患者", "客服", "管理员"});
+    m_roleFilter->addItems({"全部", "访客", "客服", "管理员"});
     
     QLabel* statusLabel = new QLabel("状态:");
     m_statusFilter = new QComboBox;
@@ -232,17 +232,17 @@ void UserManageWidget::loadUsers()
     
     // 添加示例数据
     QStringList sampleUsers = {
-        "001|艾希|患者|活跃|2025-06-19 14:30",
-        "002|亚瑟|患者|活跃|2025-06-19 13:45",
+        "001|艾希|访客|活跃|2025-06-19 14:30",
+        "002|亚瑟|访客|活跃|2025-06-19 13:45",
         "003|亏桑提|客服|活跃|2025-06-19 15:20",
         "004|夏侯惇|客服|活跃|2025-06-19 12:10",
         "005|司马昭|管理员|活跃|2025-06-19 16:00",
-        "006|孙思邈|患者|活跃|2025-06-19 09:30",
-        "007|扁鹊|患者|活跃|2025-06-19 09:30",
-        "008|艾克|患者|活跃|2025-06-19 09:30",
-        "009|安妮|患者|活跃|2025-06-19 09:30",
-        "010|塞纳|患者|活跃|2025-06-19 09:30",
-        "011|卢锡安|患者|活跃|2025-06-19 09:30"
+        "006|孙思邈|访客|活跃|2025-06-19 09:30",
+        "007|扁鹊|访客|活跃|2025-06-19 09:30",
+        "008|艾克|访客|活跃|2025-06-19 09:30",
+        "009|安妮|访客|活跃|2025-06-19 09:30",
+        "010|塞纳|访客|活跃|2025-06-19 09:30",
+        "011|卢锡安|访客|活跃|2025-06-19 09:30"
 
     };
     
@@ -476,7 +476,7 @@ void UserEditDialog::setupUI()
     QHBoxLayout* roleLayout = new QHBoxLayout;
     roleLayout->addWidget(new QLabel("角色:"));
     m_comboRole = new QComboBox;
-    m_comboRole->addItems({"患者", "客服", "管理员"});
+    m_comboRole->addItems({"访客", "客服", "管理员"});
     roleLayout->addWidget(m_comboRole);
     m_layout->addLayout(roleLayout);
     
@@ -511,7 +511,7 @@ void UserEditDialog::setUserData(const QString& id, const QString& name,
     m_editId->setReadOnly(true); // ID不可编辑
     m_editName->setText(name);
     
-    if (role == "患者") m_comboRole->setCurrentIndex(0);
+    if (role == "访客") m_comboRole->setCurrentIndex(0);
     else if (role == "客服") m_comboRole->setCurrentIndex(1);
     else if (role == "管理员") m_comboRole->setCurrentIndex(2);
     

@@ -15,7 +15,7 @@ RoleSelector::RoleSelector(QWidget *parent)
 
 void RoleSelector::setupUI()
 {
-    setWindowTitle("医院智慧客服系统 - 角色选择");
+    setWindowTitle("青蓝公司HR制度智能问答系统 - 角色选择");
     setFixedSize(500, 500);
     setModal(true);
     
@@ -24,7 +24,7 @@ void RoleSelector::setupUI()
     m_mainLayout->setSpacing(20);
     
     // 标题
-    m_titleLabel = new QLabel("🏥 医院智慧客服系统");
+    m_titleLabel = new QLabel("🏥 青蓝公司HR制度智能问答系统");
     m_titleLabel->setAlignment(Qt::AlignCenter);
     m_titleLabel->setStyleSheet(R"(
         QLabel {
@@ -47,7 +47,7 @@ void RoleSelector::setupUI()
     )");
     
     // 角色按钮 - 设计为独立卡片
-    m_btnVistitor = new QPushButton("👤 患者端\n在线咨询、常见问题、院内导航");
+    m_btnVistitor = new QPushButton("👤 访客端\n在线HR制度咨询、常见问题、公司内导航");
     m_btnStaff = new QPushButton("👩‍💼 客服端\n查看记录、问题统计、人工接管");
     m_btnAdmin = new QPushButton("👨‍💼 管理端\n用户管理、系统日志、服务配置");
     

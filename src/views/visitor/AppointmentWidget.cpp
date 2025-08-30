@@ -9,8 +9,8 @@ AppointmentWidget::AppointmentWidget(QWidget *parent)
     , m_mainLayout(nullptr)
     , m_departmentGroup(nullptr)
     , m_departmentCombo(nullptr)
-    , m_doctorGroup(nullptr)
-    , m_doctorList(nullptr)
+    , m_sephirahGroup(nullptr)
+    , m_sephirahList(nullptr)
     , m_dateGroup(nullptr)
     , m_calendar(nullptr)
     , m_timeGroup(nullptr)
@@ -32,22 +32,22 @@ void AppointmentWidget::setupUI()
     // 创建网格布局
     QGridLayout* gridLayout = new QGridLayout;
     
-    // 科室选择
-    m_departmentGroup = new QGroupBox("选择科室");
+    // 部门选择
+    m_departmentGroup = new QGroupBox("选择部门");
     QVBoxLayout* deptLayout = new QVBoxLayout(m_departmentGroup);
     m_departmentCombo = new QComboBox;
     connect(m_departmentCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &AppointmentWidget::onDepartmentChanged);
     deptLayout->addWidget(m_departmentCombo);
     
-    // 医生选择
-    m_doctorGroup = new QGroupBox("选择医生");
-    QVBoxLayout* doctorLayout = new QVBoxLayout(m_doctorGroup);
-    m_doctorList = new QListWidget;
-    m_doctorList->setMaximumHeight(200);
-    connect(m_doctorList, &QListWidget::itemClicked,
-            this, &AppointmentWidget::onDoctorSelected);
-    doctorLayout->addWidget(m_doctorList);
+    // 部长选择
+    m_sephirahGroup = new QGroupBox("选择部长");
+    QVBoxLayout* sephirahLayout = new QVBoxLayout(m_sephirahGroup);
+    m_sephirahList = new QListWidget;
+    m_sephirahList->setMaximumHeight(200);
+    connect(m_sephirahList, &QListWidget::itemClicked,
+            this, &AppointmentWidget::onSephirahSelected);
+    sephirahLayout->addWidget(m_sephirahList);
     
     // 日期选择
     m_dateGroup = new QGroupBox("选择日期");
@@ -70,12 +70,12 @@ void AppointmentWidget::setupUI()
     
     // 添加到网格
     gridLayout->addWidget(m_departmentGroup, 0, 0);
-    gridLayout->addWidget(m_doctorGroup, 0, 1);
+    gridLayout->addWidget(m_sephirahGroup, 0, 1);
     gridLayout->addWidget(m_dateGroup, 1, 0);
     gridLayout->addWidget(m_timeGroup, 1, 1);
     
-    // 预约信息和确认按钮
-    m_infoGroup = new QGroupBox("预约信息");
+    // 面试预约信息和确认按钮
+    m_infoGroup = new QGroupBox("面试预约信息");
     QVBoxLayout* infoLayout = new QVBoxLayout(m_infoGroup);
     
     m_appointmentInfo = new QLabel("请完成上述选择...");
@@ -144,38 +144,38 @@ void AppointmentWidget::setupUI()
 void AppointmentWidget::loadDepartments()
 {
     QStringList departments = {
-        "内科",
-        "外科", 
-        "妇产科",
-        "儿科",
-        "骨科",
-        "心血管科",
-        "呼吸科",
-        "消化科",
-        "神经科",
-        "皮肤科"
+        "控制部",
+        "福利部", 
+        "记录部",
+        "培训部",
+        "研发部",
+        "情报部",
+        "安保部",
+        "中央本部一区",
+        "中央本部二区",
+        "惩戒部"
     };
     
     m_departmentCombo->addItems(departments);
 }
 
-void AppointmentWidget::loadDoctors()
+void AppointmentWidget::loadSephirahs()
 {
-    m_doctorList->clear();
+    m_sephirahList->clear();
     
-    // 模拟医生数据
-    QStringList doctors;
-    if (m_selectedDepartment == "内科") {
-        doctors << "张主任 - 主任医师" << "李医生 - 副主任医师" << "王医生 - 主治医师";
-    } else if (m_selectedDepartment == "外科") {
-        doctors << "赵主任 - 主任医师" << "孙医生 - 副主任医师" << "周医生 - 主治医师";
+    // 模拟部长数据
+    QStringList sephirahs;
+    if (m_selectedDepartment == "控制部") {
+        sephirahs << "Malkuth - 部长" << "妮妮 - 队长" << "耗 - 副队长";
+    } else if (m_selectedDepartment == "福利部") {
+        sephirahs << "Chesed - 部长" << "骨头哥 - 队长" << "白发 - 副队长";
     } else {
-        doctors << "医生A - 主任医师" << "医生B - 副主任医师" << "医生C - 主治医师";
+        sephirahs << "Ayin - 部长" << "苍蓝礼悼 - 队长" << "堂吉诃德 - 副队长";
     }
     
-    for (const QString& doctor : doctors) {
-        QListWidgetItem* item = new QListWidgetItem(doctor);
-        m_doctorList->addItem(item);
+    for (const QString& sephirah : sephirahs) {
+        QListWidgetItem* item = new QListWidgetItem(sephirah);
+        m_sephirahList->addItem(item);
     }
 }
 
@@ -208,20 +208,20 @@ void AppointmentWidget::loadTimeSlots()
 void AppointmentWidget::onDepartmentChanged()
 {
     m_selectedDepartment = m_departmentCombo->currentText();
-    loadDoctors();
+    loadSephirahs();
     
     // 清空其他选择
-    m_selectedDoctor.clear();
+    m_selectedSephirah.clear();
     m_selectedTime.clear();
     m_timeList->clear();
     updateAppointmentInfo();
 }
 
-void AppointmentWidget::onDoctorSelected()
+void AppointmentWidget::onSephirahSelected()
 {
-    QListWidgetItem* item = m_doctorList->currentItem();
+    QListWidgetItem* item = m_sephirahList->currentItem();
     if (item) {
-        m_selectedDoctor = item->text();
+        m_selectedSephirah = item->text();
         updateAppointmentInfo();
     }
 }
@@ -247,10 +247,10 @@ void AppointmentWidget::updateAppointmentInfo()
     QString info;
     
     if (!m_selectedDepartment.isEmpty()) {
-        info += QString("科室: %1\n").arg(m_selectedDepartment);
+        info += QString("部门: %1\n").arg(m_selectedDepartment);
     }
-    if (!m_selectedDoctor.isEmpty()) {
-        info += QString("医生: %1\n").arg(m_selectedDoctor);
+    if (!m_selectedSephirah.isEmpty()) {
+        info += QString("部长: %1\n").arg(m_selectedSephirah);
     }
     if (m_selectedDate.isValid()) {
         info += QString("日期: %1\n").arg(m_selectedDate.toString("yyyy年MM月dd日"));
@@ -264,7 +264,7 @@ void AppointmentWidget::updateAppointmentInfo()
         m_confirmButton->setEnabled(false);
     } else {
         bool allSelected = !m_selectedDepartment.isEmpty() && 
-                          !m_selectedDoctor.isEmpty() && 
+                          !m_selectedSephirah.isEmpty() && 
                           m_selectedDate.isValid() && 
                           !m_selectedTime.isEmpty();
         m_confirmButton->setEnabled(allSelected);
@@ -275,11 +275,11 @@ void AppointmentWidget::updateAppointmentInfo()
 
 void AppointmentWidget::makeAppointment()
 {
-    QString message = QString("预约成功！\n\n科室: %1\n医生: %2\n日期: %3\n时间: %4\n\n请按时就诊，如需取消请提前联系医院。")
+    QString message = QString("预约成功！\n\n部门: %1\n部长: %2\n日期: %3\n时间: %4\n\n请按时参加面试，如需取消请提前联系公司。")
                      .arg(m_selectedDepartment)
-                     .arg(m_selectedDoctor)
+                     .arg(m_selectedSephirah)
                      .arg(m_selectedDate.toString("yyyy年MM月dd日"))
                      .arg(m_selectedTime);
                      
-    QMessageBox::information(this, "预约成功", message);
+    QMessageBox::information(this, "面试预约成功", message);
 } 

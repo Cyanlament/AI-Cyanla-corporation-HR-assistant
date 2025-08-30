@@ -37,7 +37,7 @@ public:
         UIStyleManager::applyContainerSpacing(this);
         
         // 标题
-        QLabel *title = new QLabel("欢迎使用医院智慧客服系统", this);
+        QLabel *title = new QLabel("欢迎使用青蓝公司HR制度智能问答系统", this);
         UIStyleManager::applyLabelStyle(title, "title");
         title->setAlignment(Qt::AlignCenter);
         layout->addWidget(title);
@@ -51,7 +51,7 @@ public:
         layout->addStretch();
         
         // 原始应用按钮
-        QPushButton *originalBtn = new QPushButton("医院智慧客服系统\n（原始功能）", this);
+        QPushButton *originalBtn = new QPushButton("青蓝公司HR制度智能问答系统\n（原始功能）", this);
         UIStyleManager::applyButtonStyle(originalBtn, "primary");
         originalBtn->setMinimumHeight(60);
         connect(originalBtn, &QPushButton::clicked, [this]() {
@@ -90,10 +90,10 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     
     // 设置应用程序信息
-    a.setApplicationName("医院智慧客服系统");
+    a.setApplicationName("青蓝公司HR制度智能问答系统");
     a.setApplicationVersion("1.0.0");
-    a.setOrganizationName("医院智慧客服系统 Team");
-    a.setOrganizationDomain("hosp.com");
+    a.setOrganizationName("青蓝公司HR制度智能问答系统 Team");
+    a.setOrganizationDomain("Cyan.com");
     
     // 跨平台字体设置，会在 UIStyleManager 中进一步优化
     UIStyleManager::setupFonts();

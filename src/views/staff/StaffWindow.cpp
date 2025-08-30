@@ -14,7 +14,7 @@ StaffWindow::StaffWindow(QWidget *parent)
     , m_actExport(nullptr)
     , m_actSettings(nullptr)
 {
-    setWindowTitle("医院智慧客服系统 - 客服端");
+    setWindowTitle("公司智慧客服系统 - 客服端");
     createWidgets();
     setupToolBar();
 }

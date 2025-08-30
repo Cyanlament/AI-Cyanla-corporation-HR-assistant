@@ -1,5 +1,5 @@
-#ifndef HOSPITALNAVIGATIONWIDGET_H
-#define HOSPITALNAVIGATIONWIDGET_H
+#ifndef COMPANYNAVIGATIONWIDGET_H
+#define COMPANYNAVIGATIONWIDGET_H
 
 #include <QWidget>
 #include <QGraphicsView>
@@ -17,19 +17,19 @@
 #include <QDebug>
 
 struct Department {
-    QString name;           // 科室名称
+    QString name;           // 部门名称
     QPointF position;       // 在地图上的位置
     QRectF area;           // 点击区域
-    QList<QPointF> pathPoints; // 从入口到该科室的路径点
+    QList<QPointF> pathPoints; // 从入口到该部门的路径点
     QString description;    // 导航说明
 };
 
-class HospitalGraphicsView : public QGraphicsView
+class CompanyGraphicsView : public QGraphicsView
 {
     Q_OBJECT
 
 public:
-    explicit HospitalGraphicsView(QWidget *parent = nullptr);
+    explicit CompanyGraphicsView(QWidget *parent = nullptr);
 
 signals:
     void departmentClicked(const QString &departmentName);
@@ -39,21 +39,21 @@ protected:
 
 private:
     QMap<QString, Department> m_departments;
-    friend class HospitalNavigationWidget;
+    friend class CompanyNavigationWidget;
 };
 
-class HospitalNavigationWidget : public QWidget
+class CompanyNavigationWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit HospitalNavigationWidget(QWidget *parent = nullptr);
-    ~HospitalNavigationWidget();
+    explicit CompanyNavigationWidget(QWidget *parent = nullptr);
+    ~CompanyNavigationWidget();
 
-    // 设置医院地图图片
-    void setHospitalMap(const QString &imagePath);
+    // 设置青蓝公司地图图片
+    void setCompanyMap(const QString &imagePath);
     
-    // 添加科室信息
+    // 添加部门信息
     void addDepartment(const QString &name, const QPointF &position, 
                       const QRectF &area, const QList<QPointF> &pathPoints,
                       const QString &description);
@@ -69,7 +69,7 @@ private:
     void showNavigationText(const QString &text);
 
 private:
-    HospitalGraphicsView *m_graphicsView;
+    CompanyGraphicsView *m_graphicsView;
     QGraphicsScene *m_scene;
     QGraphicsPixmapItem *m_mapItem;
     QGraphicsPathItem *m_pathItem;
@@ -84,4 +84,4 @@ private:
     QString m_currentDepartment;
 };
 
-#endif // HOSPITALNAVIGATIONWIDGET_H 
+#endif // COMPANYNAVIGATIONWIDGET_H

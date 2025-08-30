@@ -19,7 +19,7 @@ void SystemConfigWidget::setupUI()
     // 标题
     //QLabel* titleLabel = new QLabel("系统设置");
     //modify
-    QLabel* titleLabel = new QLabel("科室管理");
+    QLabel* titleLabel = new QLabel("部门管理");
     UIStyleManager::applyLabelStyle(titleLabel, "title");
     m_mainLayout->addWidget(titleLabel);
     
@@ -68,7 +68,7 @@ void SystemConfigWidget::setupUI()
     // m_tabWidget->addTab(m_generalTab, "常规设置");
     // m_tabWidget->addTab(m_aiConfigTab, "AI配置");
     // m_tabWidget->addTab(m_faqTab, " FAQ管理");
-    m_tabWidget->addTab(m_departmentTab, "科室管理");
+    m_tabWidget->addTab(m_departmentTab, "部门管理");
     
     m_mainLayout->addWidget(m_tabWidget);
     m_tabWidget->tabBar()->hide();
@@ -85,7 +85,7 @@ void SystemConfigWidget::setupGeneralTab()
     QGridLayout* basicLayout = new QGridLayout(basicGroup);
     
     basicLayout->addWidget(new QLabel("系统名称:"), 0, 0);
-    m_systemName = new QLineEdit("医院智慧客服系统");
+    m_systemName = new QLineEdit("公司智慧客服系统");
     UIStyleManager::applyLineEditStyle(m_systemName);
     basicLayout->addWidget(m_systemName, 0, 1);
     
@@ -214,7 +214,7 @@ void SystemConfigWidget::setupDepartmentTab()
     
     // 工具栏
     QHBoxLayout* toolLayout = new QHBoxLayout;
-    m_btnAddDept = new QPushButton("添加科室");
+    m_btnAddDept = new QPushButton("添加部门");
     m_btnEditDept = new QPushButton("编辑");
     m_btnDeleteDept = new QPushButton("删除");
     m_btnSearchDept = new QPushButton("搜索");
@@ -229,12 +229,12 @@ void SystemConfigWidget::setupDepartmentTab()
     
 
     m_nameEdit = new QLineEdit;
-    m_nameEdit->setPlaceholderText("请输入科室名称");
+    m_nameEdit->setPlaceholderText("请输入部门名称");
     m_nameEdit->setObjectName("m_nameEdit");
     m_nameEdit->setMinimumWidth(80);
 
     m_descriptionEdit = new QLineEdit;
-    m_descriptionEdit->setPlaceholderText("请输入科室科室描述");
+    m_descriptionEdit->setPlaceholderText("请输入部门部门描述");
     m_descriptionEdit->setObjectName("m_descriptionEdit");
     m_descriptionEdit->setMinimumWidth(80);
 
@@ -254,27 +254,27 @@ void SystemConfigWidget::setupDepartmentTab()
     
     layout->addLayout(toolLayout);
     
-    // 科室表格
+    // 部门表格
     m_departmentTable = new QTableWidget;
     m_departmentTable->setColumnCount(5);
-    QStringList headers = {"科室名称", "位置", "电话", "描述","医生"};
+    QStringList headers = {"部门名称", "位置", "电话", "描述","医生"};
     m_departmentTable->setHorizontalHeaderLabels(headers);
     
     // 添加示例数据
     m_departmentTable->setRowCount(10);
-    m_departmentTable->setItem(0, 0, new QTableWidgetItem("内科"));
+    m_departmentTable->setItem(0, 0, new QTableWidgetItem("控制部"));
     m_departmentTable->setItem(0, 1, new QTableWidgetItem("101"));
     m_departmentTable->setItem(0, 2, new QTableWidgetItem("010-12345678"));
-    m_departmentTable->setItem(0, 3, new QTableWidgetItem("内科疾病诊疗"));
+    m_departmentTable->setItem(0, 3, new QTableWidgetItem("控制部疾病诊疗"));
     m_departmentTable->setItem(0, 4, new QTableWidgetItem("张中"));
     
-    m_departmentTable->setItem(1, 0, new QTableWidgetItem("外科"));
+    m_departmentTable->setItem(1, 0, new QTableWidgetItem("福利部"));
     m_departmentTable->setItem(1, 1, new QTableWidgetItem("102"));
     m_departmentTable->setItem(1, 2, new QTableWidgetItem("010-12121212"));
-    m_departmentTable->setItem(1, 3, new QTableWidgetItem("外科手术治疗"));
+    m_departmentTable->setItem(1, 3, new QTableWidgetItem("福利部手术治疗"));
     m_departmentTable->setItem(1, 4, new QTableWidgetItem("张好"));
     
-    m_departmentTable->setItem(2, 0, new QTableWidgetItem("儿科"));
+    m_departmentTable->setItem(2, 0, new QTableWidgetItem("培训部"));
     m_departmentTable->setItem(2, 1, new QTableWidgetItem("103"));
     m_departmentTable->setItem(2, 2, new QTableWidgetItem("010-11223344"));
     m_departmentTable->setItem(2, 3, new QTableWidgetItem("儿童疾病诊疗"));
@@ -439,17 +439,17 @@ void SystemConfigWidget::onDeleteFAQ()
 
 void SystemConfigWidget::onAddDepartment()
 {
-    QMessageBox::information(this, "添加科室", "科室添加功能将在后续版本中实现");
+    QMessageBox::information(this, "添加部门", "部门添加功能将在后续版本中实现");
 }
 
 void SystemConfigWidget::onEditDepartment()
 {
-    QMessageBox::information(this, "编辑科室", "科室编辑功能将在后续版本中实现");
+    QMessageBox::information(this, "编辑部门", "部门编辑功能将在后续版本中实现");
 }
 
 void SystemConfigWidget::onDeleteDepartment()
 {
-    QMessageBox::information(this, "删除科室", "科室删除功能将在后续版本中实现");
+    QMessageBox::information(this, "删除部门", "部门删除功能将在后续版本中实现");
 }
 
 // FAQEditDialog 实现
@@ -530,7 +530,7 @@ void FAQEditDialog::setFAQData(const QString& question, const QString& answer, c
 DepartmentEditDialog::DepartmentEditDialog(QWidget *parent)
     : QDialog(parent)
 {
-    setWindowTitle("编辑科室");
+    setWindowTitle("编辑部门");
     setFixedSize(400, 250);
     setModal(true);
     
@@ -538,15 +538,15 @@ DepartmentEditDialog::DepartmentEditDialog(QWidget *parent)
     layout->setContentsMargins(20, 20, 20, 20);
     layout->setSpacing(15);
     
-    // 科室名称
-    QLabel* nameLabel = new QLabel("科室名称:");
+    // 部门名称
+    QLabel* nameLabel = new QLabel("部门名称:");
     m_editName = new QLineEdit;
-    m_editName->setPlaceholderText("输入科室名称...");
+    m_editName->setPlaceholderText("输入部门名称...");
     
     // 位置
     QLabel* locationLabel = new QLabel("位置:");
     m_editLocation = new QLineEdit;
-    m_editLocation->setPlaceholderText("输入科室位置...");
+    m_editLocation->setPlaceholderText("输入部门位置...");
     
     // 电话
     QLabel* phoneLabel = new QLabel("电话:");
@@ -556,7 +556,7 @@ DepartmentEditDialog::DepartmentEditDialog(QWidget *parent)
     // 描述
     QLabel* descLabel = new QLabel("描述:");
     m_editDescription = new QTextEdit;
-    m_editDescription->setPlaceholderText("输入科室描述...");
+    m_editDescription->setPlaceholderText("输入部门描述...");
     m_editDescription->setMaximumHeight(80);
     
     // 按钮

@@ -49,7 +49,7 @@ void ExampleUsageWidget::setupUI()
     UIStyleManager::applyContainerSpacing(this);
     
     // 标题
-    QLabel *titleLabel = new QLabel("医院智慧客服系统功能演示", this);
+    QLabel *titleLabel = new QLabel("青蓝公司HR制度智能问答系统", this);
     UIStyleManager::applyLabelStyle(titleLabel, "title");
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setStyleSheet(titleLabel->styleSheet() + 
@@ -84,9 +84,9 @@ void ExampleUsageWidget::setupUI()
 
 void ExampleUsageWidget::setupNavigationTab()
 {
-    // 创建医院导航选项卡
-    m_navigationWidget = new HospitalNavigationWidget();
-    m_tabWidget->addTab(m_navigationWidget, "🗺️ 医院导航");
+    // 创建公司导航选项卡
+    m_navigationWidget = new CompanyNavigationWidget();
+    m_tabWidget->addTab(m_navigationWidget, "🗺️ 公司导航");
 }
 
 void ExampleUsageWidget::setupChatTab()
@@ -117,7 +117,7 @@ void ExampleUsageWidget::setupChatTab()
     
     m_senderInput = new QLineEdit(inputGroup);
     m_senderInput->setPlaceholderText("发送者");
-    m_senderInput->setText("患者001");
+    m_senderInput->setText("访客001");
     UIStyleManager::applyLineEditStyle(m_senderInput);
     
     m_receiverInput = new QLineEdit(inputGroup);
@@ -127,7 +127,7 @@ void ExampleUsageWidget::setupChatTab()
     
     m_messageInput = new QLineEdit(inputGroup);
     m_messageInput->setPlaceholderText("消息内容");
-    m_messageInput->setText("你好，我想咨询一下挂号的问题");
+    m_messageInput->setText("你好，我想咨询一下HR制度问题");
     UIStyleManager::applyLineEditStyle(m_messageInput);
     
     m_sendButton = new QPushButton("📤 发送消息", inputGroup);
@@ -404,7 +404,7 @@ void ExampleUsageWidget::updateMessagesList()
         QListWidgetItem *item = new QListWidgetItem(itemText);
         
         // 根据发送者设置不同颜色
-        if (msg.sender.contains("患者")) {
+        if (msg.sender.contains("访客")) {
             item->setForeground(QColor(UIStyleManager::colors.primary));
         } else if (msg.sender.contains("客服")) {
             item->setForeground(QColor(UIStyleManager::colors.success));

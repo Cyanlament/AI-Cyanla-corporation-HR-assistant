@@ -11,7 +11,7 @@ void VisitorMainWidget::setCurrentUser(const UserInfo& user)
 {
     m_currentUser = user;
     
-    // 更新AI分诊组件的用户信息
+    // 更新AIHR组件的用户信息
     if (m_chatWidget) {
         m_chatWidget->setUserInfo(QString::number(user.id), user.realName.isEmpty() ? user.username : user.realName);
     }
@@ -58,10 +58,10 @@ void VisitorMainWidget::setupUI()
     
     m_tabWidget = new QTabWidget;
     // 设置选项卡的位置为垂直方向
-    // m_tabWidget->setTabPosition(QTabWidget::West);
+    m_tabWidget->setTabPosition(QTabWidget::West);//
     
     // 创建各个功能页面
-    m_chatWidget = new ChatWidget;          // AI智能分诊
+    m_chatWidget = new ChatWidget;          // AI智能HR
     m_realChatWidget = new RealChatWidget;  // 真人客服
     m_faqWidget = new FAQWidget;
     m_appointmentWidget = new AppointmentWidget;
@@ -69,12 +69,12 @@ void VisitorMainWidget::setupUI()
     QWidget * dtWgt = new QWidget;
     dtWgt->setStyleSheet("QWidget { border-image: url(:/dh.jpg);}");
     // 添加选项卡
-    m_tabWidget->addTab(m_chatWidget, "智能分诊");
-    // m_tabWidget->addTab(m_realChatWidget, "客服咨询");
-    // m_tabWidget->addTab(m_faqWidget, "常见问题");
-    // m_tabWidget->addTab(dtWgt, "地图导航");
+    m_tabWidget->addTab(m_chatWidget, "智能HR");
+    m_tabWidget->addTab(m_realChatWidget, "客服咨询");
+    m_tabWidget->addTab(m_faqWidget, "常见问题");
+    m_tabWidget->addTab(dtWgt, "地图导航");
     //modify
-    // m_tabWidget->addTab(m_appointmentWidget, "预约挂号");
+    m_tabWidget->addTab(m_appointmentWidget, "预约面试");
     
     // 连接转人工信号
     connect(m_chatWidget, &ChatWidget::requestHumanService,

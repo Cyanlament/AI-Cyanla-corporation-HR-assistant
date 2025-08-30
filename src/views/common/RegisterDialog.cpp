@@ -8,7 +8,7 @@
 RegisterDialog::RegisterDialog(QWidget *parent)
     : QDialog(parent)
 {
-    setWindowTitle("医院智慧客服系统- 注册账号");
+    setWindowTitle("青蓝公司HR制度智能问答系统- 注册账号");
     setFixedSize(600, 700);
     setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground);
@@ -61,7 +61,7 @@ void RegisterDialog::setupUI()
     m_roleLabel = new QLabel("注册身份:");
     m_roleLabel->setObjectName("inputLabel");
     m_roleCombo = new QComboBox;
-    m_roleCombo->addItem("👨‍⚕️ 患者", "患者");
+    m_roleCombo->addItem("👨‍⚕️ 访客", "访客");
     // m_roleCombo->addItem("👩‍💼 客服", "客服");
     // m_roleCombo->addItem("👨‍💻 管理员", "管理员");
     m_roleCombo->setObjectName("roleCombo");

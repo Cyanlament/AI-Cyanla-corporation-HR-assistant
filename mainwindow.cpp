@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     setupMenus();
     // setupStatusBar();
     
-    setWindowTitle("医院智慧客服系统");
+    setWindowTitle("青蓝公司HR制度智能问答系统");
     setMinimumSize(1200, 800);
     resize(1400, 900);
     
@@ -59,7 +59,7 @@ void MainWindow::setupMenus()
 {
     //modify
     // 系统菜单
-    // m_systemMenu = menuBar()->addMenu("系统(&S)");
+    m_systemMenu = menuBar()->addMenu("系统(&S)");
     m_systemMenu = new QMenu();
     
     m_adminAction = m_systemMenu->addAction("管理员界面(&A)");
@@ -70,8 +70,8 @@ void MainWindow::setupMenus()
     m_staffAction->setStatusTip("切换到客服界面");
     connect(m_staffAction, &QAction::triggered, this, &MainWindow::showStaffPanel);
     
-    m_visitorAction = m_systemMenu->addAction("患者界面(&P)");
-    m_visitorAction->setStatusTip("切换到患者界面");
+    m_visitorAction = m_systemMenu->addAction("访客界面(&P)");
+    m_visitorAction->setStatusTip("切换到访客界面");
     connect(m_visitorAction, &QAction::triggered, this, &MainWindow::showVisitorPanel);
     
     m_systemMenu->addSeparator();
@@ -104,7 +104,7 @@ void MainWindow::setupMenus()
     m_helpMenu = menuBar()->addMenu("帮助(&H)");
     
     m_aboutAction = m_helpMenu->addAction("关于(&A)");
-    m_aboutAction->setStatusTip("关于医院智慧客服系统系统");
+    m_aboutAction->setStatusTip("关于青蓝公司HR制度智能问答系统");
     connect(m_aboutAction, &QAction::triggered, this, &MainWindow::onAbout);
 }
 
@@ -119,7 +119,7 @@ void MainWindow::setupStatusBar()
     statusBar()->addWidget(new QLabel("|"));
     statusBar()->addWidget(new QLabel("角色:"));
     statusBar()->addWidget(m_roleLabel);
-    statusBar()->addPermanentWidget(new QLabel("医院智慧客服系统v1.0.0"));
+    statusBar()->addPermanentWidget(new QLabel("青蓝公司HR制度智能问答系统v1.0.0"));
 }
 
 void MainWindow::setCurrentUser(const UserInfo& user)
@@ -131,7 +131,7 @@ void MainWindow::setCurrentUser(const UserInfo& user)
     // m_roleLabel->setText(user.role);
     
     // 更新窗口标题
-    setWindowTitle(QString("医院智慧客服系统 [%1 - %2]")
+    setWindowTitle(QString("青蓝公司HR制度智能问答系统 [%1 - %2]")
                    .arg(user.realName.isEmpty() ? user.username : user.realName)
                    .arg(user.role));
     
@@ -162,7 +162,7 @@ void MainWindow::setDatabaseManager(DatabaseManager* dbManager)
 {
     m_dbManager = dbManager;
     
-    // 如果已经设置了用户和数据库管理器，传递给患者界面
+    // 如果已经设置了用户和数据库管理器，传递给访客界面
     if (m_dbManager && !m_currentUser.username.isEmpty()) {
         VisitorMainWidget* VisitorWidget = qobject_cast<VisitorMainWidget*>(m_centralStack->widget(2));
         if (VisitorWidget) {
@@ -189,7 +189,7 @@ void MainWindow::updateUIForRole()
         m_adminAction->setEnabled(false);
         m_staffAction->setEnabled(true);
         m_visitorAction->setEnabled(false);
-    } else if (m_currentUser.role == "患者") {
+    } else if (m_currentUser.role == "访客") {
         m_centralStack->setCurrentIndex(2);
         m_adminAction->setEnabled(false);
         m_staffAction->setEnabled(false);
@@ -219,9 +219,9 @@ void MainWindow::showStaffPanel()
 
 void MainWindow::showVisitorPanel()
 {
-    // 所有用户都可以访问患者界面
+    // 所有用户都可以访问访客界面
     m_centralStack->setCurrentIndex(2);
-    statusBar()->showMessage("已切换到患者界面", 2000);
+    statusBar()->showMessage("已切换到访客界面", 2000);
 }
 
 void MainWindow::showUserProfile()
@@ -274,21 +274,21 @@ void MainWindow::onLogout()
 
 void MainWindow::onAbout()
 {
-    QMessageBox::about(this, "关于 医院智慧客服系统",
-        "<h2>医院智慧客服系统</h2>"
+    QMessageBox::about(this, "关于 青蓝公司HR制度智能问答系统",
+        "<h2>青蓝公司HR制度智能问答系统</h2>"
         "<p>版本: 1.0.0</p>"
-        "<p>这是一个基于Qt开发的医院智慧客服系统，</p>"
-        // "<p>提供患者咨询、客服管理、系统管理等功能。</p>"
+        "<p>这是一个基于Qt开发的公司智慧客服系统，</p>"
+        "<p>提供访客咨询、客服管理、系统管理等功能。</p>"
         "<br>"
-        // "<p>主要特性:</p>"
-        // "<ul>"
-        // "<li>安全的用户认证系统</li>"
-        // "<li>多角色权限管理</li>"
-        // "<li>智能客服对话</li>"
-        // "<li>数据统计分析</li>"
-        // "<li>系统配置管理</li>"
-        // "</ul>"
+        "<p>主要特性:</p>"
+        "<ul>"
+        "<li>安全的用户认证系统</li>"
+        "<li>多角色权限管理</li>"
+        "<li>智能客服对话</li>"
+        "<li>数据统计分析</li>"
+        "<li>系统配置管理</li>"
+        "</ul>"
         "<br>"
-        "<p>© lulullu.</p>"
+        "<p>©otto</p>"
     );
 }

@@ -208,7 +208,7 @@ void SystemStatsWidget::setupUserStatsTab()
     QChart* chart = new QChart();
     QPieSeries* series = new QPieSeries();
     
-    series->append("患者", 70.5);
+    series->append("访客", 70.5);
     series->append("客服", 25.2);
     series->append("管理员", 4.3);
     
@@ -239,7 +239,7 @@ void SystemStatsWidget::setupUserStatsTab()
     m_userStatsTable->setHorizontalHeaderLabels(headers);
     
     m_userStatsTable->setRowCount(3);
-    m_userStatsTable->setItem(0, 0, new QTableWidgetItem("患者"));
+    m_userStatsTable->setItem(0, 0, new QTableWidgetItem("访客"));
     m_userStatsTable->setItem(0, 1, new QTableWidgetItem("879"));
     m_userStatsTable->setItem(0, 2, new QTableWidgetItem("623"));
     m_userStatsTable->setItem(0, 3, new QTableWidgetItem("70.5%"));
@@ -424,7 +424,7 @@ void SystemStatsWidget::onExportReport()
             out.setEncoding(QStringConverter::Utf8);
             
             // 写入报表头
-            out << "医院智慧客服系统统计报表\n";
+            out << "公司智慧客服系统统计报表\n";
             out << "生成时间," << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") << "\n";
             out << "统计范围," << m_startDate->date().toString("yyyy-MM-dd") << " 至 " << m_endDate->date().toString("yyyy-MM-dd") << "\n\n";
             

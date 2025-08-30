@@ -85,7 +85,7 @@ private:
     QPushButton* m_btnEditFAQ;
     QPushButton* m_btnDeleteFAQ;
     
-    // 科室管理选项卡
+    // 部门管理选项卡
     QWidget* m_departmentTab;
     QTableWidget* m_departmentTable;
     QPushButton* m_btnAddDept;
@@ -121,7 +121,7 @@ private:
     QPushButton* m_btnCancel;
 };
 
-// 科室编辑对话框
+// 部门编辑对话框
 class DepartmentEditDialog : public QDialog
 {
     Q_OBJECT

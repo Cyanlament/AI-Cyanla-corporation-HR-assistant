@@ -139,7 +139,7 @@ bool DatabaseManager::createTables()
 
     // 创建默认管理员账户（如果不存在）
     if (!isUsernameExists("admin")) {
-        registerUser("admin", "admin123", "admin@Cyan.com", "", "管理员", "系统管理员");
+        registerUser("admin", "admin123", "admin@Cyan.com", "", "管理员", "系统管理员ayin");
     }
 
     // 创建测试HR客服账户
@@ -273,7 +273,7 @@ int DatabaseManager::createChatSession(int visitorId, int staffId)
         // 发送系统消息
         QString systemMsg = staffId > 0 ?
                                 QString("客服 %1 已接入对话").arg(staffName) :
-                                "您好！请描述您的问题，我们会尽快为您安排客服。";
+                                "您好！请描述您的问题，我们会尽快为您安排HR客服。";
         sendMessage(sessionId, 0, systemMsg, 1); // 系统消息
 
         // 发送信号

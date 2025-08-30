@@ -9,7 +9,7 @@ VisitorWindow::VisitorWindow(QWidget *parent)
     , m_faqWidget(nullptr)
     , m_mapWidget(nullptr)
 {
-    setWindowTitle("医院智慧客服系统 - 患者端");
+    setWindowTitle("青蓝公司HR制度智能问答系统 - 访客端");
     createWidgets();
 }
 
@@ -26,12 +26,12 @@ void VisitorWindow::setupMenu()
 void VisitorWindow::setupFunctionWidgets()
 {
     // 添加功能页面到堆叠widget
-    addFunctionWidget(m_chatWidget, "智能分诊");
+    addFunctionWidget(m_chatWidget, "智能HR");
     addFunctionWidget(m_faqWidget, "常见问题");
-    addFunctionWidget(m_mapWidget, "院内导航");
+    addFunctionWidget(m_mapWidget, "公司内导航");
     
     // 默认显示聊天页面
-    setCurrentWidget("智能分诊");
+    setCurrentWidget("智能HR");
 }
 
 void VisitorWindow::createWidgets()
@@ -45,13 +45,13 @@ void VisitorWindow::onMenuItemClicked(MenuAction action)
 {
     switch (action) {
     case MenuAction::visitorChat:
-        setCurrentWidget("智能分诊");
+        setCurrentWidget("智能HR");
         break;
     case MenuAction::visitorAppointment:
         setCurrentWidget("常见问题");
         break;
     case MenuAction::visitorMap:
-        setCurrentWidget("院内导航");
+        setCurrentWidget("公司内导航");
         break;
     default:
         break;

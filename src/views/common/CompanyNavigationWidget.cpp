@@ -1,4 +1,4 @@
-#include "HospitalNavigationWidget.h"
+#include "CompanyNavigationWidget.h"
 #include "UIStyleManager.h"
 #include <QPainter>
 #include <QPen>
@@ -9,19 +9,19 @@
 #include <QDir>
 #include <QPushButton>
 
-// HospitalGraphicsView 实现
-HospitalGraphicsView::HospitalGraphicsView(QWidget *parent)
+// CompanyGraphicsView 实现
+CompanyGraphicsView::CompanyGraphicsView(QWidget *parent)
     : QGraphicsView(parent)
 {
     setDragMode(QGraphicsView::ScrollHandDrag);
     setRenderHint(QPainter::Antialiasing);
 }
 
-void HospitalGraphicsView::mousePressEvent(QMouseEvent *event)
+void CompanyGraphicsView::mousePressEvent(QMouseEvent *event)
 {
     QPointF scenePos = mapToScene(event->pos());
     
-    // 检查点击的位置是否在某个科室区域内
+    // 检查点击的位置是否在某个部门区域内
     for (auto it = m_departments.begin(); it != m_departments.end(); ++it) {
         if (it.value().area.contains(scenePos)) {
             emit departmentClicked(it.key());
@@ -32,8 +32,8 @@ void HospitalGraphicsView::mousePressEvent(QMouseEvent *event)
     QGraphicsView::mousePressEvent(event);
 }
 
-// HospitalNavigationWidget 实现
-HospitalNavigationWidget::HospitalNavigationWidget(QWidget *parent)
+// CompanyNavigationWidget 实现
+CompanyNavigationWidget::CompanyNavigationWidget(QWidget *parent)
     : QWidget(parent)
     , m_graphicsView(nullptr)
     , m_scene(nullptr)
@@ -48,21 +48,21 @@ HospitalNavigationWidget::HospitalNavigationWidget(QWidget *parent)
     initializeDepartments();
 }
 
-HospitalNavigationWidget::~HospitalNavigationWidget()
+CompanyNavigationWidget::~CompanyNavigationWidget()
 {
     if (m_scene) {
         delete m_scene;
     }
 }
 
-void HospitalNavigationWidget::setupUI()
+void CompanyNavigationWidget::setupUI()
 {
     // 创建主布局
     m_mainLayout = new QVBoxLayout(this);
     UIStyleManager::applyContainerSpacing(this);
 
     // 标题标签
-    m_titleLabel = new QLabel("🏥 医院导航系统", this);
+    m_titleLabel = new QLabel("青蓝公司导航系统", this);
     m_titleLabel->setAlignment(Qt::AlignCenter);
     UIStyleManager::applyLabelStyle(m_titleLabel, "title");
     m_titleLabel->setStyleSheet(m_titleLabel->styleSheet() + 
@@ -84,7 +84,7 @@ void HospitalNavigationWidget::setupUI()
 
     // 创建图形视图和场景
     m_scene = new QGraphicsScene(this);
-    m_graphicsView = new HospitalGraphicsView(this);
+    m_graphicsView = new CompanyGraphicsView(this);
     m_graphicsView->setScene(m_scene);
     m_graphicsView->setMinimumSize(700, 500);
     
@@ -118,7 +118,7 @@ void HospitalNavigationWidget::setupUI()
     infoPanelLayout->addWidget(panelTitle);
     
     // 导航说明标签
-    m_navigationLabel = new QLabel("点击地图上的科室名称查看导航路线", infoPanel);
+    m_navigationLabel = new QLabel("点击地图上的部门名称查看导航路线", infoPanel);
     m_navigationLabel->setWordWrap(true);
     m_navigationLabel->setAlignment(Qt::AlignTop);
     UIStyleManager::applyLabelStyle(m_navigationLabel, "normal");
@@ -138,7 +138,7 @@ void HospitalNavigationWidget::setupUI()
     // 添加清除按钮
     QPushButton *clearButton = new QPushButton("🔄 清除路径", infoPanel);
     UIStyleManager::applyButtonStyle(clearButton, "secondary");
-    connect(clearButton, &QPushButton::clicked, this, &HospitalNavigationWidget::clearNavigation);
+    connect(clearButton, &QPushButton::clicked, this, &CompanyNavigationWidget::clearNavigation);
     infoPanelLayout->addWidget(clearButton);
     
     // 添加弹性空间
@@ -147,7 +147,7 @@ void HospitalNavigationWidget::setupUI()
     // 添加使用说明
     QLabel *helpLabel = new QLabel(
         "💡 <b>使用说明：</b><br>"
-        "• 点击地图中的科室区域<br>"
+        "• 点击地图中的部门区域<br>"
         "• 查看红色导航路径<br>"
         "• 阅读详细导航说明<br>"
         "• 点击清除路径重置", infoPanel);
@@ -161,20 +161,20 @@ void HospitalNavigationWidget::setupUI()
     m_mainLayout->addLayout(m_contentLayout);
 
     // 连接信号
-    connect(m_graphicsView, &HospitalGraphicsView::departmentClicked,
-            this, &HospitalNavigationWidget::onDepartmentClicked);
+    connect(m_graphicsView, &CompanyGraphicsView::departmentClicked,
+            this, &CompanyNavigationWidget::onDepartmentClicked);
 }
 
-void HospitalNavigationWidget::initializeDepartments()
+void CompanyNavigationWidget::initializeDepartments()
 {
-    // 创建虚拟医院地图
-    QPixmap hospitalMap(800, 600);
-    hospitalMap.fill(Qt::white);
+    // 创建公司地图
+    QPixmap companyMap(800, 600);
+    companyMap.fill(Qt::white);
     
-    QPainter painter(&hospitalMap);
+    QPainter painter(&companyMap);
     painter.setRenderHint(QPainter::Antialiasing);
     
-    // 绘制医院基本结构
+    // 绘制公司基本结构
     painter.setPen(QPen(Qt::black, 2));
     painter.setBrush(QBrush(QColor(240, 240, 240)));
     
@@ -189,96 +189,96 @@ void HospitalNavigationWidget::initializeDepartments()
     painter.setPen(QPen(Qt::white, 2));
     painter.drawText(entrance, Qt::AlignCenter, "主入口");
     
-    // 绘制科室区域
+    // 绘制部门区域
     painter.setPen(QPen(Qt::black, 1));
     
-    // 内科
+    // 控制部
     painter.setBrush(QBrush(QColor(255, 193, 7))); // 黄色
     QRect internal(100, 100, 150, 100);
     painter.drawRect(internal);
     painter.setPen(QPen(Qt::black, 2));
-    painter.drawText(internal, Qt::AlignCenter, "内科");
+    painter.drawText(internal, Qt::AlignCenter, "控制部");
     
-    // 外科
+    // 福利部
     painter.setBrush(QBrush(QColor(33, 150, 243))); // 蓝色
     QRect surgery(300, 100, 150, 100);
     painter.drawRect(surgery);
-    painter.drawText(surgery, Qt::AlignCenter, "外科");
+    painter.drawText(surgery, Qt::AlignCenter, "福利部");
     
-    // 儿科
+    // 培训部
     painter.setBrush(QBrush(QColor(255, 87, 34))); // 橙色
     QRect pediatric(500, 100, 150, 100);
     painter.drawRect(pediatric);
-    painter.drawText(pediatric, Qt::AlignCenter, "儿科");
+    painter.drawText(pediatric, Qt::AlignCenter, "培训部");
     
-    // 药房
+    // 安保部
     painter.setBrush(QBrush(QColor(139, 195, 74))); // 浅绿色
     QRect pharmacy(100, 300, 150, 100);
     painter.drawRect(pharmacy);
-    painter.drawText(pharmacy, Qt::AlignCenter, "药房");
+    painter.drawText(pharmacy, Qt::AlignCenter, "安保部");
     
-    // 挂号处
+    // 情报部
     painter.setBrush(QBrush(QColor(156, 39, 176))); // 紫色
     QRect registration(300, 300, 150, 100);
     painter.drawRect(registration);
-    painter.drawText(registration, Qt::AlignCenter, "挂号处");
+    painter.drawText(registration, Qt::AlignCenter, "情报部");
     
-    // 急诊科
+    // 惩戒部
     painter.setBrush(QBrush(QColor(244, 67, 54))); // 红色
     QRect emergency(500, 300, 150, 100);
     painter.drawRect(emergency);
-    painter.drawText(emergency, Qt::AlignCenter, "急诊科");
+    painter.drawText(emergency, Qt::AlignCenter, "惩戒部");
     
     painter.end();
     
     // 设置地图到场景
-    m_mapItem = m_scene->addPixmap(hospitalMap);
-    m_scene->setSceneRect(hospitalMap.rect());
+    m_mapItem = m_scene->addPixmap(companyMap);
+    m_scene->setSceneRect(companyMap.rect());
     
-    // 添加科室信息到内部存储
+    // 添加部门信息到内部存储
     QPointF entrancePoint(400, 575); // 入口点
     
-    // 内科路径
-    addDepartment("内科", QPointF(175, 150), 
+    // 控制部路径
+    addDepartment("控制部", QPointF(175, 150),
                  QRectF(100, 100, 150, 100),
                  {entrancePoint, QPointF(400, 400), QPointF(200, 400), QPointF(175, 150)},
-                 "📍 内科导航:\n1. 从主入口进入\n2. 直行至大厅中央\n3. 左转走廊\n4. 到达内科诊室\n\n⏱️ 预计步行时间: 3分钟");
+                 "📍 控制部导航:\n1. 从主入口进入\n2. 直行至大厅中央\n3. 左转走廊\n4. 到达控制部\n\n⏱️ 预计步行时间: 3分钟");
     
-    // 外科路径
-    addDepartment("外科", QPointF(375, 150),
+    // 福利部路径
+    addDepartment("福利部", QPointF(375, 150),
                  QRectF(300, 100, 150, 100),
                  {entrancePoint, QPointF(400, 400), QPointF(375, 150)},
-                 "📍 外科导航:\n1. 从主入口进入\n2. 直行至大厅中央\n3. 继续直行\n4. 到达外科诊室\n\n⏱️ 预计步行时间: 2分钟");
+                 "📍 福利部导航:\n1. 从主入口进入\n2. 直行至大厅中央\n3. 继续直行\n4. 到达福利部\n\n⏱️ 预计步行时间: 2分钟");
     
-    // 儿科路径
-    addDepartment("儿科", QPointF(575, 150),
+    // 培训部路径
+    addDepartment("培训部", QPointF(575, 150),
                  QRectF(500, 100, 150, 100),
                  {entrancePoint, QPointF(400, 400), QPointF(600, 400), QPointF(575, 150)},
-                 "📍 儿科导航:\n1. 从主入口进入\n2. 直行至大厅中央\n3. 右转走廊\n4. 到达儿科诊室\n\n⏱️ 预计步行时间: 3分钟");
+                 "📍 培训部导航:\n1. 从主入口进入\n2. 直行至大厅中央\n3. 右转走廊\n4. 到达培训部\n\n⏱️ 预计步行时间: 3分钟");
     
-    // 药房路径
-    addDepartment("药房", QPointF(175, 350),
+    // 安保部路径
+    addDepartment("安保部", QPointF(175, 350),
                  QRectF(100, 300, 150, 100),
                  {entrancePoint, QPointF(400, 450), QPointF(175, 350)},
-                 "📍 药房导航:\n1. 从主入口进入\n2. 左转至服务区\n3. 到达药房窗口\n\n⏱️ 预计步行时间: 2分钟\n💊 可在此取药和咨询");
+                 "📍 安保部导航:\n1. 从主入口进入\n2. 左转至服务区\n3. 到达安保部\n\n⏱️ 预计步行时间: 2分钟\n💊 可在此取脑啡肽和药品");
     
-    // 挂号处路径
-    addDepartment("挂号处", QPointF(375, 350),
+    // 情报部路径
+    addDepartment("情报部", QPointF(375, 350),
                  QRectF(300, 300, 150, 100),
                  {entrancePoint, QPointF(375, 350)},
-                 "📍 挂号处导航:\n1. 从主入口进入\n2. 直接前方就是挂号处\n\n⏱️ 预计步行时间: 1分钟\n🎫 请先在此挂号");
+                 "📍 情报部导航:\n1. 从主入口进入\n2. 直接前方就是情报部\n\n⏱️ 预计步行时间: 1分钟\n🎫 可以在这里获得工作详细情报");
     
-    // 急诊科路径
-    addDepartment("急诊科", QPointF(575, 350),
+    // 惩戒部路径
+    addDepartment("惩戒部", QPointF(575, 350),
                  QRectF(500, 300, 150, 100),
                  {entrancePoint, QPointF(400, 450), QPointF(575, 350)},
-                 "📍 急诊科导航:\n1. 从主入口进入\n2. 右转至急诊区\n3. 到达急诊科\n\n⏱️ 预计步行时间: 2分钟\n🚨 24小时开放");
+                 "📍 惩戒部导航:\n1. 从主入口进入\n2. 右转至惩戒区\n3. 到达惩戒部\n\n⏱️ 预计步行时间: 2分钟\n🚨 24小时开放");
     
-    // 将科室信息同步到图形视图
+    // 将部门信息同步到图形视图
     m_graphicsView->m_departments = m_departments;
 }
 
-void HospitalNavigationWidget::setHospitalMap(const QString &imagePath)
+void CompanyNavigationWidget::setCompanyMap(const QString &imagePath)
 {
     QPixmap pixmap(imagePath);
     if (!pixmap.isNull()) {
@@ -291,7 +291,7 @@ void HospitalNavigationWidget::setHospitalMap(const QString &imagePath)
     }
 }
 
-void HospitalNavigationWidget::addDepartment(const QString &name, const QPointF &position,
+void CompanyNavigationWidget::addDepartment(const QString &name, const QPointF &position,
                                            const QRectF &area, const QList<QPointF> &pathPoints,
                                            const QString &description)
 {
@@ -310,12 +310,12 @@ void HospitalNavigationWidget::addDepartment(const QString &name, const QPointF 
     }
 }
 
-void HospitalNavigationWidget::onDepartmentClicked(const QString &departmentName)
+void CompanyNavigationWidget::onDepartmentClicked(const QString &departmentName)
 {
-    qDebug() << "科室被点击:" << departmentName;
+    qDebug() << "部门被点击:" << departmentName;
     
     if (!m_departments.contains(departmentName)) {
-        qWarning() << "未找到科室:" << departmentName;
+        qWarning() << "未找到部门:" << departmentName;
         return;
     }
     
@@ -329,7 +329,7 @@ void HospitalNavigationWidget::onDepartmentClicked(const QString &departmentName
     showNavigationText(dept.description);
 }
 
-void HospitalNavigationWidget::clearNavigation()
+void CompanyNavigationWidget::clearNavigation()
 {
     // 清除路径
     if (m_pathItem) {
@@ -339,11 +339,11 @@ void HospitalNavigationWidget::clearNavigation()
     }
     
     // 重置导航说明
-    m_navigationLabel->setText("点击地图上的科室名称查看导航路线");
+    m_navigationLabel->setText("点击地图上的部门名称查看导航路线");
     m_currentDepartment.clear();
 }
 
-void HospitalNavigationWidget::drawNavigationPath(const QList<QPointF> &pathPoints)
+void CompanyNavigationWidget::drawNavigationPath(const QList<QPointF> &pathPoints)
 {
     if (pathPoints.isEmpty()) return;
     
@@ -394,7 +394,7 @@ void HospitalNavigationWidget::drawNavigationPath(const QList<QPointF> &pathPoin
                        QPen(Qt::red, 3), QBrush(Qt::red));
 }
 
-void HospitalNavigationWidget::showNavigationText(const QString &text)
+void CompanyNavigationWidget::showNavigationText(const QString &text)
 {
     QString styledText = QString(
         "<div style='color: %1; line-height: 1.8; font-size: 14px;'>"

@@ -12,8 +12,8 @@
 #include <QPolygon>
 #include <cmath>
 
-// HospitalMapWidget 实现
-HospitalMapWidget::HospitalMapWidget(QWidget* parent)
+// CompanyMapWidget 实现
+CompanyMapWidget::CompanyMapWidget(QWidget* parent)
     : QWidget(parent)
     , m_zoomLevel(1.0)
     , m_pulseOpacity(1.0)
@@ -37,13 +37,13 @@ HospitalMapWidget::HospitalMapWidget(QWidget* parent)
     });
 }
 
-void HospitalMapWidget::setDepartments(const QMap<QString, DepartmentInfo>& departments)
+void CompanyMapWidget::setDepartments(const QMap<QString, DepartmentInfo>& departments)
 {
     m_departments = departments;
     update();
 }
 
-void HospitalMapWidget::highlightDepartment(const QString& departmentName)
+void CompanyMapWidget::highlightDepartment(const QString& departmentName)
 {
     m_highlightedDepartment = departmentName;
     
@@ -59,7 +59,7 @@ void HospitalMapWidget::highlightDepartment(const QString& departmentName)
     update();
 }
 
-void HospitalMapWidget::clearHighlight()
+void CompanyMapWidget::clearHighlight()
 {
     m_highlightedDepartment.clear();
     m_hoveredDepartment.clear();
@@ -67,7 +67,7 @@ void HospitalMapWidget::clearHighlight()
     update();
 }
 
-void HospitalMapWidget::showRoute(const QString& from, const QString& to)
+void CompanyMapWidget::showRoute(const QString& from, const QString& to)
 {
     m_routeFrom = from;
     m_routeTo = to;
@@ -91,19 +91,19 @@ void HospitalMapWidget::showRoute(const QString& from, const QString& to)
     update();
 }
 
-void HospitalMapWidget::setZoomLevel(double zoom)
+void CompanyMapWidget::setZoomLevel(double zoom)
 {
     m_zoomLevel = qBound(0.5, zoom, 3.0);
     setMinimumSize(800 * m_zoomLevel, 600 * m_zoomLevel);
     update();
 }
 
-QSize HospitalMapWidget::sizeHint() const
+QSize CompanyMapWidget::sizeHint() const
 {
     return QSize(800 * m_zoomLevel, 600 * m_zoomLevel);
 }
 
-void HospitalMapWidget::paintEvent(QPaintEvent* event)
+void CompanyMapWidget::paintEvent(QPaintEvent* event)
 {
     Q_UNUSED(event)
     
@@ -118,7 +118,7 @@ void HospitalMapWidget::paintEvent(QPaintEvent* event)
     drawLabels(painter);
 }
 
-void HospitalMapWidget::mousePressEvent(QMouseEvent* event)
+void CompanyMapWidget::mousePressEvent(QMouseEvent* event)
 {
     QPoint scaledPos(event->pos().x() / m_zoomLevel, event->pos().y() / m_zoomLevel);
     QString department = getDepartmentAt(scaledPos);
@@ -130,7 +130,7 @@ void HospitalMapWidget::mousePressEvent(QMouseEvent* event)
     QWidget::mousePressEvent(event);
 }
 
-void HospitalMapWidget::mouseMoveEvent(QMouseEvent* event)
+void CompanyMapWidget::mouseMoveEvent(QMouseEvent* event)
 {
     QPoint scaledPos(event->pos().x() / m_zoomLevel, event->pos().y() / m_zoomLevel);
     QString department = getDepartmentAt(scaledPos);
@@ -155,7 +155,7 @@ void HospitalMapWidget::mouseMoveEvent(QMouseEvent* event)
     QWidget::mouseMoveEvent(event);
 }
 
-void HospitalMapWidget::leaveEvent(QEvent* event)
+void CompanyMapWidget::leaveEvent(QEvent* event)
 {
     m_hoveredDepartment.clear();
     QToolTip::hideText();
@@ -163,7 +163,7 @@ void HospitalMapWidget::leaveEvent(QEvent* event)
     QWidget::leaveEvent(event);
 }
 
-void HospitalMapWidget::wheelEvent(QWheelEvent* event)
+void CompanyMapWidget::wheelEvent(QWheelEvent* event)
 {
     const double scaleFactor = 1.15;
     double newZoom = m_zoomLevel;
@@ -178,7 +178,7 @@ void HospitalMapWidget::wheelEvent(QWheelEvent* event)
     QWidget::wheelEvent(event);
 }
 
-void HospitalMapWidget::drawBackground(QPainter& painter)
+void CompanyMapWidget::drawBackground(QPainter& painter)
 {
     // 绘制背景
     QLinearGradient gradient(0, 0, 0, height() / m_zoomLevel);
@@ -196,7 +196,7 @@ void HospitalMapWidget::drawBackground(QPainter& painter)
     }
 }
 
-void HospitalMapWidget::drawBuildings(QPainter& painter)
+void CompanyMapWidget::drawBuildings(QPainter& painter)
 {
     // 绘制建筑轮廓
     painter.setPen(QPen(QColor("#6C757D"), 2));
@@ -224,7 +224,7 @@ void HospitalMapWidget::drawBuildings(QPainter& painter)
     }
 }
 
-void HospitalMapWidget::drawDepartments(QPainter& painter)
+void CompanyMapWidget::drawDepartments(QPainter& painter)
 {
     for (auto it = m_departments.begin(); it != m_departments.end(); ++it) {
         const QString& name = it.key();
@@ -242,12 +242,12 @@ void HospitalMapWidget::drawDepartments(QPainter& painter)
             baseColor.setAlphaF(0.7);
         }
         
-        // 绘制科室区域
+        // 绘制部门区域
         painter.setPen(QPen(baseColor.darker(120), 2));
         painter.setBrush(baseColor);
         painter.drawRoundedRect(rect, 8, 8);
         
-        // 绘制科室名称
+        // 绘制部门名称
         painter.setPen(QColor("#212529"));
         painter.setFont(QFont("Arial", 10, QFont::Bold));
         
@@ -261,7 +261,7 @@ void HospitalMapWidget::drawDepartments(QPainter& painter)
     }
 }
 
-void HospitalMapWidget::drawRoute(QPainter& painter)
+void CompanyMapWidget::drawRoute(QPainter& painter)
 {
     if (m_routePoints.size() < 2) return;
     
@@ -298,7 +298,7 @@ void HospitalMapWidget::drawRoute(QPainter& painter)
     }
 }
 
-void HospitalMapWidget::drawLabels(QPainter& painter)
+void CompanyMapWidget::drawLabels(QPainter& painter)
 {
     // 绘制指北针
     painter.save();
@@ -314,7 +314,7 @@ void HospitalMapWidget::drawLabels(QPainter& painter)
     painter.restore();
 }
 
-QString HospitalMapWidget::getDepartmentAt(const QPoint& pos) const
+QString CompanyMapWidget::getDepartmentAt(const QPoint& pos) const
 {
     for (auto it = m_departments.begin(); it != m_departments.end(); ++it) {
         if (it.value().mapRect.contains(pos)) {
@@ -324,7 +324,7 @@ QString HospitalMapWidget::getDepartmentAt(const QPoint& pos) const
     return QString();
 }
 
-QRect HospitalMapWidget::getScaledRect(const QRect& rect) const
+QRect CompanyMapWidget::getScaledRect(const QRect& rect) const
 {
     return QRect(rect.x(), rect.y(), rect.width(), rect.height());
 }
@@ -378,13 +378,13 @@ void MapWidget::setupLeftPanel()
     m_leftLayout->setSpacing(15);
     
     // 搜索区域
-    m_searchGroup = new QGroupBox("🔍 查找科室");
+    m_searchGroup = new QGroupBox("🔍 查找部门");
     QVBoxLayout* searchLayout = new QVBoxLayout(m_searchGroup);
     
     // 搜索框
     QHBoxLayout* searchInputLayout = new QHBoxLayout;
     m_searchEdit = new QLineEdit;
-    m_searchEdit->setPlaceholderText("输入科室名称或服务类型...");
+    m_searchEdit->setPlaceholderText("输入部门名称或服务类型...");
     m_btnClearSearch = new QPushButton("✖");
     m_btnClearSearch->setFixedSize(30, 30);
     
@@ -402,11 +402,11 @@ void MapWidget::setupLeftPanel()
     searchLayout->addLayout(searchInputLayout);
     searchLayout->addLayout(floorLayout);
     
-    // 科室列表
-    m_departmentGroup = new QGroupBox("🏥 科室列表");
+    // 部门列表
+    m_departmentGroup = new QGroupBox("🏥 部门列表");
     QVBoxLayout* listLayout = new QVBoxLayout(m_departmentGroup);
     
-    m_listInfo = new QLabel("显示全部科室");
+    m_listInfo = new QLabel("显示全部部门");
     m_listInfo->setStyleSheet("color: #6C757D; font-size: 12px;");
     
     m_departmentList = new QListWidget;
@@ -419,9 +419,9 @@ void MapWidget::setupLeftPanel()
     m_quickGroup = new QGroupBox("⚡ 快捷导航");
     QGridLayout* quickLayout = new QGridLayout(m_quickGroup);
     
-    m_btnEmergency = new QPushButton("🚑 急诊科");
+    m_btnEmergency = new QPushButton("🚑 惩戒部");
     m_btnParking = new QPushButton("🅿️ 停车场");
-    m_btnPharmacy = new QPushButton("💊 药房");
+    m_btnPharmacy = new QPushButton("💊 安保部");
     m_btnCashier = new QPushButton("💳 收费处");
     
     quickLayout->addWidget(m_btnEmergency, 0, 0);
@@ -446,13 +446,13 @@ void MapWidget::setupLeftPanel()
     
     // 快捷按钮连接
     connect(m_btnEmergency, &QPushButton::clicked, [this]() {
-        highlightDepartment("急诊科");
+        highlightDepartment("惩戒部");
     });
     connect(m_btnParking, &QPushButton::clicked, [this]() {
         highlightDepartment("停车场A");
     });
     connect(m_btnPharmacy, &QPushButton::clicked, [this]() {
-        highlightDepartment("药房");
+        highlightDepartment("安保部");
     });
     connect(m_btnCashier, &QPushButton::clicked, [this]() {
         highlightDepartment("收费处");
@@ -473,7 +473,7 @@ void MapWidget::setupRightPanel()
     m_mapScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     m_mapScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     
-    m_mapWidget = new HospitalMapWidget;
+    m_mapWidget = new CompanyMapWidget;
     m_mapWidget->setDepartments(m_departments);
     m_mapScrollArea->setWidget(m_mapWidget);
     
@@ -482,10 +482,10 @@ void MapWidget::setupRightPanel()
     m_infoGroup->setMaximumHeight(150);
     QVBoxLayout* infoLayout = new QVBoxLayout(m_infoGroup);
     
-    m_infoTitle = new QLabel("请选择科室查看详细信息");
+    m_infoTitle = new QLabel("请选择部门查看详细信息");
     m_infoTitle->setStyleSheet("font-weight: bold; font-size: 14px; color: #007AFF;");
     
-    m_infoContent = new QLabel("点击左侧科室列表或地图上的科室区域");
+    m_infoContent = new QLabel("点击左侧部门列表或地图上的部门区域");
     m_infoContent->setWordWrap(true);
     m_infoContent->setStyleSheet("color: #6C757D;");
     
@@ -502,7 +502,7 @@ void MapWidget::setupRightPanel()
     m_rightLayout->addWidget(m_infoGroup);
     
     // 连接地图信号
-    connect(m_mapWidget, &HospitalMapWidget::departmentClicked,
+    connect(m_mapWidget, &CompanyMapWidget::departmentClicked,
             this, &MapWidget::onMapDepartmentClicked);
     connect(m_btnShowRoute, &QPushButton::clicked, this, &MapWidget::onGetRoute);
 }
@@ -514,7 +514,7 @@ void MapWidget::setupToolbar()
     m_toolbarLayout->setContentsMargins(0, 0, 0, 0);
     
     // 标题
-    m_titleLabel = new QLabel("🏥 医院院内导航");
+    m_titleLabel = new QLabel("🏥 公司院内导航");
     m_titleLabel->setStyleSheet("font-size: 18px; font-weight: bold; color: #007AFF;");
     
     // 地图控制按钮
@@ -543,12 +543,12 @@ void MapWidget::setupToolbar()
 
 void MapWidget::initializeDepartments()
 {
-    // 初始化科室数据
+    // 初始化部门数据
     m_departments.clear();
     
-    // 1楼科室
+    // 1楼部门
     DepartmentInfo emergency;
-    emergency.name = "急诊科";
+    emergency.name = "惩戒部";
     emergency.description = "24小时急诊医疗服务";
     emergency.location = "1楼东侧";
     emergency.hours = "24小时";
@@ -569,7 +569,7 @@ void MapWidget::initializeDepartments()
     outvisitor.floor = "1楼";
     
     DepartmentInfo pharmacy;
-    pharmacy.name = "药房";
+    pharmacy.name = "安保部";
     pharmacy.description = "处方药品调配发放";
     pharmacy.location = "1楼南侧";
     pharmacy.hours = "8:00-17:00";
@@ -588,10 +588,10 @@ void MapWidget::initializeDepartments()
     cashier.highlightColor = QColor("#96CEB4");
     cashier.floor = "1楼";
     
-    // 2楼科室
+    // 2楼部门
     DepartmentInfo internal;
-    internal.name = "内科";
-    internal.description = "内科疾病诊治";
+    internal.name = "控制部";
+    internal.description = "控制部疾病诊治";
     internal.location = "2楼东侧";
     internal.hours = "8:00-17:00";
     internal.phone = "0571-12348";
@@ -600,8 +600,8 @@ void MapWidget::initializeDepartments()
     internal.floor = "2楼";
     
     DepartmentInfo surgery;
-    surgery.name = "外科";
-    surgery.description = "外科手术治疗";
+    surgery.name = "福利部";
+    surgery.description = "福利部手术治疗";
     surgery.location = "2楼西侧";
     surgery.hours = "8:00-17:00";
     surgery.phone = "0571-12349";
@@ -619,7 +619,7 @@ void MapWidget::initializeDepartments()
     laboratory.highlightColor = QColor("#74B9FF");
     laboratory.floor = "2楼";
     
-    // 3楼科室
+    // 3楼部门
     DepartmentInfo radiology;
     radiology.name = "放射科";
     radiology.description = "医学影像诊断";
@@ -631,7 +631,7 @@ void MapWidget::initializeDepartments()
     radiology.floor = "3楼";
     
     DepartmentInfo pediatrics;
-    pediatrics.name = "儿科";
+    pediatrics.name = "培训部";
     pediatrics.description = "儿童疾病诊治";
     pediatrics.location = "3楼西侧";
     pediatrics.hours = "8:00-17:00";
@@ -661,23 +661,23 @@ void MapWidget::initializeDepartments()
     parkingA.highlightColor = QColor("#CCCCCC");
     parkingA.floor = "地下";
     
-    // 添加到科室映射
-    m_departments["急诊科"] = emergency;
+    // 添加到部门映射
+    m_departments["惩戒部"] = emergency;
     m_departments["门诊大厅"] = outvisitor;
-    m_departments["药房"] = pharmacy;
+    m_departments["安保部"] = pharmacy;
     m_departments["收费处"] = cashier;
-    m_departments["内科"] = internal;
-    m_departments["外科"] = surgery;
+    m_departments["控制部"] = internal;
+    m_departments["福利部"] = surgery;
     m_departments["检验科"] = laboratory;
     m_departments["放射科"] = radiology;
-    m_departments["儿科"] = pediatrics;
+    m_departments["培训部"] = pediatrics;
     m_departments["妇产科"] = gynecology;
     m_departments["停车场A"] = parkingA;
     
     // 按楼层分组
-    m_floorDepartments["1楼"] = {"急诊科", "门诊大厅", "药房", "收费处"};
-    m_floorDepartments["2楼"] = {"内科", "外科", "检验科"};
-    m_floorDepartments["3楼"] = {"放射科", "儿科", "妇产科"};
+    m_floorDepartments["1楼"] = {"惩戒部", "门诊大厅", "安保部", "收费处"};
+    m_floorDepartments["2楼"] = {"控制部", "福利部", "检验科"};
+    m_floorDepartments["3楼"] = {"放射科", "培训部", "妇产科"};
     m_floorDepartments["地下"] = {"停车场A"};
 }
 
@@ -690,7 +690,7 @@ void MapWidget::updateDepartmentList()
     
     QStringList filteredDepartments;
     
-    // 筛选科室
+    // 筛选部门
     for (auto it = m_departments.begin(); it != m_departments.end(); ++it) {
         const QString& name = it.key();
         const DepartmentInfo& info = it.value();
@@ -724,9 +724,9 @@ void MapWidget::updateDepartmentList()
     
     // 更新信息标签
     if (keyword.isEmpty() && floor == "全部") {
-        m_listInfo->setText(QString("显示全部 %1 个科室").arg(filteredDepartments.size()));
+        m_listInfo->setText(QString("显示全部 %1 个部门").arg(filteredDepartments.size()));
     } else {
-        m_listInfo->setText(QString("筛选结果: %1 个科室").arg(filteredDepartments.size()));
+        m_listInfo->setText(QString("筛选结果: %1 个部门").arg(filteredDepartments.size()));
     }
 }
 
@@ -879,8 +879,8 @@ void MapWidget::onClearSelection()
     m_mapWidget->clearHighlight();
     m_selectedDepartment.clear();
     
-    m_infoTitle->setText("请选择科室查看详细信息");
-    m_infoContent->setText("点击左侧科室列表或地图上的科室区域");
+    m_infoTitle->setText("请选择部门查看详细信息");
+    m_infoContent->setText("点击左侧部门列表或地图上的部门区域");
     m_btnShowRoute->setEnabled(false);
 }
 
@@ -912,12 +912,12 @@ void MapWidget::onResetView()
 void MapWidget::onGetRoute()
 {
     if (m_selectedDepartment.isEmpty()) {
-        QMessageBox::information(this, "提示", "请先选择目标科室");
+        QMessageBox::information(this, "提示", "请先选择目标部门");
         return;
     }
     
     // 简化版路径规划对话框
-    QString message = QString("路线规划\n\n从: 医院正门\n到: %1\n\n路线: 正门 → 门诊大厅 → %2")
+    QString message = QString("路线规划\n\n从: 公司正门\n到: %1\n\n路线: 正门 → 门诊大厅 → %2")
                       .arg(m_selectedDepartment)
                       .arg(m_departments[m_selectedDepartment].location);
     
@@ -936,8 +936,8 @@ void MapWidget::onMapRouteRequested(const QString& from, const QString& to)
 
 void MapWidget::onShowEmergencyRoute() 
 {
-    highlightDepartment("急诊科");
-    m_mapWidget->showRoute("门诊大厅", "急诊科");
+    highlightDepartment("惩戒部");
+    m_mapWidget->showRoute("门诊大厅", "惩戒部");
 }
 
 void MapWidget::updateRouteAnimation() { }
