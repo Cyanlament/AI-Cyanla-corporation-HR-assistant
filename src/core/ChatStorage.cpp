@@ -95,18 +95,18 @@ bool ChatStorage::initialize()
 bool ChatStorage::createTables()
 {
     QSqlQuery query(m_database);
-    
+
     // 创建聊天消息表
     QString createTableSQL = QString(
-        "CREATE TABLE IF NOT EXISTS %1 ("
-        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-        "sender TEXT NOT NULL, "
-        "receiver TEXT NOT NULL, "
-        "message TEXT NOT NULL, "
-        "timestamp DATETIME NOT NULL, "
-        "created_at DATETIME DEFAULT CURRENT_TIMESTAMP"
-        ")"
-    ).arg(TABLE_NAME);
+                                 "CREATE TABLE IF NOT EXISTS %1 ("
+                                 "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                                 "sender TEXT NOT NULL, "
+                                 "receiver TEXT NOT NULL, "
+                                 "message TEXT NOT NULL, "
+                                 "timestamp DATETIME NOT NULL, "
+                                 "created_at DATETIME DEFAULT CURRENT_TIMESTAMP"
+                                 ")"
+                                 ).arg(TABLE_NAME);
 
     if (!query.exec(createTableSQL)) {
         setLastError("创建表失败: " + query.lastError().text());
@@ -139,13 +139,13 @@ QString ChatStorage::getDatabasePath()
         dataPath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
         dataPath += "/HospAI";
     }
-    
+
     QDir().mkpath(dataPath);
     return dataPath + "/" + DATABASE_NAME;
 }
 
-bool ChatStorage::insertMessage(const QString &sender, const QString &receiver, 
-                               const QString &message, const QDateTime &timestamp)
+bool ChatStorage::insertMessage(const QString &sender, const QString &receiver,
+                                const QString &message, const QDateTime &timestamp)
 {
     if (!checkDatabaseConnection()) {
         return false;
@@ -153,10 +153,10 @@ bool ChatStorage::insertMessage(const QString &sender, const QString &receiver,
 
     QSqlQuery query(m_database);
     query.prepare(QString(
-        "INSERT INTO %1 (sender, receiver, message, timestamp) "
-        "VALUES (?, ?, ?, ?)"
-    ).arg(TABLE_NAME));
-    
+                      "INSERT INTO %1 (sender, receiver, message, timestamp) "
+                      "VALUES (?, ?, ?, ?)"
+                      ).arg(TABLE_NAME));
+
     query.addBindValue(sender);
     query.addBindValue(receiver);
     query.addBindValue(message);
@@ -169,14 +169,14 @@ bool ChatStorage::insertMessage(const QString &sender, const QString &receiver,
 
     // 获取插入的记录ID
     int messageId = query.lastInsertId().toInt();
-    
+
     // 创建消息对象并发送信号
     Message msg(sender, receiver, message, timestamp);
     msg.id = messageId;
-    
+
     qDebug() << QString("ChatStorage: 插入消息成功 [ID: %1, %2 -> %3]")
-                .arg(messageId).arg(sender).arg(receiver);
-    
+                    .arg(messageId).arg(sender).arg(receiver);
+
     emit messageInserted(msg);
     return true;
 }
@@ -195,64 +195,64 @@ QList<Message> ChatStorage::getAllMessages()
 QList<Message> ChatStorage::getMessagesBetweenUsers(const QString &user1, const QString &user2)
 {
     QString queryString = QString(
-        "SELECT id, sender, receiver, message, timestamp FROM %1 "
-        "WHERE (sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?) "
-        "ORDER BY timestamp ASC"
-    ).arg(TABLE_NAME);
-    
+                              "SELECT id, sender, receiver, message, timestamp FROM %1 "
+                              "WHERE (sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?) "
+                              "ORDER BY timestamp ASC"
+                              ).arg(TABLE_NAME);
+
     return executeMessageQuery(queryString, {user1, user2, user2, user1});
 }
 
 QList<Message> ChatStorage::getMessagesByTimeRange(const QDateTime &startTime, const QDateTime &endTime)
 {
     QString queryString = QString(
-        "SELECT id, sender, receiver, message, timestamp FROM %1 "
-        "WHERE timestamp BETWEEN ? AND ? "
-        "ORDER BY timestamp ASC"
-    ).arg(TABLE_NAME);
-    
+                              "SELECT id, sender, receiver, message, timestamp FROM %1 "
+                              "WHERE timestamp BETWEEN ? AND ? "
+                              "ORDER BY timestamp ASC"
+                              ).arg(TABLE_NAME);
+
     return executeMessageQuery(queryString, {startTime, endTime});
 }
 
 QList<Message> ChatStorage::getMessagesBySender(const QString &sender)
 {
     QString queryString = QString(
-        "SELECT id, sender, receiver, message, timestamp FROM %1 "
-        "WHERE sender = ? ORDER BY timestamp ASC"
-    ).arg(TABLE_NAME);
-    
+                              "SELECT id, sender, receiver, message, timestamp FROM %1 "
+                              "WHERE sender = ? ORDER BY timestamp ASC"
+                              ).arg(TABLE_NAME);
+
     return executeMessageQuery(queryString, {sender});
 }
 
 QList<Message> ChatStorage::getMessagesByReceiver(const QString &receiver)
 {
     QString queryString = QString(
-        "SELECT id, sender, receiver, message, timestamp FROM %1 "
-        "WHERE receiver = ? ORDER BY timestamp ASC"
-    ).arg(TABLE_NAME);
-    
+                              "SELECT id, sender, receiver, message, timestamp FROM %1 "
+                              "WHERE receiver = ? ORDER BY timestamp ASC"
+                              ).arg(TABLE_NAME);
+
     return executeMessageQuery(queryString, {receiver});
 }
 
 QList<Message> ChatStorage::getMessagesWithPagination(int offset, int limit)
 {
     QString queryString = QString(
-        "SELECT id, sender, receiver, message, timestamp FROM %1 "
-        "ORDER BY timestamp DESC LIMIT ? OFFSET ?"
-    ).arg(TABLE_NAME);
-    
+                              "SELECT id, sender, receiver, message, timestamp FROM %1 "
+                              "ORDER BY timestamp DESC LIMIT ? OFFSET ?"
+                              ).arg(TABLE_NAME);
+
     return executeMessageQuery(queryString, {limit, offset});
 }
 
-QList<Message> ChatStorage::getMessagesBetweenUsersWithPagination(const QString &user1, const QString &user2, 
-                                                                 int offset, int limit)
+QList<Message> ChatStorage::getMessagesBetweenUsersWithPagination(const QString &user1, const QString &user2,
+                                                                  int offset, int limit)
 {
     QString queryString = QString(
-        "SELECT id, sender, receiver, message, timestamp FROM %1 "
-        "WHERE (sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?) "
-        "ORDER BY timestamp DESC LIMIT ? OFFSET ?"
-    ).arg(TABLE_NAME);
-    
+                              "SELECT id, sender, receiver, message, timestamp FROM %1 "
+                              "WHERE (sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?) "
+                              "ORDER BY timestamp DESC LIMIT ? OFFSET ?"
+                              ).arg(TABLE_NAME);
+
     return executeMessageQuery(queryString, {user1, user2, user2, user1, limit, offset});
 }
 
@@ -290,9 +290,9 @@ bool ChatStorage::deleteMessagesBetweenUsers(const QString &user1, const QString
 
     QSqlQuery query(m_database);
     query.prepare(QString(
-        "DELETE FROM %1 WHERE (sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?)"
-    ).arg(TABLE_NAME));
-    
+                      "DELETE FROM %1 WHERE (sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?)"
+                      ).arg(TABLE_NAME));
+
     query.addBindValue(user1);
     query.addBindValue(user2);
     query.addBindValue(user2);
@@ -305,7 +305,7 @@ bool ChatStorage::deleteMessagesBetweenUsers(const QString &user1, const QString
 
     int rowsAffected = query.numRowsAffected();
     qDebug() << QString("ChatStorage: 删除用户间消息成功, %1 <-> %2, 删除 %3 条记录")
-                .arg(user1).arg(user2).arg(rowsAffected);
+                    .arg(user1).arg(user2).arg(rowsAffected);
     return true;
 }
 
@@ -372,9 +372,9 @@ int ChatStorage::getMessageCount(const QString &sender, const QString &receiver)
 
     QSqlQuery query(m_database);
     query.prepare(QString(
-        "SELECT COUNT(*) FROM %1 WHERE (sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?)"
-    ).arg(TABLE_NAME));
-    
+                      "SELECT COUNT(*) FROM %1 WHERE (sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?)"
+                      ).arg(TABLE_NAME));
+
     query.addBindValue(sender);
     query.addBindValue(receiver);
     query.addBindValue(receiver);
@@ -416,12 +416,12 @@ QString ChatStorage::exportToJson(const QList<Message> &messages)
     for (const Message &msg : messages) {
         jsonArray.append(msg.toJson());
     }
-    
+
     QJsonObject rootObject;
     rootObject["export_timestamp"] = QDateTime::currentDateTime().toString(Qt::ISODate);
     rootObject["message_count"] = messages.size();
     rootObject["messages"] = jsonArray;
-    
+
     QJsonDocument doc(rootObject);
     return doc.toJson();
 }
@@ -446,7 +446,7 @@ bool ChatStorage::exportToFile(const QString &filePath, const QList<Message> &me
     out.setEncoding(QStringConverter::Utf8);
 #endif
     out << exportToJson(messages);
-    
+
     qDebug() << QString("ChatStorage: 导出 %1 条消息到文件: %2").arg(messages.size()).arg(filePath);
     return true;
 }
@@ -486,14 +486,14 @@ void ChatStorage::setLastError(const QString &error)
 QList<Message> ChatStorage::executeMessageQuery(const QString &queryString, const QVariantList &parameters)
 {
     QList<Message> messages;
-    
+
     if (!checkDatabaseConnection()) {
         return messages;
     }
 
     QSqlQuery query(m_database);
     query.prepare(queryString);
-    
+
     for (const QVariant &param : parameters) {
         query.addBindValue(param);
     }
@@ -515,4 +515,4 @@ QList<Message> ChatStorage::executeMessageQuery(const QString &queryString, cons
 
     qDebug() << QString("ChatStorage: 查询返回 %1 条消息").arg(messages.size());
     return messages;
-} 
+}

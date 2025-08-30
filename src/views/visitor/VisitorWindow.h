@@ -7,13 +7,13 @@ class ChatWidget;
 class FAQWidget;
 class MapWidget;
 
-class PatientWindow : public BaseWindow
+class VisitorWindow : public BaseWindow
 {
     Q_OBJECT
 
 public:
-    explicit PatientWindow(QWidget *parent = nullptr);
-    ~PatientWindow();
+    explicit VisitorWindow(QWidget *parent = nullptr);
+    ~VisitorWindow();
 
 protected:
     void setupMenu() override;

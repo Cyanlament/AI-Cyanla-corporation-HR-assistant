@@ -1,4 +1,5 @@
 #include "ExampleUsageWidget.h"
+#include "src/core/ChatStorage.h"
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QStandardPaths>

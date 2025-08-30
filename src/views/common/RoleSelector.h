@@ -18,7 +18,7 @@ public:
     UserRole getSelectedRole() const { return m_selectedRole; }
 
 private slots:
-    void onPatientClicked();
+    void onVistitorClicked();
     void onStaffClicked();
     void onAdminClicked();
 
@@ -30,7 +30,7 @@ private:
     QLabel* m_titleLabel;
     QLabel* m_descLabel;
     
-    QPushButton* m_btnPatient;
+    QPushButton* m_btnVistitor;
     QPushButton* m_btnStaff;
     QPushButton* m_btnAdmin;
     

@@ -1,10 +1,10 @@
-#include "PatientWindow.h"
+#include "VisitorWindow.h"
 #include "ChatWidget.h"
 #include "FAQWidget.h"
 #include "MapWidget.h"
 
-PatientWindow::PatientWindow(QWidget *parent)
-    : BaseWindow(UserRole::Patient, parent)
+VisitorWindow::VisitorWindow(QWidget *parent)
+    : BaseWindow(UserRole::visitor, parent)
     , m_chatWidget(nullptr)
     , m_faqWidget(nullptr)
     , m_mapWidget(nullptr)
@@ -13,17 +13,17 @@ PatientWindow::PatientWindow(QWidget *parent)
     createWidgets();
 }
 
-PatientWindow::~PatientWindow()
+VisitorWindow::~VisitorWindow()
 {
     // Qt会自动清理子对象
 }
 
-void PatientWindow::setupMenu()
+void VisitorWindow::setupMenu()
 {
     // 菜单已在BaseWindow中通过SideMenuWidget设置
 }
 
-void PatientWindow::setupFunctionWidgets()
+void VisitorWindow::setupFunctionWidgets()
 {
     // 添加功能页面到堆叠widget
     addFunctionWidget(m_chatWidget, "智能分诊");
@@ -34,23 +34,23 @@ void PatientWindow::setupFunctionWidgets()
     setCurrentWidget("智能分诊");
 }
 
-void PatientWindow::createWidgets()
+void VisitorWindow::createWidgets()
 {
     m_chatWidget = new ChatWidget(this);
     m_faqWidget = new FAQWidget(this);
     m_mapWidget = new MapWidget(this);
 }
 
-void PatientWindow::onMenuItemClicked(MenuAction action)
+void VisitorWindow::onMenuItemClicked(MenuAction action)
 {
     switch (action) {
-    case MenuAction::PatientChat:
+    case MenuAction::visitorChat:
         setCurrentWidget("智能分诊");
         break;
-    case MenuAction::PatientAppointment:
+    case MenuAction::visitorAppointment:
         setCurrentWidget("常见问题");
         break;
-    case MenuAction::PatientMap:
+    case MenuAction::visitorMap:
         setCurrentWidget("院内导航");
         break;
     default:

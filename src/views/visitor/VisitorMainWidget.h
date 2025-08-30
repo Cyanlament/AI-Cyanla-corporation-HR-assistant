@@ -11,12 +11,12 @@
 #include "AppointmentWidget.h"
 #include "../../core/DatabaseManager.h"
 
-class PatientMainWidget : public QWidget
+class VisitorMainWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit PatientMainWidget(QWidget *parent = nullptr);
+    explicit VisitorMainWidget(QWidget *parent = nullptr);
     
     void setCurrentUser(const UserInfo& user);
     void setDatabaseManager(DatabaseManager* dbManager);

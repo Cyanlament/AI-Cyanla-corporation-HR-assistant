@@ -254,7 +254,7 @@ QListWidgetItem* StaffChatManager::createSessionItem(const ChatSession& session)
     QListWidgetItem* item = new QListWidgetItem;
     
     QString text = QString("%1\n最后消息: %2")
-                   .arg(session.patientName)
+                   .arg(session.visitorName)
                    .arg(formatTime(session.lastMessageAt));
     
     item->setText(text);
@@ -288,7 +288,7 @@ void StaffChatManager::onSessionSelectionChanged()
     ChatSession session = m_sessions.value(sessionId);
     
     // 更新聊天标题
-    m_chatTitleLabel->setText(QString("与 %1 的对话").arg(session.patientName));
+    m_chatTitleLabel->setText(QString("与 %1 的对话").arg(session.visitorName));
     
     // 启用输入
     m_messageInput->setEnabled(true);

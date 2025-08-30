@@ -250,7 +250,7 @@ void RealChatWidget::onMessageReceived(const ChatMessage& message)
 
 void RealChatWidget::onSessionCreated(const ChatSession& session)
 {
-    if (session.patientId == m_currentUser.id) {
+    if (session.visitorId == m_currentUser.id) {
         updateConnectionStatus();
     }
 }
@@ -423,7 +423,7 @@ void RealChatWidget::loadChatHistory()
     if (m_currentUser.id <= 0) return;
     
     // 获取用户的最近会话
-    QList<ChatSession> sessions = m_dbManager->getPatientSessions(m_currentUser.id);
+    QList<ChatSession> sessions = m_dbManager->getvisitorSessions(m_currentUser.id);
     
     if (!sessions.isEmpty()) {
         ChatSession lastSession = sessions.first();

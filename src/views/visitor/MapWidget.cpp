@@ -558,15 +558,15 @@ void MapWidget::initializeDepartments()
     emergency.floor = "1楼";
     emergency.building = "门诊楼";
     
-    DepartmentInfo outpatient;
-    outpatient.name = "门诊大厅";
-    outpatient.description = "挂号、导诊、咨询服务";
-    outpatient.location = "1楼中央";
-    outpatient.hours = "8:00-17:00";
-    outpatient.phone = "0571-12345";
-    outpatient.mapRect = QRect(350, 450, 150, 80);
-    outpatient.highlightColor = QColor("#4ECDC4");
-    outpatient.floor = "1楼";
+    DepartmentInfo outvisitor;
+    outvisitor.name = "门诊大厅";
+    outvisitor.description = "挂号、导诊、咨询服务";
+    outvisitor.location = "1楼中央";
+    outvisitor.hours = "8:00-17:00";
+    outvisitor.phone = "0571-12345";
+    outvisitor.mapRect = QRect(350, 450, 150, 80);
+    outvisitor.highlightColor = QColor("#4ECDC4");
+    outvisitor.floor = "1楼";
     
     DepartmentInfo pharmacy;
     pharmacy.name = "药房";
@@ -663,7 +663,7 @@ void MapWidget::initializeDepartments()
     
     // 添加到科室映射
     m_departments["急诊科"] = emergency;
-    m_departments["门诊大厅"] = outpatient;
+    m_departments["门诊大厅"] = outvisitor;
     m_departments["药房"] = pharmacy;
     m_departments["收费处"] = cashier;
     m_departments["内科"] = internal;

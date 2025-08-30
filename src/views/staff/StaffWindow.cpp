@@ -103,7 +103,7 @@ void StaffWindow::onMenuItemClicked(MenuAction action)
     case MenuAction::StaffChatManage:
         setCurrentWidget("人工接管");
         break;
-    case MenuAction::StaffPatientList:
+    case MenuAction::StaffvisitorList:
         setCurrentWidget("提问记录");
         break;
     case MenuAction::StaffKnowledge:

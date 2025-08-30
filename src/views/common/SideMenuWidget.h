@@ -22,7 +22,7 @@ private slots:
 
 private:
     void setupUI();
-    void setupPatientMenu();
+    void setupvisitorMenu();
     void setupStaffMenu();
     void setupAdminMenu();
     void addMenuItem(const QString& text, const QString& icon, MenuAction action);

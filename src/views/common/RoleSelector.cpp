@@ -5,10 +5,10 @@ RoleSelector::RoleSelector(QWidget *parent)
     , m_mainLayout(nullptr)
     , m_titleLabel(nullptr)
     , m_descLabel(nullptr)
-    , m_btnPatient(nullptr)
+    , m_btnVistitor(nullptr)
     , m_btnStaff(nullptr)
     , m_btnAdmin(nullptr)
-    , m_selectedRole(UserRole::Patient)
+    , m_selectedRole(UserRole::visitor)
 {
     setupUI();
 }
@@ -47,7 +47,7 @@ void RoleSelector::setupUI()
     )");
     
     // 角色按钮 - 设计为独立卡片
-    m_btnPatient = new QPushButton("👤 患者端\n在线咨询、常见问题、院内导航");
+    m_btnVistitor = new QPushButton("👤 患者端\n在线咨询、常见问题、院内导航");
     m_btnStaff = new QPushButton("👩‍💼 客服端\n查看记录、问题统计、人工接管");
     m_btnAdmin = new QPushButton("👨‍💼 管理端\n用户管理、系统日志、服务配置");
     
@@ -74,11 +74,11 @@ void RoleSelector::setupUI()
         }
     )";
     
-    m_btnPatient->setStyleSheet(buttonStyle);
+    m_btnVistitor->setStyleSheet(buttonStyle);
     m_btnStaff->setStyleSheet(buttonStyle);
     m_btnAdmin->setStyleSheet(buttonStyle);
     
-    connect(m_btnPatient, &QPushButton::clicked, this, &RoleSelector::onPatientClicked);
+    connect(m_btnVistitor, &QPushButton::clicked, this, &RoleSelector::onVistitorClicked);
     connect(m_btnStaff, &QPushButton::clicked, this, &RoleSelector::onStaffClicked);
     connect(m_btnAdmin, &QPushButton::clicked, this, &RoleSelector::onAdminClicked);
     
@@ -93,7 +93,7 @@ void RoleSelector::setupUI()
     cardLayout->setSpacing(15); // 卡片之间的间隔
     cardLayout->setContentsMargins(0, 0, 0, 0);
     
-    cardLayout->addWidget(m_btnPatient);
+    cardLayout->addWidget(m_btnVistitor);
     cardLayout->addWidget(m_btnStaff);
     cardLayout->addWidget(m_btnAdmin);
     
@@ -108,9 +108,9 @@ void RoleSelector::setupUI()
     )");
 }
 
-void RoleSelector::onPatientClicked()
+void RoleSelector::onVistitorClicked()
 {
-    m_selectedRole = UserRole::Patient;
+    m_selectedRole = UserRole::visitor;
     accept();
 }
 

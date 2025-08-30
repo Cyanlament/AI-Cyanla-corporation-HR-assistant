@@ -28,7 +28,7 @@ public:
 private slots:
     void showAdminPanel();
     void showStaffPanel();
-    void showPatientPanel();
+    void showVisitorPanel();
     void showUserProfile();
     void onLogout();
     void onAbout();
@@ -52,7 +52,7 @@ private:
     QMenu* m_helpMenu;
     QAction* m_adminAction;
     QAction* m_staffAction;
-    QAction* m_patientAction;
+    QAction* m_visitorAction;
     QAction* m_profileAction;
     QAction* m_logoutAction;
     QAction* m_aboutAction;

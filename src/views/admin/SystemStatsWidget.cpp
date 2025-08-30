@@ -213,9 +213,9 @@ void SystemStatsWidget::setupUserStatsTab()
     series->append("管理员", 4.3);
     
     // 设置饼图样式
-    QPieSlice* patientSlice = series->slices().at(0);
-    patientSlice->setColor(QColor("#3498db"));
-    patientSlice->setLabelVisible(true);
+    QPieSlice* visitorSlice = series->slices().at(0);
+    visitorSlice->setColor(QColor("#3498db"));
+    visitorSlice->setLabelVisible(true);
     
     QPieSlice* staffSlice = series->slices().at(1);
     staffSlice->setColor(QColor("#2ecc71"));

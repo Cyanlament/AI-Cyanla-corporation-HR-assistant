@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "src/views/admin/AdminMainWidget.h"
 #include "src/views/staff/StaffMainWidget.h"
-#include "src/views/patient/PatientMainWidget.h"
+#include "src/views/visitor/VisitorMainWidget.h"
 #include "src/views/common/LoginDialog.h"
 #include <QApplication>
 #include <QMessageBox>
@@ -48,11 +48,11 @@ void MainWindow::setupUI()
     // 预创建各角色的主界面
     AdminMainWidget* adminWidget = new AdminMainWidget;
     StaffMainWidget* staffWidget = new StaffMainWidget;
-    PatientMainWidget* patientWidget = new PatientMainWidget;
+    VisitorMainWidget* visitorWidget = new VisitorMainWidget;
     
     m_centralStack->addWidget(adminWidget);  // 索引 0
     m_centralStack->addWidget(staffWidget);  // 索引 1
-    m_centralStack->addWidget(patientWidget); // 索引 2
+    m_centralStack->addWidget(visitorWidget); // 索引 2
 }
 
 void MainWindow::setupMenus()
@@ -70,9 +70,9 @@ void MainWindow::setupMenus()
     m_staffAction->setStatusTip("切换到客服界面");
     connect(m_staffAction, &QAction::triggered, this, &MainWindow::showStaffPanel);
     
-    m_patientAction = m_systemMenu->addAction("患者界面(&P)");
-    m_patientAction->setStatusTip("切换到患者界面");
-    connect(m_patientAction, &QAction::triggered, this, &MainWindow::showPatientPanel);
+    m_visitorAction = m_systemMenu->addAction("患者界面(&P)");
+    m_visitorAction->setStatusTip("切换到患者界面");
+    connect(m_visitorAction, &QAction::triggered, this, &MainWindow::showVisitorPanel);
     
     m_systemMenu->addSeparator();
     
@@ -83,7 +83,7 @@ void MainWindow::setupMenus()
 
     m_adminAction->setVisible(false);
     m_staffAction->setVisible(false);
-    m_patientAction->setVisible(false);
+    m_visitorAction->setVisible(false);
     exitAction->setVisible(false);
 
     
@@ -146,11 +146,11 @@ void MainWindow::setCurrentUser(const UserInfo& user)
         staffWidget->setCurrentUser(user);
     }
     
-    PatientMainWidget* patientWidget = qobject_cast<PatientMainWidget*>(m_centralStack->widget(2));
-    if (patientWidget) {
-        patientWidget->setCurrentUser(user);
+    VisitorMainWidget* VisitorWidget = qobject_cast<VisitorMainWidget*>(m_centralStack->widget(2));
+    if (VisitorWidget) {
+        VisitorWidget->setCurrentUser(user);
         if (m_dbManager) {
-            patientWidget->setDatabaseManager(m_dbManager);
+            VisitorWidget->setDatabaseManager(m_dbManager);
         }
     }
     
@@ -164,9 +164,9 @@ void MainWindow::setDatabaseManager(DatabaseManager* dbManager)
     
     // 如果已经设置了用户和数据库管理器，传递给患者界面
     if (m_dbManager && !m_currentUser.username.isEmpty()) {
-        PatientMainWidget* patientWidget = qobject_cast<PatientMainWidget*>(m_centralStack->widget(2));
-        if (patientWidget) {
-            patientWidget->setDatabaseManager(m_dbManager);
+        VisitorMainWidget* VisitorWidget = qobject_cast<VisitorMainWidget*>(m_centralStack->widget(2));
+        if (VisitorWidget) {
+            VisitorWidget->setDatabaseManager(m_dbManager);
         }
         
         StaffMainWidget* staffWidget = qobject_cast<StaffMainWidget*>(m_centralStack->widget(1));
@@ -183,17 +183,17 @@ void MainWindow::updateUIForRole()
         m_centralStack->setCurrentIndex(0);
         m_adminAction->setEnabled(true);
         m_staffAction->setEnabled(true);
-        m_patientAction->setEnabled(true);
+        m_visitorAction->setEnabled(true);
     } else if (m_currentUser.role == "客服") {
         m_centralStack->setCurrentIndex(1);
         m_adminAction->setEnabled(false);
         m_staffAction->setEnabled(true);
-        m_patientAction->setEnabled(false);
+        m_visitorAction->setEnabled(false);
     } else if (m_currentUser.role == "患者") {
         m_centralStack->setCurrentIndex(2);
         m_adminAction->setEnabled(false);
         m_staffAction->setEnabled(false);
-        m_patientAction->setEnabled(true);
+        m_visitorAction->setEnabled(true);
     }
 }
 
@@ -217,7 +217,7 @@ void MainWindow::showStaffPanel()
     }
 }
 
-void MainWindow::showPatientPanel()
+void MainWindow::showVisitorPanel()
 {
     // 所有用户都可以访问患者界面
     m_centralStack->setCurrentIndex(2);

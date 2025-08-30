@@ -96,8 +96,8 @@ void SideMenuWidget::setupUI()
     
     // 根据角色设置菜单
     switch (m_userRole) {
-    case UserRole::Patient:
-        setupPatientMenu();
+    case UserRole::visitor:
+        setupvisitorMenu();
         break;
     case UserRole::Staff:
         setupStaffMenu();
@@ -123,17 +123,17 @@ void SideMenuWidget::setupUI()
     m_layout->addWidget(m_logoutButton);
 }
 
-void SideMenuWidget::setupPatientMenu()
+void SideMenuWidget::setupvisitorMenu()
 {
-    addMenuItem("💬 智能分诊", "chat", MenuAction::PatientChat);
-    addMenuItem("❓ 常见问题", "faq", MenuAction::PatientAppointment);
-    addMenuItem("🗺️ 院内导航", "map", MenuAction::PatientMap);
+    addMenuItem("💬 智能分诊", "chat", MenuAction::visitorChat);
+    addMenuItem("❓ 常见问题", "faq", MenuAction::visitorAppointment);
+    addMenuItem("🗺️ 院内导航", "map", MenuAction::visitorMap);
 }
 
 void SideMenuWidget::setupStaffMenu()
 {
     addMenuItem("💬 客服管理", "chat_manage", MenuAction::StaffChatManage);
-    addMenuItem("👥 患者列表", "patient_list", MenuAction::StaffPatientList);
+    addMenuItem("👥 患者列表", "visitor_list", MenuAction::StaffvisitorList);
     addMenuItem("📚 知识库", "knowledge", MenuAction::StaffKnowledge);
 }
 

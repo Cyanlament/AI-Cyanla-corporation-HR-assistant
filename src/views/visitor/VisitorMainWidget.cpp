@@ -1,13 +1,13 @@
-#include "PatientMainWidget.h"
+#include "VisitorMainWidget.h"
 #include <QDebug>
 
-PatientMainWidget::PatientMainWidget(QWidget *parent)
+VisitorMainWidget::VisitorMainWidget(QWidget *parent)
     : QWidget(parent)
 {
     setupUI();
 }
 
-void PatientMainWidget::setCurrentUser(const UserInfo& user)
+void VisitorMainWidget::setCurrentUser(const UserInfo& user)
 {
     m_currentUser = user;
     
@@ -22,7 +22,7 @@ void PatientMainWidget::setCurrentUser(const UserInfo& user)
     }
 }
 
-void PatientMainWidget::setDatabaseManager(DatabaseManager* dbManager)
+void VisitorMainWidget::setDatabaseManager(DatabaseManager* dbManager)
 {
     // 设置数据库管理器
     if (m_chatWidget) {
@@ -33,7 +33,7 @@ void PatientMainWidget::setDatabaseManager(DatabaseManager* dbManager)
     }
 }
 
-void PatientMainWidget::onRequestHumanService(const QString& userId, const QString& userName, const QString& context)
+void VisitorMainWidget::onRequestHumanService(const QString& userId, const QString& userName, const QString& context)
 {
     // 调试信息
     qDebug() << "接收到转人工信号！用户ID:" << userId << "用户名:" << userName;
@@ -51,7 +51,7 @@ void PatientMainWidget::onRequestHumanService(const QString& userId, const QStri
     }
 }
 
-void PatientMainWidget::setupUI()
+void VisitorMainWidget::setupUI()
 {
     m_mainLayout = new QVBoxLayout(this);
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -78,7 +78,7 @@ void PatientMainWidget::setupUI()
     
     // 连接转人工信号
     connect(m_chatWidget, &ChatWidget::requestHumanService,
-            this, &PatientMainWidget::onRequestHumanService);
+            this, &VisitorMainWidget::onRequestHumanService);
     
     m_mainLayout->addWidget(m_tabWidget);
 

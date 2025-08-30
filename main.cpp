@@ -1,5 +1,5 @@
 #include "src/views/common/RoleSelector.h"
-#include "src/views/patient/PatientWindow.h"
+#include "src/views/visitor/visitorWindow.h"
 #include "src/views/staff/StaffWindow.h"
 #include "src/views/admin/AdminWindow.h"
 #include "mainwindow.h"
