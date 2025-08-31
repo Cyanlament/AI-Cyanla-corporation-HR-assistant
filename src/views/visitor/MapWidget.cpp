@@ -547,16 +547,16 @@ void MapWidget::initializeDepartments()
     m_departments.clear();
     
     // 1楼部门
-    DepartmentInfo emergency;
-    emergency.name = "惩戒部";
-    emergency.description = "24小时急诊医疗服务";
-    emergency.location = "1楼东侧";
-    emergency.hours = "24小时";
-    emergency.phone = "120";
-    emergency.mapRect = QRect(600, 450, 120, 80);
-    emergency.highlightColor = QColor("#FF6B6B");
-    emergency.floor = "1楼";
-    emergency.building = "门诊楼";
+    DepartmentInfo fitness;
+    fitness.name = "惩戒部";
+    fitness.description = "24小时急诊医疗服务";
+    fitness.location = "1楼东侧";
+    fitness.hours = "24小时";
+    fitness.phone = "120";
+    fitness.mapRect = QRect(600, 450, 120, 80);
+    fitness.highlightColor = QColor("#FF6B6B");
+    fitness.floor = "1楼";
+    fitness.building = "门诊楼";
     
     DepartmentInfo outvisitor;
     outvisitor.name = "门诊大厅";
@@ -662,7 +662,7 @@ void MapWidget::initializeDepartments()
     parkingA.floor = "地下";
     
     // 添加到部门映射
-    m_departments["惩戒部"] = emergency;
+    m_departments["惩戒部"] = fitness;
     m_departments["门诊大厅"] = outvisitor;
     m_departments["安保部"] = pharmacy;
     m_departments["收费处"] = cashier;

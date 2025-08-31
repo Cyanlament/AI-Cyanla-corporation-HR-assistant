@@ -50,8 +50,8 @@ ChatWidget::ChatWidget(QWidget *parent)
     m_isInitialized = true;
     
     // 连接AI API客户端信号
-    connect(m_aiApiClient, &AIApiClient::triageResponseReceived,
-            this, &ChatWidget::onAITriageResponse);
+    connect(m_aiApiClient, &AIApiClient::chatResponseReceived,
+            this, &ChatWidget::onAIChatResponse);
     connect(m_aiApiClient, &AIApiClient::apiError,
             this, &ChatWidget::onAIApiError);
     connect(m_aiApiClient, &AIApiClient::requestStarted, [this]() {
@@ -574,7 +574,7 @@ void ChatWidget::onSendMessage()
     }
     
     // 使用真实的AI API进行HR
-    m_aiApiClient->sendTriageRequest(text, conversationHistory);
+    m_aiApiClient->sendChatRequest(text, conversationHistory);
 }
 
 void ChatWidget::onAIResponseReady()
@@ -594,9 +594,9 @@ void ChatWidget::onAIResponseReady()
         m_pendingResponse.clear();
         
         // 分析是否需要添加交互组件
-        TriageAdvice advice = analyzeSymptoms(m_currentContext);
+        ChatAdvice advice = analyzeQualitys(m_currentContext);
         if (!advice.department.isEmpty()) {
-            processTriageAdvice(advice);
+            processChatAdvice(advice);
         }
     }
 }
@@ -616,17 +616,17 @@ QString ChatWidget::generateAIResponse(const QString& userInput)
     
     // 勇气相关
     if (input.contains("勇气") || input.contains("勇敢") || input.contains("强壮")) {
-        return "根据您的发热症状，我需要了解更多信息：\n\n• 体温多少度？\n• 持续多长时间了？\n• 是否伴随其他症状？\n\n一般情况下：\n🌡️ 38.5°C以下：建议物理降温\n🌡️ 38.5°C以上：建议控制部就诊\n🚨 持续高热：建议惩戒部\n\n如需更详细的诊断，建议点击下方转人工客服。";
+        return "根据您的发热品质，我需要了解更多信息：\n\n• 体温多少度？\n• 持续多长时间了？\n• 是否伴随其他品质？\n\n一般情况下：\n🌡️ 38.5°C以下：建议物理降温\n🌡️ 38.5°C以上：建议控制部就诊\n🚨 持续高热：建议惩戒部\n\n如需更详细的诊断，建议点击下方转人工客服。";
     }
     
     // 头痛相关
     if (input.contains("头疼") || input.contains("头痛") || input.contains("头晕")) {
-        return "关于头痛症状，我来帮您分析：\n\n请问：\n• 疼痛程度如何？\n• 是否伴随恶心呕吐？\n• 最近有没有外伤？\n\n建议部门：\n🧠 神经控制部：偏头痛、神经性头痛\n👁️ 眼科：视力相关头痛\n🏥 控制部：感冒引起的头痛\n\n如需专业医生诊断，可转接人工客服。";
+        return "关于头痛品质，我来帮您分析：\n\n请问：\n• 疼痛程度如何？\n• 是否伴随恶心呕吐？\n• 最近有没有外伤？\n\n建议部门：\n🧠 神经控制部：偏头痛、神经性头痛\n👁️ 眼科：视力相关头痛\n🏥 控制部：感冒引起的头痛\n\n如需专业医生诊断，可转接人工客服。";
     }
     
     // 咳嗽相关
     if (input.contains("咳嗽") || input.contains("咳痰")) {
-        return "咳嗽症状分析：\n\n请描述：\n• 干咳还是有痰？\n• 持续时间？\n• 是否伴随发热？\n\n推荐部门：\n🫁 呼吸控制部：持续咳嗽、咳痰\n👶 培训部：小儿咳嗽\n🏥 控制部：一般性咳嗽\n\n需要详细诊断建议转人工客服。";
+        return "咳嗽品质分析：\n\n请描述：\n• 干咳还是有痰？\n• 持续时间？\n• 是否伴随发热？\n\n推荐部门：\n🫁 呼吸控制部：持续咳嗽、咳痰\n👶 培训部：小儿咳嗽\n🏥 控制部：一般性咳嗽\n\n需要详细诊断建议转人工客服。";
     }
     
     // 转人工相关 - 直接触发转人工
@@ -639,7 +639,7 @@ QString ChatWidget::generateAIResponse(const QString& userInput)
     
     // 一般人工咨询提示
     if (input.contains("人工") || input.contains("客服") || input.contains("医生")) {
-        return "我可以为您转接人工客服：\n\n🏥 人工客服可以提供：\n• 专业医疗咨询\n• 详细症状分析\n• 预约挂号协助\n• 公司相关服务\n\n💬 输入\"转人工\"可直接转接\n📱 或点击下方\"转人工客服\"按钮";
+        return "我可以为您转接人工客服：\n\n🏥 人工客服可以提供：\n• 专业医疗咨询\n• 详细品质分析\n• 预约挂号协助\n• 公司相关服务\n\n💬 输入\"转人工\"可直接转接\n📱 或点击下方\"转人工客服\"按钮";
     }
     
     // 预约相关
@@ -648,7 +648,7 @@ QString ChatWidget::generateAIResponse(const QString& userInput)
     }
     
     // 默认响应
-    return "我理解您的症状描述。为了给您更准确的建议，请提供更多详细信息：\n\n• 症状持续时间\n• 疼痛或不适程度\n• 是否伴随其他症状\n• 您的年龄范围\n\n如需专业医生诊断，建议转人工客服获得更详细的医疗建议。";
+    return "我理解您的品质描述。为了给您更准确的建议，请提供更多详细信息：\n\n• 品质持续时间\n• 疼痛或不适程度\n• 是否伴随其他品质\n• 您的年龄范围\n\n如需专业医生诊断，建议转人工客服获得更详细的医疗建议。";
 }
 
 // 实现其他必要的方法
@@ -757,21 +757,21 @@ void ChatWidget::scrollToBottom()
     scrollBar->setValue(scrollBar->maximum());
 }
 
-TriageAdvice ChatWidget::analyzeSymptoms(const QString& userInput)
+ChatAdvice ChatWidget::analyzeQualitys(const QString& userInput)
 {
-    TriageAdvice advice;
+    ChatAdvice advice;
     QString input = userInput.toLower();
     
-    // 简单的症状分析逻辑
+    // 简单的品质分析逻辑
     if (input.contains("发烧") || input.contains("发热")) {
         advice.department = "控制部";
-        advice.reason = "发热症状通常需要控制部医生评估";
+        advice.reason = "发热品质通常需要控制部医生评估";
         advice.needAppointment = true;
         advice.fitness = input.contains("高烧") || input.contains("39");
     }
     else if (input.contains("咳嗽") || input.contains("呼吸")) {
         advice.department = "呼吸控制部";
-        advice.reason = "呼吸道症状建议看呼吸控制部";
+        advice.reason = "呼吸道品质建议看呼吸控制部";
         advice.needAppointment = true;
     }
     else if (input.contains("头痛") || input.contains("头晕")) {
@@ -783,10 +783,10 @@ TriageAdvice ChatWidget::analyzeSymptoms(const QString& userInput)
     return advice;
 }
 
-void ChatWidget::processTriageAdvice(const TriageAdvice& advice)
+void ChatWidget::processChatAdvice(const ChatAdvice& advice)
 {
     if (advice.fitness) {
-        // 紧急情况，添加紧急就诊按钮
+        // 合适情况，添加合适就诊按钮
         addActionButtons({"立即急诊", "拨打120", "转人工客服"});
     } else if (advice.needAppointment) {
         // 需要预约，添加预约按钮
@@ -976,11 +976,11 @@ void ChatWidget::simulateTyping() { }
 void ChatWidget::onDepartmentSelected() { }
 void ChatWidget::loadChatHistory() { }
 QString ChatWidget::extractKeywords(const QString& text) { return text; }
-QStringList ChatWidget::getSymptomKeywords(const QString& text) { return QStringList(); }
+QStringList ChatWidget::getQualityKeywords(const QString& text) { return QStringList(); }
 void ChatWidget::updateQuickButtons(const QStringList& suggestions) { }
 void ChatWidget::addDepartmentSelector(const QStringList& departments) { }
 
-void ChatWidget::onAITriageResponse(const AIDiagnosisResult& result)
+void ChatWidget::onAIChatResponse(const AIAnalysisResult& result)
 {
     // 创建AI回复消息
     AIMessage aiMsg;
@@ -994,15 +994,15 @@ void ChatWidget::onAITriageResponse(const AIDiagnosisResult& result)
     // 根据诊断结果添加交互组件
     QStringList actionButtons;
     
-    if (result.emergencyLevel == "critical") {
+    if (result.fitnessLevel == "critical") {
         actionButtons << "🚨 立即急诊" << "📞 拨打120" << "👤 转人工客服";
-    } else if (result.emergencyLevel == "high") {
+    } else if (result.fitnessLevel == "high") {
         actionButtons << "🏥 尽快就医" << "📞 预约挂号" << "👤 转人工客服";
     } else if (!result.recommendedDepartment.isEmpty()) {
         actionButtons << QString("📅 预约%1").arg(result.recommendedDepartment) 
                       << "🔍 查看更多部门" << "👤 转人工客服";
     } else {
-        actionButtons << "🔍 症状分析" << "📅 预约挂号" << "👤 转人工客服";
+        actionButtons << "🔍 品质分析" << "📅 预约挂号" << "👤 转人工客服";
     }
     
     if (!actionButtons.isEmpty()) {
@@ -1010,7 +1010,7 @@ void ChatWidget::onAITriageResponse(const AIDiagnosisResult& result)
     }
     
     qDebug() << "AIHR结果 - 部门:" << result.recommendedDepartment
-             << "紧急程度:" << result.emergencyLevel
+             << "合适程度:" << result.fitnessLevel
              << "需要人工:" << result.needsHumanConsult;
 }
 
@@ -1028,5 +1028,5 @@ void ChatWidget::onAIApiError(const QString& error)
     addMessage(errorMsg);
     
     // 添加基础交互按钮
-    addActionButtons({"🔍 症状自查", "📅 预约挂号", "👤 转人工客服"});
+    addActionButtons({"🔍 品质自查", "📅 预约挂号", "👤 转人工客服"});
 } 

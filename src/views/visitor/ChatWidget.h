@@ -38,7 +38,7 @@ struct AIMessage {
 };
 
 // HR建议结构体
-struct TriageAdvice {
+struct ChatAdvice {
     QString department;     // 推荐部门
     QString reason;         // 推荐理由
     QString action;         // 建议操作
@@ -69,7 +69,7 @@ private slots:
     // AI响应相关
     void onAIResponseReady();
     void simulateTyping();
-    void onAITriageResponse(const AIDiagnosisResult& result);
+    void onAIChatResponse(const AIAnalysisResult& result);
     void onAIApiError(const QString& error);
     
     // 交互按钮相关
@@ -96,9 +96,9 @@ private:
     void scrollToBottom();
     
     // AIHR逻辑
-    TriageAdvice analyzeSymptoms(const QString& userInput);
+    ChatAdvice analyzeQualitys(const QString& userInput);
     QString generateAIResponse(const QString& userInput);
-    void processTriageAdvice(const TriageAdvice& advice);
+    void processChatAdvice(const ChatAdvice& advice);
     
     // 快捷按钮管理
     void setupQuickButtons();
@@ -120,7 +120,7 @@ private:
     // 工具方法
     QString formatTimestamp(const QDateTime& timestamp);
     QString extractKeywords(const QString& text);
-    QStringList getSymptomKeywords(const QString& text);
+    QStringList getQualityKeywords(const QString& text);
 
 private:
     // 主布局

@@ -225,9 +225,9 @@ void CompanyNavigationWidget::initializeDepartments()
     
     // 惩戒部
     painter.setBrush(QBrush(QColor(244, 67, 54))); // 红色
-    QRect emergency(500, 300, 150, 100);
-    painter.drawRect(emergency);
-    painter.drawText(emergency, Qt::AlignCenter, "惩戒部");
+    QRect fitness(500, 300, 150, 100);
+    painter.drawRect(fitness);
+    painter.drawText(fitness, Qt::AlignCenter, "惩戒部");
     
     painter.end();
     

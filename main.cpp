@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
     // 初始化数据库
     DatabaseManager* dbManager = DatabaseManager::instance();
     if (!dbManager->initDatabase()) {
-        QMessageBox::critical(nullptr, "数据库错误", 
+        QMessageBox::critical(nullptr, "数据库错误",
                             "无法初始化数据库！\n应用程序将退出。");
         return -1;
     }

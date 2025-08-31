@@ -11,12 +11,12 @@
 #include <QTimer>
 
 // AI诊断结果结构
-struct AIDiagnosisResult {
-    QString qualityAnalysis;      // 症状分析
+struct AIAnalysisResult {
+    QString qualityAnalysis;      // 品质分析
     QString recommendedDepartment; // 推荐部门
-    QString emergencyLevel;       // 紧急程度 (low/medium/high/critical)
-    QStringList possibleCauses;   // 可能原因
-    QStringList suggestions;      // 建议措施
+    QString fitnessLevel;       // 合适程度 (low/medium/high/critical)
+    QStringList possibleCauses;   // 可能原因 //对于建议你去的部门
+    QStringList suggestions;      // 未来工作建议
     bool needsHumanConsult;       // 是否需要人工咨询
     QString aiResponse;           // AI完整回复
 };
@@ -30,10 +30,10 @@ public:
     ~AIApiClient();
     
     // 发送智能HR请求
-    void sendTriageRequest(const QString& userInput, const QString& conversationHistory = "");
+    void sendChatRequest(const QString& userInput, const QString& conversationHistory = "");
     
-    // 发送症状分析请求
-    void sendSymptomAnalysis(const QString& qualities, int age = 0, const QString& gender = "");
+    // 发送品质分析请求
+    void sendQualityAnalysis(const QString& qualities, int age = 0, const QString& gender = "");
     
     // 发送部门推荐请求
     void sendDepartmentRecommendation(const QString& qualities, const QString& analysis = "");
@@ -49,9 +49,9 @@ public:
 
 signals:
     // AI响应信号
-    void triageResponseReceived(const AIDiagnosisResult& result);
-    void qualityAnalysisReceived(const AIDiagnosisResult& result);
-    void departmentRecommendationReceived(const AIDiagnosisResult& result);
+    void chatResponseReceived(const AIAnalysisResult& result);
+    void qualityAnalysisReceived(const AIAnalysisResult& result);
+    void departmentRecommendationReceived(const AIAnalysisResult& result);
     
     // 错误和状态信号
     void apiError(const QString& error);
@@ -60,8 +60,8 @@ signals:
     void requestFinished();
 
 private slots:
-    void handleTriageResponse();
-    void handleSymptomResponse(); 
+    void handleChatResponse();
+    void handleQualityResponse();
     void handleDepartmentResponse();
     void handleNetworkError(QNetworkReply::NetworkError error);
     void handleSslErrors(const QList<QSslError>& errors);
@@ -83,8 +83,8 @@ private:
     
     // 请求类型枚举
     enum RequestType {
-        TriageRequest,
-        SymptomRequest,
+        ChatRequest,
+        QualityRequest,
         DepartmentRequest
     };
     RequestType m_currentRequestType;
@@ -92,11 +92,11 @@ private:
     // 私有方法
     QNetworkRequest createApiRequest();
     QJsonObject createRequestBody(const QString& systemPrompt, const QString& userMessage);
-    AIDiagnosisResult parseApiResponse(const QJsonDocument& response);
-    void parseAIResponseContent(AIDiagnosisResult& result);
+    AIAnalysisResult parseApiResponse(const QJsonDocument& response);
+    void parseAIResponseContent(AIAnalysisResult& result);
     void setupDefaultConfig();
-    QString createTriagePrompt(const QString& userInput, const QString& history);
-    QString createSymptomPrompt(const QString& qualities, int age, const QString& gender);
+    QString createChatPrompt(const QString& userInput, const QString& history);
+    QString createQualityPrompt(const QString& qualities, int age, const QString& gender);
     QString createDepartmentPrompt(const QString& qualities, const QString& analysis);
 };
 
