@@ -139,15 +139,15 @@ bool DatabaseManager::createTables()
 
     // 创建默认管理员账户（如果不存在）
     if (!isUsernameExists("admin")) {
-        registerUser("admin", "admin123", "admin@Cyan.com", "", "管理员", "系统管理员ayin");
+        registerUser("admin", "admin123", "admin@Cyan.com", "", "管理员", "Ayin");
     }
 
     // 创建测试HR客服账户
     if (!isUsernameExists("staff1")) {
-        registerUser("staff1", "123456", "staff1@Cyan.com", "", "客服", "客服小祥");
+        registerUser("staff1", "123456", "staff1@Cyan.com", "", "客服小祥", "丰川祥子");
     }
     if (!isUsernameExists("staff2")) {
-        registerUser("staff2", "123456", "staff2@Cyan.com", "", "客服", "客服小唐");
+        registerUser("staff2", "123456", "staff2@Cyan.com", "", "客服小唐", "桑丘");
     }
 
     return true;

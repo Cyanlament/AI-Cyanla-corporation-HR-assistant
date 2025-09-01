@@ -137,7 +137,7 @@ QString ChatStorage::getDatabasePath()
     QString dataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     if (dataPath.isEmpty()) {
         dataPath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-        dataPath += "/HospAI";
+        dataPath += "/Cyanla";
     }
 
     QDir().mkpath(dataPath);

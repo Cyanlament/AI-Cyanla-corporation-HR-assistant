@@ -41,7 +41,7 @@ void AppointmentWidget::setupUI()
     deptLayout->addWidget(m_departmentCombo);
     
     // 部长选择
-    m_sephirahGroup = new QGroupBox("选择部长");
+    m_sephirahGroup = new QGroupBox("选择面试官");
     QVBoxLayout* sephirahLayout = new QVBoxLayout(m_sephirahGroup);
     m_sephirahList = new QListWidget;
     m_sephirahList->setMaximumHeight(200);
@@ -153,7 +153,8 @@ void AppointmentWidget::loadDepartments()
         "安保部",
         "中央本部一区",
         "中央本部二区",
-        "惩戒部"
+        "惩戒部",
+        "构筑部"
     };
     
     m_departmentCombo->addItems(departments);
@@ -163,14 +164,32 @@ void AppointmentWidget::loadSephirahs()
 {
     m_sephirahList->clear();
     
-    // 模拟部长数据
+    // 部长数据
     QStringList sephirahs;
     if (m_selectedDepartment == "控制部") {
         sephirahs << "Malkuth - 部长" << "妮妮 - 队长" << "耗 - 副队长";
+    } else if (m_selectedDepartment == "情报部") {
+        sephirahs << "Yesod - 部长" << "弗兰力 - 队长" << "上级 - 副队长";
+    } else if (m_selectedDepartment == "培训部") {
+        sephirahs << "Hod - 部长" << "白发 - 队长" << "啪啪 - 副队长";
+    } else if (m_selectedDepartment == "安保部") {
+        sephirahs << "Netzach - 部长" << "骨头哥 - 队长" << "阿良 - 副队长";
+    } else if (m_selectedDepartment == "中央本部一区") {
+        sephirahs << "TipherethA - 部长" << "张叔叔 - 队长" << "哈哈 - 副队长";
+    } else if (m_selectedDepartment == "中央本部二区") {
+        sephirahs << "TipherethB - 部长" << "张嫂 - 队长" << "崩坏 - 副队长";
     } else if (m_selectedDepartment == "福利部") {
-        sephirahs << "Chesed - 部长" << "骨头哥 - 队长" << "白发 - 副队长";
+        sephirahs << "Chesed - 部长" << "奥托 - 队长" << "粉色妖精小姐🎶 - 副队长";
+    } else if (m_selectedDepartment == "惩戒部") {
+        sephirahs << "Geburah - 部长" << "堂吉诃德 - 队长" << "涛哥 - 副队长";
+    } else if (m_selectedDepartment == "记录部") {
+        sephirahs << "Hokma - 部长" << "凑数人 - 队长" << "秃秃大侠 - 副队长";
+    } else if (m_selectedDepartment == "研发部") {
+        sephirahs << "Binah - 部长" << "凯特 - 队长" << "夜将明 - 副队长";
+    } else if (m_selectedDepartment == "构筑部") {
+        sephirahs << "Keter - 部长" << "Ayin - 队长" << "苍蓝礼悼 - 副队长";
     } else {
-        sephirahs << "Ayin - 部长" << "苍蓝礼悼 - 队长" << "堂吉诃德 - 副队长";
+        sephirahs << "未知部门";
     }
     
     for (const QString& sephirah : sephirahs) {

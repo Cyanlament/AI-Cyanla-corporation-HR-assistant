@@ -275,9 +275,9 @@ void MainWindow::onLogout()
 void MainWindow::onAbout()
 {
     QMessageBox::about(this, "关于 青蓝公司HR制度智能问答系统",
-        "<h2>青蓝公司HR制度智能问答系统</h2>"
+        "<h2>青蓝公司（Cyanla Corporation)HR制度智能问答系统</h2>"
         "<p>版本: 1.0.0</p>"
-        "<p>这是一个基于Qt开发的公司智慧客服系统，</p>"
+        "<p>这是一个基于Qt开发的青蓝公司智慧客服系统，</p>"
         "<p>提供访客咨询、客服管理、系统管理等功能。</p>"
         "<br>"
         "<p>主要特性:</p>"

@@ -87,6 +87,7 @@ qt_add_executable(Cyanla
     src/views/admin/AdminMainWidget.cpp src/views/admin/AdminMainWidget.h src/views/admin/AdminWindow.cpp src/views/admin/AdminWindow.h src/views/admin/AuditLogWidget.cpp src/views/admin/AuditLogWidget.h src/views/admin/SystemConfigWidget.cpp src/views/admin/SystemConfigWidget.h src/views/admin/SystemStatsWidget.cpp src/views/admin/SystemStatsWidget.h src/views/admin/UserManageWidget.cpp src/views/admin/UserManageWidget.h
     src/views/visitor/AppointmentWidget.cpp src/views/visitor/AppointmentWidget.h src/views/visitor/ChatWidget.cpp src/views/visitor/ChatWidget.h src/views/visitor/FAQWidget.cpp src/views/visitor/FAQWidget.h src/views/visitor/MapWidget.cpp src/views/visitor/MapWidget.h src/views/visitor/RealChatWidget.cpp src/views/visitor/RealChatWidget.h src/views/visitor/VisitorMainWidget.cpp src/views/visitor/VisitorMainWidget.h src/views/visitor/VisitorWindow.cpp src/views/visitor/VisitorWindow.h
     mainwindow.ui
+    pic.qrc
 
 )
 set_source_files_properties(

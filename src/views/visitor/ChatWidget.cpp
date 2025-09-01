@@ -68,7 +68,7 @@ ChatWidget::ChatWidget(QWidget *parent)
     // 发送欢迎消息
     QTimer::singleShot(500, [this]() {
         AIMessage welcomeMsg;
-        welcomeMsg.content = "您好！我是青蓝公司智能HR助手\n\n我可以帮助您：\n• 告诉我您的性格特长，推荐合适部门\n• 解答公司相关问题\n•  识别您与公司及部门合适度，还能帮您安排面试 \n• 转接人工客服\n\n请描述您的问题开始咨询！";
+        welcomeMsg.content = "您好！我是青蓝公司智能HR助手\n\n我可以帮助您：\n• 如果您想入职，请自我介绍，我会进行分析\n• 解答公司相关问题\n•  识别您与公司及部门合适度，还能帮您安排面试 \n• 转接人工客服\n\n请描述您的问题开始咨询！";
         welcomeMsg.type = MessageType::Robot;
         welcomeMsg.timestamp = QDateTime::currentDateTime();
         welcomeMsg.sessionId = m_currentSessionId;
@@ -364,6 +364,7 @@ void ChatWidget::setupQuickButtons()
                      "中央本部一区",
                      "中央本部二区",
                      "惩戒部"
+                     "构筑部"
     };
     
     // 初始化性格特长关键词映射
@@ -371,8 +372,6 @@ void ChatWidget::setupQuickButtons()
     m_qualityKeywords["谨慎"] = {"谨慎", "内向", "善良", "细心"};
     m_qualityKeywords["自律"] = {"自律", "约束", "纪律", "规矩"};
     m_qualityKeywords["正义"] = {"正义", "责任", "热情", "梦想"};
-
-    
 
 
     QStringList quickQuestions = { "转人工客服"};
@@ -556,7 +555,7 @@ void ChatWidget::onSendMessage()
     // 检查是否直接触发转人工关键词
     QString lowerText = text.toLower();
     if (lowerText.contains("转人工") || lowerText.contains("换人工") || lowerText.contains("要人工") || 
-        lowerText.contains("人工客服") || lowerText.contains("真人客服") || lowerText.contains("联系客服")) {
+        lowerText.contains("人工客服") || lowerText.contains("真人客服") || lowerText.contains("真人HR")) {
         QTimer::singleShot(500, this, &ChatWidget::onTransferToHuman);
         return;
     }
@@ -610,23 +609,8 @@ QString ChatWidget::generateAIResponse(const QString& userInput)
     QStringList fitnessKeywords = {"天才", "特色", "首脑", "爪牙", "血魔", "都市之星"};
     for (const QString& keyword : fitnessKeywords) {
         if (input.contains(keyword)) {
-            return "⚠️ 根据您描述的特点，您可能是我们公司在找的人才！！建议您立即前往惩戒部寻找堂吉诃德先生参与面试与培训！\n\n惩戒部位置：公司1楼\n惩戒部电话：114514";
+            return "⚠️ 根据您描述的特点，您可能是我们公司在找的人才！！建议您立即前往惩戒部寻找堂吉诃德先生参与面试与培训！\n\n惩戒部位置：公司6楼\n惩戒部电话：114514";
         }
-    }
-    
-    // 勇气相关
-    if (input.contains("勇气") || input.contains("勇敢") || input.contains("强壮")) {
-        return "根据您的发热品质，我需要了解更多信息：\n\n• 体温多少度？\n• 持续多长时间了？\n• 是否伴随其他品质？\n\n一般情况下：\n🌡️ 38.5°C以下：建议物理降温\n🌡️ 38.5°C以上：建议控制部就诊\n🚨 持续高热：建议惩戒部\n\n如需更详细的诊断，建议点击下方转人工客服。";
-    }
-    
-    // 头痛相关
-    if (input.contains("头疼") || input.contains("头痛") || input.contains("头晕")) {
-        return "关于头痛品质，我来帮您分析：\n\n请问：\n• 疼痛程度如何？\n• 是否伴随恶心呕吐？\n• 最近有没有外伤？\n\n建议部门：\n🧠 神经控制部：偏头痛、神经性头痛\n👁️ 眼科：视力相关头痛\n🏥 控制部：感冒引起的头痛\n\n如需专业医生诊断，可转接人工客服。";
-    }
-    
-    // 咳嗽相关
-    if (input.contains("咳嗽") || input.contains("咳痰")) {
-        return "咳嗽品质分析：\n\n请描述：\n• 干咳还是有痰？\n• 持续时间？\n• 是否伴随发热？\n\n推荐部门：\n🫁 呼吸控制部：持续咳嗽、咳痰\n👶 培训部：小儿咳嗽\n🏥 控制部：一般性咳嗽\n\n需要详细诊断建议转人工客服。";
     }
     
     // 转人工相关 - 直接触发转人工
@@ -638,17 +622,17 @@ QString ChatWidget::generateAIResponse(const QString& userInput)
     }
     
     // 一般人工咨询提示
-    if (input.contains("人工") || input.contains("客服") || input.contains("医生")) {
-        return "我可以为您转接人工客服：\n\n🏥 人工客服可以提供：\n• 专业医疗咨询\n• 详细品质分析\n• 预约挂号协助\n• 公司相关服务\n\n💬 输入\"转人工\"可直接转接\n📱 或点击下方\"转人工客服\"按钮";
+    if (input.contains("人工") || input.contains("客服") || input.contains("部长")) {
+        return "如果您希望与部长或队长直接沟通，您可以点击界面左侧与人工客服沟通！";
     }
     
     // 预约相关
-    if (input.contains("预约") || input.contains("挂号")) {
-        return "关于预约挂号：\n\n📱 预约方式：\n• 微信公众号预约\n• 手机APP预约\n• 现场挂号\n• 电话预约：400-123-4567\n\n⏰ 预约时间：\n• 普通门诊：提前3天\n• 专家门诊：提前7天\n\n需要预约协助？建议转接人工客服。";
+    if (input.contains("预约") || input.contains("面试")||input.contains("面试")) {
+        return "如果您想预约面试，可以在界面左侧找到预约选项进行预约！";
     }
     
     // 默认响应
-    return "我理解您的品质描述。为了给您更准确的建议，请提供更多详细信息：\n\n• 品质持续时间\n• 疼痛或不适程度\n• 是否伴随其他品质\n• 您的年龄范围\n\n如需专业医生诊断，建议转人工客服获得更详细的医疗建议。";
+    return "嘟嘟嘟...\nworkworkwork......";
 }
 
 // 实现其他必要的方法
@@ -763,22 +747,13 @@ ChatAdvice ChatWidget::analyzeQualitys(const QString& userInput)
     QString input = userInput.toLower();
     
     // 简单的品质分析逻辑
-    if (input.contains("发烧") || input.contains("发热")) {
-        advice.department = "控制部";
-        advice.reason = "发热品质通常需要控制部医生评估";
+    if (input.contains("爱世人") ) {
+        advice.department = "福利部";
+        advice.reason = "看来您和福利部的那位妖精小姐很聊的来呢🎶";
         advice.needAppointment = true;
-        advice.fitness = input.contains("高烧") || input.contains("39");
+
     }
-    else if (input.contains("咳嗽") || input.contains("呼吸")) {
-        advice.department = "呼吸控制部";
-        advice.reason = "呼吸道品质建议看呼吸控制部";
-        advice.needAppointment = true;
-    }
-    else if (input.contains("头痛") || input.contains("头晕")) {
-        advice.department = "神经控制部";
-        advice.reason = "头部不适建议神经控制部检查";
-        advice.needAppointment = true;
-    }
+
     
     return advice;
 }
@@ -786,8 +761,8 @@ ChatAdvice ChatWidget::analyzeQualitys(const QString& userInput)
 void ChatWidget::processChatAdvice(const ChatAdvice& advice)
 {
     if (advice.fitness) {
-        // 合适情况，添加合适就诊按钮
-        addActionButtons({"立即急诊", "拨打120", "转人工客服"});
+        // 合适情况
+        addActionButtons({"转人工客服"});
     } else if (advice.needAppointment) {
         // 需要预约，添加预约按钮
         // addActionButtons({"📅 预约" + advice.department, "🔍 查看更多部门", "👤 转人工客服"});
@@ -995,14 +970,14 @@ void ChatWidget::onAIChatResponse(const AIAnalysisResult& result)
     QStringList actionButtons;
     
     if (result.fitnessLevel == "critical") {
-        actionButtons << "🚨 立即急诊" << "📞 拨打120" << "👤 转人工客服";
+        actionButtons << "🚨 立即入职" << "📞 联系部长" << "👤 转人工客服";
     } else if (result.fitnessLevel == "high") {
-        actionButtons << "🏥 尽快就医" << "📞 预约挂号" << "👤 转人工客服";
+        actionButtons << "📅 预约面试" << "📞 联系队长" << "👤 转人工客服";
     } else if (!result.recommendedDepartment.isEmpty()) {
         actionButtons << QString("📅 预约%1").arg(result.recommendedDepartment) 
                       << "🔍 查看更多部门" << "👤 转人工客服";
     } else {
-        actionButtons << "🔍 品质分析" << "📅 预约挂号" << "👤 转人工客服";
+        actionButtons << "🔍 品质分析" << "📅 预约" << "👤 转人工客服";
     }
     
     if (!actionButtons.isEmpty()) {
@@ -1028,5 +1003,5 @@ void ChatWidget::onAIApiError(const QString& error)
     addMessage(errorMsg);
     
     // 添加基础交互按钮
-    addActionButtons({"🔍 品质自查", "📅 预约挂号", "👤 转人工客服"});
+    addActionButtons({"🔍 品质自查", "📅 预约面试", "👤 转人工客服"});
 } 

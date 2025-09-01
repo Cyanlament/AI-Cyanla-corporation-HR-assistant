@@ -127,7 +127,7 @@ void SideMenuWidget::setupvisitorMenu()
 {
     addMenuItem("💬 智能HR", "chat", MenuAction::visitorChat);
     addMenuItem("❓ 常见问题", "faq", MenuAction::visitorAppointment);
-    addMenuItem("🗺️ 公司内导航", "map", MenuAction::visitorMap);
+    addMenuItem("🗺️ 地图", "map", MenuAction::visitorMap);
 }
 
 void SideMenuWidget::setupStaffMenu()
