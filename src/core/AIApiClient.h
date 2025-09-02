@@ -19,6 +19,8 @@ struct AIAnalysisResult {
     QStringList suggestions;      // 未来工作建议
     bool needsHumanConsult;       // 是否需要人工咨询
     QString aiResponse;           // AI完整回复
+    bool containsImage = false;   // 新增：是否包含图片
+    QString imageUrl;             // 新增：图片URL
 };
 
 class AIApiClient : public QObject
@@ -28,36 +30,40 @@ class AIApiClient : public QObject
 public:
     explicit AIApiClient(QObject *parent = nullptr);
     ~AIApiClient();
-    
+
     // 发送智能HR请求
     void sendChatRequest(const QString& userInput, const QString& conversationHistory = "");
-    
+
     // 发送品质分析请求
     void sendQualityAnalysis(const QString& qualities, int age = 0, const QString& gender = "");
-    
+
     // 发送部门推荐请求
     void sendDepartmentRecommendation(const QString& qualities, const QString& analysis = "");
-    
+
     // 设置API配置
     void setApiConfig(const QString& baseUrl, const QString& apiKey, const QString& model);
-    
+
     // 检查API连接状态
     bool isConnected() const;
-    
+
     // 获取错误信息
     QString getLastError() const;
+
+    // 检查并发送图片
+    void checkAndSendImage(const QString& userInput);
 
 signals:
     // AI响应信号
     void chatResponseReceived(const AIAnalysisResult& result);
     void qualityAnalysisReceived(const AIAnalysisResult& result);
     void departmentRecommendationReceived(const AIAnalysisResult& result);
-    
+
     // 错误和状态信号
     void apiError(const QString& error);
     void connectionStatusChanged(bool connected);
     void requestStarted();
     void requestFinished();
+    void imageResponseReceived(const QString& imageUrl);
 
 private slots:
     void handleChatResponse();
@@ -70,17 +76,17 @@ private:
     // 网络管理
     QNetworkAccessManager* m_networkManager;
     QNetworkReply* m_currentReply;
-    
+
     // API配置
     QString m_baseUrl;
     QString m_apiKey;
     QString m_model;
-    
+
     // 状态管理
     bool m_isConnected;
     QString m_lastError;
     QTimer* m_timeoutTimer;
-    
+
     // 请求类型枚举
     enum RequestType {
         ChatRequest,
@@ -88,7 +94,7 @@ private:
         DepartmentRequest
     };
     RequestType m_currentRequestType;
-    
+
     // 私有方法
     QNetworkRequest createApiRequest();
     QJsonObject createRequestBody(const QString& systemPrompt, const QString& userMessage);
@@ -100,4 +106,4 @@ private:
     QString createDepartmentPrompt(const QString& qualities, const QString& analysis);
 };
 
-#endif // AIAPICLIENT_H 
+#endif // AIAPICLIENT_H

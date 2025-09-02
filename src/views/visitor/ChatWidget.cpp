@@ -48,7 +48,7 @@ ChatWidget::ChatWidget(QWidget *parent)
     
     m_currentSessionId = generateSessionId();
     m_isInitialized = true;
-    
+    m_specialResponses["堂吉诃德是个什么样的人"] = "D:/qtprogram/Don.png";
     // 连接AI API客户端信号
     connect(m_aiApiClient, &AIApiClient::chatResponseReceived,
             this, &ChatWidget::onAIChatResponse);
@@ -64,7 +64,7 @@ ChatWidget::ChatWidget(QWidget *parent)
         m_statusLabel->setText("智能HR助手");
         m_btnSend->setEnabled(true);
     });
-    
+
     // 发送欢迎消息
     QTimer::singleShot(500, [this]() {
         AIMessage welcomeMsg;
@@ -552,6 +552,13 @@ void ChatWidget::onSendMessage()
     m_messageInput->clear();
     m_currentContext = text;
     
+    // 检查特殊响应 - 堂吉诃德问题
+    if (text == "堂吉诃德长什么样？") {
+        QString imagePath = "D:/qtprogram/Don.png";
+        displayImageMessage(imagePath, "堂吉诃德先生");
+        return;
+    }
+
     // 检查是否直接触发转人工关键词
     QString lowerText = text.toLower();
     if (lowerText.contains("转人工") || lowerText.contains("换人工") || lowerText.contains("要人工") || 
@@ -574,6 +581,129 @@ void ChatWidget::onSendMessage()
     
     // 使用真实的AI API进行HR
     m_aiApiClient->sendChatRequest(text, conversationHistory);
+}
+// 添加显示图片的函数
+void ChatWidget::addImageMessage(const QString& imagePath, const QString& altText)
+{
+    // 检查文件是否存在
+    QFile file(imagePath);
+    if (!file.exists()) {
+        AIMessage errorMsg;
+        errorMsg.content = "抱歉，图片未找到: " + imagePath;
+        errorMsg.type = MessageType::System;
+        errorMsg.timestamp = QDateTime::currentDateTime();
+        errorMsg.sessionId = m_currentSessionId;
+        addMessage(errorMsg);
+        return;
+    }
+
+    // 创建图片消息
+    AIMessage imageMsg;
+    imageMsg.content = QString("<div style='text-align: center;'><img src='%1' alt='%2' style='max-width: 300px; max-height: 300px; border-radius: 8px;'/><p style='color: #666; margin-top: 8px;'>%2</p></div>")
+                           .arg(imagePath).arg(altText);
+    imageMsg.type = MessageType::Robot;
+    imageMsg.timestamp = QDateTime::currentDateTime();
+    imageMsg.sessionId = m_currentSessionId;
+
+    addMessage(imageMsg);
+}
+
+// 添加显示图片消息的函数
+void ChatWidget::displayImageMessage(const QString& imagePath, const QString& caption)
+{
+    QWidget* messageWidget = new QWidget;
+    QHBoxLayout* messageLayout = new QHBoxLayout(messageWidget);
+    messageLayout->setContentsMargins(0, 0, 0, 0);
+
+    // 机器人头像
+    QLabel* avatarLabel = new QLabel("😊");
+    avatarLabel->setFixedSize(48, 48);
+    avatarLabel->setAlignment(Qt::AlignCenter);
+    avatarLabel->setStyleSheet(R"(
+        QLabel {
+            background-color: #00BFFF;
+            border-radius: 24px;
+            font-size: 24px;
+        }
+    )");
+
+    // 图片容器
+    QWidget* imageContainer = new QWidget;
+    QVBoxLayout* imageLayout = new QVBoxLayout(imageContainer);
+    imageLayout->setContentsMargins(0, 0, 0, 0);
+    imageLayout->setSpacing(5);
+
+    // 图片标签
+    QLabel* imageLabel = new QLabel;
+    QPixmap pixmap(imagePath);
+
+    if (pixmap.isNull()) {
+        // 图片加载失败
+        imageLabel->setText("图片加载失败: " + imagePath);
+        imageLabel->setStyleSheet(R"(
+            QLabel {
+                background-color: #F2F2F7;
+                color: #FF3B30;
+                border-radius: 12px;
+                padding: 12px 16px;
+                margin-right: 60px;
+                font-size: 14px;
+            }
+        )");
+    } else {
+        // 缩放图片以适应显示
+        QPixmap scaledPixmap = pixmap.scaled(300, 300, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        imageLabel->setPixmap(scaledPixmap);
+        imageLabel->setStyleSheet(R"(
+            QLabel {
+                background-color: #F2F2F7;
+                border-radius: 12px;
+                padding: 10px;
+            }
+        )");
+        imageLabel->setAlignment(Qt::AlignCenter);
+    }
+
+    // 图片说明
+    QLabel* captionLabel = new QLabel(caption);
+    captionLabel->setStyleSheet(R"(
+        QLabel {
+            color: #8E8E93;
+            font-size: 12px;
+            padding: 0 5px;
+        }
+    )");
+    captionLabel->setAlignment(Qt::AlignCenter);
+
+    // 时间戳
+    QLabel* timeLabel = new QLabel(formatTimestamp(QDateTime::currentDateTime()));
+    timeLabel->setStyleSheet("color: #8E8E93; font-size: 11px;");
+
+    imageLayout->addWidget(imageLabel);
+    imageLayout->addWidget(captionLabel);
+    imageLayout->addWidget(timeLabel);
+    timeLabel->setAlignment(Qt::AlignLeft);
+
+    // 添加到消息布局
+    messageLayout->addWidget(avatarLabel);
+    messageLayout->addWidget(imageContainer);
+    messageLayout->addStretch();
+
+    // 添加到聊天区域
+    m_chatLayout->removeItem(m_chatLayout->itemAt(m_chatLayout->count() - 1));
+    m_chatLayout->addWidget(messageWidget);
+    m_chatLayout->addStretch();
+
+    // 滚动到底部
+    QTimer::singleShot(100, this, &ChatWidget::scrollToBottom);
+
+    // 添加到聊天历史
+    AIMessage imageMsg;
+    imageMsg.content = "[图片] " + caption;
+    imageMsg.type = MessageType::Robot;
+    imageMsg.timestamp = QDateTime::currentDateTime();
+    imageMsg.sessionId = m_currentSessionId;
+    m_chatHistory.append(imageMsg);
 }
 
 void ChatWidget::onAIResponseReady()
@@ -654,13 +784,23 @@ void ChatWidget::displayMessage(const AIMessage& message)
     QHBoxLayout* messageLayout = new QHBoxLayout(messageWidget);
     messageLayout->setContentsMargins(0, 0, 0, 0);
     
+    // 检查是否是图片消息
+    bool isImageMessage = message.content.contains("<img src=");
+
     // 创建消息气泡
     QLabel* bubbleLabel = new QLabel;
     bubbleLabel->setText(message.content);
     bubbleLabel->setWordWrap(true);
     bubbleLabel->setTextFormat(Qt::RichText);
     bubbleLabel->setOpenExternalLinks(true);
-    
+
+    // 如果是图片消息，调整大小策略
+    if (isImageMessage) {
+        bubbleLabel->setMinimumWidth(320);
+        bubbleLabel->setMinimumHeight(340);
+    }
+
+
     // 时间戳
     QLabel* timeLabel = new QLabel(formatTimestamp(message.timestamp));
     timeLabel->setStyleSheet("color: #8E8E93; font-size: 11px;");

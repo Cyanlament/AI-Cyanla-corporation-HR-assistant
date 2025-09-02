@@ -89,7 +89,7 @@ private:
     void setupQuickButtonsArea();
     void setupInputArea();
     void setupToolBar();
-    
+     void displayImageMessage(const QString& imagePath, const QString& caption = "");
     // 消息处理
     void addMessage(const AIMessage& message);
     void displayMessage(const AIMessage& message);
@@ -110,7 +110,12 @@ private:
     void addDepartmentSelector(const QStringList& departments);
     void addTransferOption();  // 添加转人工选项
     void clearInteractionComponents();
-    
+
+    // 图片显示相关
+    void displayImage(const QString& imagePath);
+    void addImageMessage(const QString& imagePath, const QString& altText = "");
+
+    QMap<QString, QString> m_specialResponses; // 特殊响应映射
     // 数据库操作
     void initDatabase();
     void saveChatHistory();

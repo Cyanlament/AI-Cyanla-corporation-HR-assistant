@@ -67,7 +67,7 @@ void VisitorMainWidget::setupUI()
     m_appointmentWidget = new AppointmentWidget;
 
     QWidget * dtWgt = new QWidget;
-    dtWgt->setStyleSheet("QWidget { border-image: url(:/dh.jpg);}");
+    dtWgt->setStyleSheet("QWidget { border-image: url(:/map.png);}");
     // 添加选项卡
     m_tabWidget->addTab(m_chatWidget, "智能HR");
     m_tabWidget->addTab(m_realChatWidget, "客服咨询");

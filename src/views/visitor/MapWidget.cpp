@@ -420,14 +420,14 @@ void MapWidget::setupLeftPanel()
     QGridLayout* quickLayout = new QGridLayout(m_quickGroup);
 
     m_btnEmergency = new QPushButton(" 惩戒部");
-    m_btnParking = new QPushButton(" ");
-    m_btnPharmacy = new QPushButton("");
-    m_btnCashier = new QPushButton("");
+    m_btnSafety = new QPushButton(" ");
+    m_btnWelfare = new QPushButton("");
+    m_btnTrain = new QPushButton("");
 
     quickLayout->addWidget(m_btnEmergency, 0, 0);
-    quickLayout->addWidget(m_btnParking, 0, 1);
-    quickLayout->addWidget(m_btnPharmacy, 1, 0);
-    quickLayout->addWidget(m_btnCashier, 1, 1);
+    quickLayout->addWidget(m_btnSafety, 0, 1);
+    quickLayout->addWidget(m_btnWelfare, 1, 0);
+    quickLayout->addWidget(m_btnTrain, 1, 1);
 
     // 添加到左侧布局
     m_leftLayout->addWidget(m_searchGroup);
@@ -448,13 +448,13 @@ void MapWidget::setupLeftPanel()
     connect(m_btnEmergency, &QPushButton::clicked, [this]() {
         highlightDepartment("惩戒部");
     });
-    connect(m_btnParking, &QPushButton::clicked, [this]() {
+    connect(m_btnSafety, &QPushButton::clicked, [this]() {
         highlightDepartment("");
     });
-    connect(m_btnPharmacy, &QPushButton::clicked, [this]() {
+    connect(m_btnWelfare, &QPushButton::clicked, [this]() {
         highlightDepartment("安保部");
     });
-    connect(m_btnCashier, &QPushButton::clicked, [this]() {
+    connect(m_btnTrain, &QPushButton::clicked, [this]() {
         highlightDepartment("收费处");
     });
 }

@@ -4,7 +4,8 @@
 #include <QSslError>
 #include <QDebug>
 #include <QApplication>
-
+#include <QFile>
+#include <QDir>
 AIApiClient::AIApiClient(QObject *parent)
     : QObject(parent)
     , m_networkManager(new QNetworkAccessManager(this))
@@ -15,18 +16,18 @@ AIApiClient::AIApiClient(QObject *parent)
 {
     // 设置默认配置
     setupDefaultConfig();
-    
+
     // 配置超时定时器
     m_timeoutTimer->setSingleShot(true);
     m_timeoutTimer->setInterval(15000); // 15秒超时
-    
+
     connect(m_timeoutTimer, &QTimer::timeout, this, [this]() {
         if (m_currentReply) {
             m_currentReply->abort();
             emit apiError("请求超时，请检查网络连接");
         }
     });
-    
+
     // SSL错误信号将在请求时连接
 }
 
@@ -44,7 +45,7 @@ void AIApiClient::setupDefaultConfig()
     m_baseUrl = "https://dashscope.aliyuncs.com/compatible-mode/v1";
     m_apiKey = "sk-4a6b52e034b84b2e80ad65ac6075c0d0";
     m_model = "deepseek-v3.1";
-    
+
     qDebug() << "AI API客户端初始化完成";
     qDebug() << "Base URL:" << m_baseUrl;
     qDebug() << "Model:" << m_model;
@@ -55,7 +56,7 @@ void AIApiClient::setApiConfig(const QString& baseUrl, const QString& apiKey, co
     m_baseUrl = baseUrl;
     m_apiKey = apiKey;
     m_model = model;
-    
+
     qDebug() << "API配置已更新 - URL:" << baseUrl << "Model:" << model;
 }
 
@@ -69,33 +70,79 @@ QString AIApiClient::getLastError() const
     return m_lastError;
 }
 
+
+void AIApiClient::checkAndSendImage(const QString& userInput)
+{
+    if (userInput.contains("堂吉诃德是个什么样的人") ||
+        (userInput.contains("堂吉诃德") &&
+         (userInput.contains("什么样") || userInput.contains("介绍") || userInput.contains("故事") ||
+          userInput.contains("形象") || userInput.contains("图片")))) {
+
+        // 构建本地图片路径
+        QString imagePath = "D:/qtprogram/Don.png";
+
+        // 确保路径使用正斜杠
+        imagePath = QDir::toNativeSeparators(imagePath);
+
+        QFile file(imagePath);
+        if (file.exists()) {
+            // 发送图片信号（使用 file:// 协议表示本地文件）
+            QString fileUrl = "file:///" + imagePath;
+            emit imageResponseReceived(fileUrl);
+            qDebug() << "成功发送堂吉诃德图片:" << imagePath;
+        } else {
+            qDebug() << "堂吉诃德图片文件不存在，路径:" << imagePath;
+
+            // 尝试其他可能的位置
+            QStringList possiblePaths = {
+                "D:/qtprogram/Don.png",
+                QApplication::applicationDirPath() + "/Don.png"
+            };
+
+            for (const QString &path : possiblePaths) {
+                QFile testFile(path);
+                if (testFile.exists()) {
+                    QString foundUrl = "file:///" + QDir::toNativeSeparators(path);
+                    emit imageResponseReceived(foundUrl);
+                    qDebug() << "从备用路径找到图片:" << path;
+                    break;
+                }
+            }
+        }
+    }
+}
+
 void AIApiClient::sendChatRequest(const QString& userInput, const QString& conversationHistory)
 {
+
+    // 检查是否需要发送图片（不打断AI流程）
+    checkAndSendImage(userInput);
+
     if (m_currentReply) {
         qDebug() << "请求正在进行中，忽略新请求";
         return;
     }
-    
+
     m_currentRequestType = ChatRequest;
     emit requestStarted();
-    
+
     QString systemPrompt = createChatPrompt(userInput, conversationHistory);
     QJsonObject requestBody = createRequestBody(systemPrompt, userInput);
-    
+
     QNetworkRequest request = createApiRequest();
-    
+
     QJsonDocument doc(requestBody);
     m_currentReply = m_networkManager->post(request, doc.toJson());
-    
-    connect(m_currentReply, &QNetworkReply::finished, 
+
+    connect(m_currentReply, &QNetworkReply::finished,
             this, &AIApiClient::handleChatResponse);
     connect(m_currentReply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::errorOccurred),
             this, &AIApiClient::handleNetworkError);
     connect(m_currentReply, &QNetworkReply::sslErrors,
             this, &AIApiClient::handleSslErrors);
-    
+
     m_timeoutTimer->start();
-    
+
     qDebug() << "发送智能HR请求:" << userInput;
 }
 
@@ -105,27 +152,27 @@ void AIApiClient::sendQualityAnalysis(const QString& qualities, int age, const Q
         qDebug() << "请求正在进行中，忽略新请求";
         return;
     }
-    
+
     m_currentRequestType = QualityRequest;
     emit requestStarted();
-    
+
     QString systemPrompt = createQualityPrompt(qualities, age, gender);
     QJsonObject requestBody = createRequestBody(systemPrompt, qualities);
-    
+
     QNetworkRequest request = createApiRequest();
-    
+
     QJsonDocument doc(requestBody);
     m_currentReply = m_networkManager->post(request, doc.toJson());
-    
-    connect(m_currentReply, &QNetworkReply::finished, 
+
+    connect(m_currentReply, &QNetworkReply::finished,
             this, &AIApiClient::handleQualityResponse);
     connect(m_currentReply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::errorOccurred),
             this, &AIApiClient::handleNetworkError);
     connect(m_currentReply, &QNetworkReply::sslErrors,
             this, &AIApiClient::handleSslErrors);
-    
+
     m_timeoutTimer->start();
-    
+
     qDebug() << "发送品质分析请求:" << qualities;
 }
 
@@ -135,38 +182,38 @@ void AIApiClient::sendDepartmentRecommendation(const QString& qualities, const Q
         qDebug() << "请求正在进行中，忽略新请求";
         return;
     }
-    
+
     m_currentRequestType = DepartmentRequest;
     emit requestStarted();
-    
+
     QString systemPrompt = createDepartmentPrompt(qualities, analysis);
     QJsonObject requestBody = createRequestBody(systemPrompt, qualities);
-    
+
     QNetworkRequest request = createApiRequest();
-    
+
     QJsonDocument doc(requestBody);
     m_currentReply = m_networkManager->post(request, doc.toJson());
-    
-    connect(m_currentReply, &QNetworkReply::finished, 
+
+    connect(m_currentReply, &QNetworkReply::finished,
             this, &AIApiClient::handleDepartmentResponse);
     connect(m_currentReply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::errorOccurred),
             this, &AIApiClient::handleNetworkError);
     connect(m_currentReply, &QNetworkReply::sslErrors,
             this, &AIApiClient::handleSslErrors);
-    
+
     m_timeoutTimer->start();
-    
+
     qDebug() << "发送部门推荐请求:" << qualities;
 }
 
 QNetworkRequest AIApiClient::createApiRequest()
 {
     QNetworkRequest request(QUrl(m_baseUrl + "/chat/completions"));
-    
+
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader("Authorization", QString("Bearer %1").arg(m_apiKey).toUtf8());
     request.setRawHeader("User-Agent", "");
-    
+
     return request;
 }
 
@@ -175,28 +222,28 @@ QJsonObject AIApiClient::createRequestBody(const QString& systemPrompt, const QS
     QJsonObject requestBody;
     requestBody["model"] = m_model;
     requestBody["stream"] = false;
-    
+
     QJsonArray messages;
-    
+
     // 系统消息
     QJsonObject systemMsg;
     systemMsg["role"] = "system";
     systemMsg["content"] = systemPrompt;
     messages.append(systemMsg);
-    
+
     // 用户消息
     QJsonObject userMsg;
     userMsg["role"] = "user";
     userMsg["content"] = userMessage;
     messages.append(userMsg);
-    
+
     requestBody["messages"] = messages;
-    
+
     // 参数设置
     requestBody["temperature"] = 0.7;
     requestBody["max_tokens"] = 1000;
     requestBody["top_p"] = 0.9;
-    
+
     return requestBody;
 }
 
@@ -958,25 +1005,25 @@ QString AIApiClient::createDepartmentPrompt(const QString& qualities, const QStr
 void AIApiClient::handleChatResponse()
 {
     m_timeoutTimer->stop();
-    
+
     if (!m_currentReply) {
         return;
     }
-    
+
     QNetworkReply* reply = m_currentReply;
     m_currentReply = nullptr;
-    
+
     if (reply->error() == QNetworkReply::NoError) {
         QByteArray data = reply->readAll();
         QJsonDocument doc = QJsonDocument::fromJson(data);
-        
+
         qDebug() << "收到HR响应:" << doc.toJson(QJsonDocument::Compact);
-        
+
         AIAnalysisResult result = parseApiResponse(doc);
         m_isConnected = true;
         emit connectionStatusChanged(true);
         emit chatResponseReceived(result);
-        
+
     } else {
         QString error = QString("网络请求失败: %1").arg(reply->errorString());
         m_lastError = error;
@@ -984,7 +1031,7 @@ void AIApiClient::handleChatResponse()
         emit connectionStatusChanged(false);
         emit apiError(error);
     }
-    
+
     reply->deleteLater();
     emit requestFinished();
 }
@@ -992,29 +1039,29 @@ void AIApiClient::handleChatResponse()
 void AIApiClient::handleQualityResponse()
 {
     m_timeoutTimer->stop();
-    
+
     if (!m_currentReply) {
         return;
     }
-    
+
     QNetworkReply* reply = m_currentReply;
     m_currentReply = nullptr;
-    
+
     if (reply->error() == QNetworkReply::NoError) {
         QByteArray data = reply->readAll();
         QJsonDocument doc = QJsonDocument::fromJson(data);
-        
+
         AIAnalysisResult result = parseApiResponse(doc);
         m_isConnected = true;
         emit connectionStatusChanged(true);
         emit qualityAnalysisReceived(result);
-        
+
     } else {
         QString error = QString("品质分析请求失败: %1").arg(reply->errorString());
         m_lastError = error;
         emit apiError(error);
     }
-    
+
     reply->deleteLater();
     emit requestFinished();
 }
@@ -1022,29 +1069,29 @@ void AIApiClient::handleQualityResponse()
 void AIApiClient::handleDepartmentResponse()
 {
     m_timeoutTimer->stop();
-    
+
     if (!m_currentReply) {
         return;
     }
-    
+
     QNetworkReply* reply = m_currentReply;
     m_currentReply = nullptr;
-    
+
     if (reply->error() == QNetworkReply::NoError) {
         QByteArray data = reply->readAll();
         QJsonDocument doc = QJsonDocument::fromJson(data);
-        
+
         AIAnalysisResult result = parseApiResponse(doc);
         m_isConnected = true;
         emit connectionStatusChanged(true);
         emit departmentRecommendationReceived(result);
-        
+
     } else {
         QString error = QString("部门推荐请求失败: %1").arg(reply->errorString());
         m_lastError = error;
         emit apiError(error);
     }
-    
+
     reply->deleteLater();
     emit requestFinished();
 }
@@ -1052,9 +1099,9 @@ void AIApiClient::handleDepartmentResponse()
 AIAnalysisResult AIApiClient::parseApiResponse(const QJsonDocument& response)
 {
     AIAnalysisResult result;
-    
+
     QJsonObject rootObj = response.object();
-    
+
     if (rootObj.contains("choices") && rootObj["choices"].isArray()) {
         QJsonArray choices = rootObj["choices"].toArray();
         if (!choices.isEmpty()) {
@@ -1062,25 +1109,25 @@ AIAnalysisResult AIApiClient::parseApiResponse(const QJsonDocument& response)
             if (firstChoice.contains("message")) {
                 QJsonObject message = firstChoice["message"].toObject();
                 result.aiResponse = message["content"].toString();
-                
+
                 // 解析AI回复内容，提取结构化信息
                 parseAIResponseContent(result);
             }
         }
     }
-    
+
     if (result.aiResponse.isEmpty()) {
         result.aiResponse = "抱歉，暂时无法获取AI回复，请稍后重试或转人工客服。";
         result.needsHumanConsult = true;
     }
-    
+
     return result;
 }
 
 void AIApiClient::parseAIResponseContent(AIAnalysisResult& result)
 {
     QString content = result.aiResponse.toLower();
-    
+
     // 判断合适程度
     if (content.contains("完美") || content.contains("critical") || content.contains("人才")) {
         result.fitnessLevel = "critical";
@@ -1091,59 +1138,59 @@ void AIApiClient::parseAIResponseContent(AIAnalysisResult& result)
     } else {
         result.fitnessLevel = "low";
     }
-    
+
     // 提取部门推荐
     QStringList departments = {"控制部", "情报部", "安保部", "培训部", "中央本部一区", "中央本部二区", "福利部",
-                              "惩戒部", "记录部", "研发部", "构筑部"};
-    
+                               "惩戒部", "记录部", "研发部", "构筑部"};
+
     for (const QString& dept : departments) {
         if (content.contains(dept)) {
             result.recommendedDepartment = dept;
             break;
         }
     }
-    
+
     // 判断是否需要人工咨询
-    result.needsHumanConsult = content.contains("转人工") || content.contains("人工客服") || 
-                              content.contains("人工HR") || result.fitnessLevel == "critical";
+    result.needsHumanConsult = content.contains("转人工") || content.contains("人工客服") ||
+                               content.contains("人工HR") || result.fitnessLevel == "critical";
 }
 
 void AIApiClient::handleNetworkError(QNetworkReply::NetworkError error)
 {
     m_timeoutTimer->stop();
-    
+
     QString errorMsg;
     switch (error) {
-        case QNetworkReply::ConnectionRefusedError:
-            errorMsg = "连接被拒绝，请检查网络设置";
-            break;
-        case QNetworkReply::RemoteHostClosedError:
-            errorMsg = "远程主机关闭连接";
-            break;
-        case QNetworkReply::HostNotFoundError:
-            errorMsg = "无法找到服务器，请检查网络连接";
-            break;
-        case QNetworkReply::TimeoutError:
-            errorMsg = "请求超时，请稍后重试";
-            break;
-        case QNetworkReply::SslHandshakeFailedError:
-            errorMsg = "SSL连接失败";
-            break;
-        default:
-            errorMsg = QString("网络错误: %1").arg(m_currentReply ? m_currentReply->errorString() : "未知错误");
-            break;
+    case QNetworkReply::ConnectionRefusedError:
+        errorMsg = "连接被拒绝，请检查网络设置";
+        break;
+    case QNetworkReply::RemoteHostClosedError:
+        errorMsg = "远程主机关闭连接";
+        break;
+    case QNetworkReply::HostNotFoundError:
+        errorMsg = "无法找到服务器，请检查网络连接";
+        break;
+    case QNetworkReply::TimeoutError:
+        errorMsg = "请求超时，请稍后重试";
+        break;
+    case QNetworkReply::SslHandshakeFailedError:
+        errorMsg = "SSL连接失败";
+        break;
+    default:
+        errorMsg = QString("网络错误: %1").arg(m_currentReply ? m_currentReply->errorString() : "未知错误");
+        break;
     }
-    
+
     m_lastError = errorMsg;
     m_isConnected = false;
     emit connectionStatusChanged(false);
     emit apiError(errorMsg);
-    
+
     if (m_currentReply) {
         m_currentReply->deleteLater();
         m_currentReply = nullptr;
     }
-    
+
     emit requestFinished();
 }
 
@@ -1153,10 +1200,10 @@ void AIApiClient::handleSslErrors(const QList<QSslError>& errors)
     for (const QSslError& error : errors) {
         qDebug() << "SSL错误:" << error.errorString();
     }
-    
+
     // 在生产环境中，应该更严格地处理SSL错误
     // 这里为了测试方便，忽略SSL错误
     if (m_currentReply) {
         m_currentReply->ignoreSslErrors();
     }
-} 
+}

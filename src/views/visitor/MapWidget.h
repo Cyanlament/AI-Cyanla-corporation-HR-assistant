@@ -174,9 +174,9 @@ private:
     // 快捷功能
     QGroupBox* m_quickGroup;
     QPushButton* m_btnEmergency;
-    QPushButton* m_btnParking;
-    QPushButton* m_btnPharmacy;
-    QPushButton* m_btnCashier;
+    QPushButton* m_btnSafety;
+    QPushButton* m_btnWelfare;
+    QPushButton* m_btnTrain;
     
     // 右侧面板
     QWidget* m_rightPanel;

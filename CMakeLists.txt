@@ -90,6 +90,7 @@ qt_add_executable(Cyanla
     pic.qrc
     VideoPlayerDialog.h
     VideoPlayerDialog.cpp
+    map.h map.cpp map.ui
 
 )
 set_source_files_properties(
