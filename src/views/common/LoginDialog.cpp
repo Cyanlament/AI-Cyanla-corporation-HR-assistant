@@ -42,17 +42,24 @@ void LoginDialog::setupUI()
     m_loginFrame = new QFrame;
     m_loginFrame->setObjectName("loginFrame");
     m_frameLayout = new QVBoxLayout(m_loginFrame);
-    m_frameLayout->setContentsMargins(30, 30, 30, 30);
-    m_frameLayout->setSpacing(20);
+    m_frameLayout->setContentsMargins(30, 20, 30, 20);
+    m_frameLayout->setSpacing(15);
     
     // Logo和标题
     m_logoLabel = new QLabel("");
     m_logoLabel->setAlignment(Qt::AlignCenter);
     m_logoLabel->setObjectName("logoLabel");
+    m_logoLabel->setStyleSheet("border-image: url(':/logo.png');");
+    m_logoLabel->setFixedSize(QSize(400,300));
+
     
     m_titleLabel = new QLabel("青蓝公司HR制度智能问答系统");
     m_titleLabel->setAlignment(Qt::AlignCenter);
     m_titleLabel->setObjectName("titleLabel");
+    // 创建字体并设置字体大小
+    QFont font = m_titleLabel->font(); // 获取当前字体
+    font.setPointSize(24); // 设置字体大小为24
+    m_titleLabel->setFont(font); // 应用新字体
     
     m_subtitleLabel = new QLabel("青蓝公司HR制度智能问答系统");
     m_subtitleLabel->setAlignment(Qt::AlignCenter);
@@ -97,13 +104,17 @@ void LoginDialog::setupUI()
     m_rememberCheck = new QCheckBox("记住密码");
     m_rememberCheck->setObjectName("rememberCheck");
     
+    m_roleCombo->setFixedHeight(30);
+    m_usernameEdit->setFixedHeight(30);
+    m_passwordEdit->setFixedHeight(30);
+
     m_inputLayout->addWidget(m_roleLabel, 0, 0);
     m_inputLayout->addWidget(m_roleCombo, 0, 1);
     m_inputLayout->addWidget(m_usernameLabel, 1, 0);
     m_inputLayout->addWidget(m_usernameEdit, 1, 1);
     m_inputLayout->addWidget(m_passwordLabel, 2, 0);
     m_inputLayout->addWidget(m_passwordEdit, 2, 1);
-    m_inputLayout->addWidget(m_rememberCheck, 3, 1);
+    // m_inputLayout->addWidget(m_rememberCheck, 3, 1);
     
     // 按钮区域
     m_buttonFrame = new QFrame;
@@ -113,6 +124,7 @@ void LoginDialog::setupUI()
     
     m_loginButton = new QPushButton("登 录");
     m_loginButton->setObjectName("loginButton");
+    m_loginButton->setFixedHeight(50);
     m_loginButton->setEnabled(false);
     connect(m_loginButton, &QPushButton::clicked, this, &LoginDialog::onLoginClicked);
     
@@ -140,11 +152,21 @@ void LoginDialog::setupUI()
     m_messageLabel->setWordWrap(true);
     m_messageLabel->hide();
     
+    // 创建一个横向布局
+    QHBoxLayout *hLayout = new QHBoxLayout;
+    // 添加左侧弹簧
+    hLayout->addSpacerItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    // 添加标签
+    hLayout->addWidget(m_logoLabel);
+    // 添加右侧弹簧
+    hLayout->addSpacerItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
+
     // 组装布局
-    m_frameLayout->addWidget(m_logoLabel);
+    // m_frameLayout->addWidget(m_logoLabel);
+    m_frameLayout->addLayout(hLayout);
     m_frameLayout->addWidget(m_titleLabel);
-    m_frameLayout->addWidget(m_subtitleLabel);
-    m_frameLayout->addSpacing(10);
+    // m_frameLayout->addWidget(m_subtitleLabel);
+    // m_frameLayout->addSpacing(10);
     m_frameLayout->addWidget(m_inputFrame);
     m_frameLayout->addWidget(m_buttonFrame);
     m_frameLayout->addWidget(m_messageLabel);

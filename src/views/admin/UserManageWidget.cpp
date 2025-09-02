@@ -135,32 +135,32 @@ void UserManageWidget::setupUI()
     connect(m_userTable, &QTableWidget::itemSelectionChanged, 
             this, &UserManageWidget::onUserSelectionChanged);
     
-    // 应用表格样式
-    // m_userTable->setStyleSheet(R"(
-    //     QTableWidget {
-    //         border: 1px solid #dee2e6;
-    //         border-radius: 8px;
-    //         background-color: white;
-    //         gridline-color: #f1f3f4;
-    //         selection-background-color: #e3f2fd;
-    //     }
-    //     QTableWidget::item {
-    //         padding: 12px 8px;
-    //         border-bottom: 1px solid #f1f3f4;
-    //     }
-    //     QTableWidget::item:selected {
-    //         background-color: #2196f3;
-    //         color: white;
-    //     }
-    //     QHeaderView::section {
-    //         background-color: #f8f9fa;
-    //         border: none;
-    //         border-bottom: 2px solid #dee2e6;
-    //         padding: 10px 8px;
-    //         font-weight: bold;
-    //         color: #495057;
-    //     }
-    // )");
+    //应用表格样式
+    m_userTable->setStyleSheet(R"(
+        QTableWidget {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            background-color: white;
+            gridline-color: #f1f3f4;
+            selection-background-color: #e3f2fd;
+        }
+        QTableWidget::item {
+            padding: 12px 8px;
+            border-bottom: 1px solid #f1f3f4;
+        }
+        QTableWidget::item:selected {           //
+            background-color: #2196f3;
+            color: white;
+        }
+        QHeaderView::section {
+            background-color: #f8f9fa;
+            border: none;
+            border-bottom: 2px solid #dee2e6;
+            padding: 10px 8px;
+            font-weight: bold;
+            color: #495057;
+        }
+    )");
 
     m_userTable->setStyleSheet(R"(
     QTableWidget {
@@ -232,17 +232,17 @@ void UserManageWidget::loadUsers()
     
     // 添加示例数据
     QStringList sampleUsers = {
-        "001|艾希|访客|活跃|2025-06-19 14:30",
-        "002|亚瑟|访客|活跃|2025-06-19 13:45",
-        "003|亏桑提|客服|活跃|2025-06-19 15:20",
-        "004|夏侯惇|客服|活跃|2025-06-19 12:10",
-        "005|司马昭|管理员|活跃|2025-06-19 16:00",
-        "006|孙思邈|访客|活跃|2025-06-19 09:30",
-        "007|扁鹊|访客|活跃|2025-06-19 09:30",
-        "008|艾克|访客|活跃|2025-06-19 09:30",
-        "009|安妮|访客|活跃|2025-06-19 09:30",
-        "010|塞纳|访客|活跃|2025-06-19 09:30",
-        "011|卢锡安|访客|活跃|2025-06-19 09:30"
+        "001|otto|访客|活跃|2025-06-19 14:30",
+        "002|尼采|访客|活跃|2025-06-19 13:45",
+        "003|爱音|客服|活跃|2025-06-19 15:20",
+        "004|查拉图斯特拉|客服|活跃|2025-06-19 12:10",
+        "005|叔本华|管理员|活跃|2025-06-19 16:00",
+        "006|血狼破军|访客|活跃|2025-06-19 09:30",
+        "007|苍蓝礼悼|访客|活跃|2025-06-19 09:30",
+        "008|小缘|访客|活跃|2025-06-19 09:30",
+        "009|迪亚|访客|活跃|2025-06-19 09:30",
+        "010|hanser|访客|活跃|2025-09-04 06:30",
+        "011|温|访客|活跃|2025-09-04 07:30"
 
     };
     

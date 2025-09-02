@@ -57,21 +57,21 @@ void KnowledgeBaseWidget::loadKnowledgeBase()
 {
     // 添加示例知识分类
     QTreeWidgetItem* appointment = new QTreeWidgetItem(m_categoryTree);
-    appointment->setText(0, "挂号相关");
+    appointment->setText(0, "面试相关");
     
     QTreeWidgetItem* appointmentFlow = new QTreeWidgetItem(appointment);
-    appointmentFlow->setText(0, "挂号流程");
+    appointmentFlow->setText(0, "面试流程");
     
     QTreeWidgetItem* appointmentTime = new QTreeWidgetItem(appointment);
-    appointmentTime->setText(0, "挂号时间");
+    appointmentTime->setText(0, "面试时间");
     
-    QTreeWidgetItem* medical = new QTreeWidgetItem(m_categoryTree);
-    medical->setText(0, "就医指南");
+    QTreeWidgetItem* tutorial = new QTreeWidgetItem(m_categoryTree);
+    tutorial->setText(0, "面试指南");
     
-    QTreeWidgetItem* department = new QTreeWidgetItem(medical);
+    QTreeWidgetItem* department = new QTreeWidgetItem(tutorial);
     department->setText(0, "部门介绍");
     
-    QTreeWidgetItem* examination = new QTreeWidgetItem(medical);
+    QTreeWidgetItem* examination = new QTreeWidgetItem(tutorial);
     examination->setText(0, "检查项目");
     
     m_categoryTree->expandAll();

@@ -9,7 +9,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Widgets Charts Sql Network)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets Charts Sql Network Multimedia MultimediaWidgets)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -88,6 +88,8 @@ qt_add_executable(Cyanla
     src/views/visitor/AppointmentWidget.cpp src/views/visitor/AppointmentWidget.h src/views/visitor/ChatWidget.cpp src/views/visitor/ChatWidget.h src/views/visitor/FAQWidget.cpp src/views/visitor/FAQWidget.h src/views/visitor/MapWidget.cpp src/views/visitor/MapWidget.h src/views/visitor/RealChatWidget.cpp src/views/visitor/RealChatWidget.h src/views/visitor/VisitorMainWidget.cpp src/views/visitor/VisitorMainWidget.h src/views/visitor/VisitorWindow.cpp src/views/visitor/VisitorWindow.h
     mainwindow.ui
     pic.qrc
+    VideoPlayerDialog.h
+    VideoPlayerDialog.cpp
 
 )
 set_source_files_properties(
@@ -95,7 +97,8 @@ set_source_files_properties(
     PROPERTIES
     SKIP_AUTOMOC TRUE
 )
-target_link_libraries(Cyanla PRIVATE Qt6::Core Qt6::Widgets Qt6::Charts Qt6::Sql Qt6::Network)
+target_link_libraries(Cyanla PRIVATE Qt6::Core Qt6::Widgets Qt6::Charts Qt6::Sql Qt6::Network Qt6::Multimedia
+    Qt6::MultimediaWidgets)
 
 set_target_properties(Cyanla PROPERTIES
     MACOSX_BUNDLE TRUE

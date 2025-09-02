@@ -31,13 +31,13 @@ void AdminMainWidget::setupUI()
     
     // 添加选项卡
     m_tabWidget->addTab(m_userManageWidget, "用户管理");
-    m_tabWidget->addTab(m_statsWidget, "高频问题统计");
-    // m_tabWidget->addTab(m_systemStatsWidget, "📊 系统统计");
-    // m_tabWidget->addTab(m_systemConfigWidget, "⚙️ 系统配置");
+    // m_tabWidget->addTab(m_statsWidget, "高频问题统计");
+    m_tabWidget->addTab(m_systemStatsWidget, "📊 系统统计");
+    m_tabWidget->addTab(m_systemConfigWidget, "⚙️ 系统配置");
     //modify
     m_tabWidget->addTab(m_systemConfigWidget, "部门管理");
     //modify
-    // m_tabWidget->addTab(m_auditLogWidget, "审计日志");
+    m_tabWidget->addTab(m_auditLogWidget, "审计日志");
     
     m_mainLayout->addWidget(m_tabWidget);
 

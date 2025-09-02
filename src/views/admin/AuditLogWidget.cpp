@@ -192,11 +192,11 @@ void AuditLogWidget::loadOperationLogs()
     
     // 添加示例数据
     QStringList sampleLogs = {
-        "2024-01-15 14:30:25|admin|用户登录|成功|192.168.1.100",
-        "2024-01-15 14:25:10|visitor001|查看FAQ|成功|192.168.1.101",
-        "2024-01-15 14:20:55|staff002|处理聊天|成功|192.168.1.102",
-        "2024-01-15 14:15:30|admin|修改配置|成功|192.168.1.100",
-        "2024-01-15 14:10:15|visitor003|发起聊天|成功|192.168.1.103"
+        "2025-08-15 14:30:25|admin|用户登录|成功|192.168.1.100",
+        "2025-08-25 17:25:10|otto|查看FAQ|成功|192.168.1.100",
+        "2025-08-27 11:20:55|staff001|处理聊天|成功|192.168.1.100",
+        "2025-09-02 12:15:30|admin|修改配置|成功|192.168.1.100",
+        "2025-09-03 14:10:15|hanser|发起聊天|成功|192.168.1.100"
     };
     
     m_operationTable->setRowCount(sampleLogs.size());
@@ -226,20 +226,20 @@ void AuditLogWidget::loadChatLogs()
 {
     // 加载聊天日志的示例实现
     m_chatTable->setRowCount(3);
-    m_chatTable->setItem(0, 0, new QTableWidgetItem("2024-01-15 14:30"));
-    m_chatTable->setItem(0, 1, new QTableWidgetItem("访客001"));
+    m_chatTable->setItem(0, 0, new QTableWidgetItem("2025-08-27 11:24:55"));
+    m_chatTable->setItem(0, 1, new QTableWidgetItem("otto"));
     m_chatTable->setItem(0, 2, new QTableWidgetItem("AI客服"));
-    m_chatTable->setItem(0, 3, new QTableWidgetItem("咨询挂号流程..."));
+    m_chatTable->setItem(0, 3, new QTableWidgetItem("咨询EGO申请流程..."));
     
-    m_chatTable->setItem(1, 0, new QTableWidgetItem("2024-01-15 14:25"));
-    m_chatTable->setItem(1, 1, new QTableWidgetItem("访客002"));
-    m_chatTable->setItem(1, 2, new QTableWidgetItem("客服001"));
-    m_chatTable->setItem(1, 3, new QTableWidgetItem("询问检查结果..."));
+    m_chatTable->setItem(1, 0, new QTableWidgetItem("2025-09-02 12:15:30"));
+    m_chatTable->setItem(1, 1, new QTableWidgetItem("hanser"));
+    m_chatTable->setItem(1, 2, new QTableWidgetItem("客服小祥"));
+    m_chatTable->setItem(1, 3, new QTableWidgetItem("询问录取结果..."));
     
-    m_chatTable->setItem(2, 0, new QTableWidgetItem("2024-01-15 14:20"));
-    m_chatTable->setItem(2, 1, new QTableWidgetItem("访客003"));
+    m_chatTable->setItem(2, 0, new QTableWidgetItem("2025-09-03 14:10:15"));
+    m_chatTable->setItem(2, 1, new QTableWidgetItem("hanser"));
     m_chatTable->setItem(2, 2, new QTableWidgetItem("AI客服"));
-    m_chatTable->setItem(2, 3, new QTableWidgetItem("药品使用说明..."));
+    m_chatTable->setItem(2, 3, new QTableWidgetItem("脑啡肽使用说明..."));
     
     m_chatTable->horizontalHeader()->setStretchLastSection(true);
     m_chatTable->setAlternatingRowColors(true);

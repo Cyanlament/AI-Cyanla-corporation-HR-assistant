@@ -1,5 +1,5 @@
-#ifndef PATIENTWINDOW_H
-#define PATIENTWINDOW_H
+#ifndef VISITORWINDOW_H
+#define VISITORWINDOW_H
 
 #include "../common/BaseWindow.h"
 
@@ -31,4 +31,4 @@ private:
     MapWidget* m_mapWidget;
 };
 
-#endif // PATIENTWINDOW_H 
+#endif // VISITORWINDOW_H

@@ -1,5 +1,5 @@
-#ifndef PATIENTMAINWIDGET_H
-#define PATIENTMAINWIDGET_H
+#ifndef VISITORMAINWIDGET_H
+#define VISITORMAINWIDGET_H
 
 #include <QWidget>
 #include <QVBoxLayout>
@@ -38,4 +38,4 @@ private:
     UserInfo m_currentUser;
 };
 
-#endif // PATIENTMAINWIDGET_H 
+#endif // VISITORMAINWIDGET_H

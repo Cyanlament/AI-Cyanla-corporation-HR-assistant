@@ -191,17 +191,17 @@ void SystemConfigWidget::setupFAQTab()
     
     // 添加示例数据
     m_faqTable->setRowCount(3);
-    m_faqTable->setItem(0, 0, new QTableWidgetItem("如何挂号？"));
-    m_faqTable->setItem(0, 1, new QTableWidgetItem("您可以通过网上预约或现场挂号"));
-    m_faqTable->setItem(0, 2, new QTableWidgetItem("挂号"));
+    m_faqTable->setItem(0, 0, new QTableWidgetItem("如何预约面试？"));
+    m_faqTable->setItem(0, 1, new QTableWidgetItem("您可以通过访客界面预约面试"));
+    m_faqTable->setItem(0, 2, new QTableWidgetItem("面试"));
     
-    m_faqTable->setItem(1, 0, new QTableWidgetItem("门诊时间是什么？"));
-    m_faqTable->setItem(1, 1, new QTableWidgetItem("门诊时间：周一至周日 8:00-17:00"));
-    m_faqTable->setItem(1, 2, new QTableWidgetItem("门诊"));
+    m_faqTable->setItem(1, 0, new QTableWidgetItem("客服工作时间是什么？"));
+    m_faqTable->setItem(1, 1, new QTableWidgetItem("客服工作时间：周一至周日 6:00-23:00"));
+    m_faqTable->setItem(1, 2, new QTableWidgetItem("客服"));
     
-    m_faqTable->setItem(2, 0, new QTableWidgetItem("如何查看检查结果？"));
-    m_faqTable->setItem(2, 1, new QTableWidgetItem("可通过手机APP或网站查询"));
-    m_faqTable->setItem(2, 2, new QTableWidgetItem("检查"));
+    m_faqTable->setItem(2, 0, new QTableWidgetItem("如何查看录取结果？"));
+    m_faqTable->setItem(2, 1, new QTableWidgetItem("可通过手机APP或公司官网查询"));
+    m_faqTable->setItem(2, 2, new QTableWidgetItem("录取"));
     
     m_faqTable->horizontalHeader()->setStretchLastSection(true);
     layout->addWidget(m_faqTable);
@@ -234,7 +234,7 @@ void SystemConfigWidget::setupDepartmentTab()
     m_nameEdit->setMinimumWidth(80);
 
     m_descriptionEdit = new QLineEdit;
-    m_descriptionEdit->setPlaceholderText("请输入部门部门描述");
+    m_descriptionEdit->setPlaceholderText("请输入部门描述");
     m_descriptionEdit->setObjectName("m_descriptionEdit");
     m_descriptionEdit->setMinimumWidth(80);
 
@@ -257,7 +257,7 @@ void SystemConfigWidget::setupDepartmentTab()
     // 部门表格
     m_departmentTable = new QTableWidget;
     m_departmentTable->setColumnCount(5);
-    QStringList headers = {"部门名称", "位置", "电话", "描述","医生"};
+    QStringList headers = {"部门名称", "位置", "电话", "描述","部长"};
     m_departmentTable->setHorizontalHeaderLabels(headers);
     
     // 添加示例数据
@@ -265,63 +265,63 @@ void SystemConfigWidget::setupDepartmentTab()
     m_departmentTable->setItem(0, 0, new QTableWidgetItem("控制部"));
     m_departmentTable->setItem(0, 1, new QTableWidgetItem("101"));
     m_departmentTable->setItem(0, 2, new QTableWidgetItem("010-12345678"));
-    m_departmentTable->setItem(0, 3, new QTableWidgetItem("控制部疾病诊疗"));
-    m_departmentTable->setItem(0, 4, new QTableWidgetItem("张中"));
+    m_departmentTable->setItem(0, 3, new QTableWidgetItem("控制部最强大脑"));
+    m_departmentTable->setItem(0, 4, new QTableWidgetItem("Malkuth"));
     
-    m_departmentTable->setItem(1, 0, new QTableWidgetItem("福利部"));
+    m_departmentTable->setItem(1, 0, new QTableWidgetItem("情报部"));
     m_departmentTable->setItem(1, 1, new QTableWidgetItem("102"));
     m_departmentTable->setItem(1, 2, new QTableWidgetItem("010-12121212"));
-    m_departmentTable->setItem(1, 3, new QTableWidgetItem("福利部手术治疗"));
-    m_departmentTable->setItem(1, 4, new QTableWidgetItem("张好"));
+    m_departmentTable->setItem(1, 3, new QTableWidgetItem("情报部毒蛇"));
+    m_departmentTable->setItem(1, 4, new QTableWidgetItem("Yesod"));
     
     m_departmentTable->setItem(2, 0, new QTableWidgetItem("培训部"));
     m_departmentTable->setItem(2, 1, new QTableWidgetItem("103"));
     m_departmentTable->setItem(2, 2, new QTableWidgetItem("010-11223344"));
-    m_departmentTable->setItem(2, 3, new QTableWidgetItem("儿童疾病诊疗"));
-    m_departmentTable->setItem(2, 4, new QTableWidgetItem("张帅"));
+    m_departmentTable->setItem(2, 3, new QTableWidgetItem("AAA培训部不提供脑啡肽"));
+    m_departmentTable->setItem(2, 4, new QTableWidgetItem("Hod"));
 
 
-    m_departmentTable->setItem(3, 0, new QTableWidgetItem("肛肠科"));
+    m_departmentTable->setItem(3, 0, new QTableWidgetItem("安保部"));
     m_departmentTable->setItem(3, 1, new QTableWidgetItem("104"));
     m_departmentTable->setItem(3, 2, new QTableWidgetItem("010-11223994"));
-    m_departmentTable->setItem(3, 3, new QTableWidgetItem("肛肠疾病诊疗"));
-    m_departmentTable->setItem(3, 4, new QTableWidgetItem("张飞"));
+    m_departmentTable->setItem(3, 3, new QTableWidgetItem("安保部酒鬼"));
+    m_departmentTable->setItem(3, 4, new QTableWidgetItem("Netzach"));
 
-    m_departmentTable->setItem(4, 0, new QTableWidgetItem("妇产科"));
-    m_departmentTable->setItem(4, 1, new QTableWidgetItem("201"));
+    m_departmentTable->setItem(4, 0, new QTableWidgetItem("中央本部"));
+    m_departmentTable->setItem(4, 1, new QTableWidgetItem("105"));
     m_departmentTable->setItem(4, 2, new QTableWidgetItem("010-112883344"));
-    m_departmentTable->setItem(4, 3, new QTableWidgetItem("妇产疾病诊疗"));
-    m_departmentTable->setItem(4, 4, new QTableWidgetItem("赵云"));
+    m_departmentTable->setItem(4, 3, new QTableWidgetItem("中本暴力小朋友"));
+    m_departmentTable->setItem(4, 4, new QTableWidgetItem("TipherethA"));
 
-    m_departmentTable->setItem(5, 0, new QTableWidgetItem("耳鼻喉科"));
-    m_departmentTable->setItem(5, 1, new QTableWidgetItem("203"));
+    m_departmentTable->setItem(5, 0, new QTableWidgetItem("惩戒部"));
+    m_departmentTable->setItem(5, 1, new QTableWidgetItem("106"));
     m_departmentTable->setItem(5, 2, new QTableWidgetItem("010-112663344"));
-    m_departmentTable->setItem(5, 3, new QTableWidgetItem("耳鼻喉疾病诊疗"));
-    m_departmentTable->setItem(5, 4, new QTableWidgetItem("关羽"));
+    m_departmentTable->setItem(5, 3, new QTableWidgetItem("惩戒部最强之人"));
+    m_departmentTable->setItem(5, 4, new QTableWidgetItem("Geburah"));
 
-    m_departmentTable->setItem(6, 0, new QTableWidgetItem("放射科"));
-    m_departmentTable->setItem(6, 1, new QTableWidgetItem("204"));
+    m_departmentTable->setItem(6, 0, new QTableWidgetItem("福利部"));
+    m_departmentTable->setItem(6, 1, new QTableWidgetItem("107"));
     m_departmentTable->setItem(6, 2, new QTableWidgetItem("010-11222344"));
-    m_departmentTable->setItem(6, 3, new QTableWidgetItem("拍CT"));
-    m_departmentTable->setItem(6, 4, new QTableWidgetItem("刘备"));
+    m_departmentTable->setItem(6, 3, new QTableWidgetItem("福利部咖啡杯"));
+    m_departmentTable->setItem(6, 4, new QTableWidgetItem("Chesed"));
 
-    m_departmentTable->setItem(7, 0, new QTableWidgetItem("化验科"));
-    m_departmentTable->setItem(7, 1, new QTableWidgetItem("205"));
+    m_departmentTable->setItem(7, 0, new QTableWidgetItem("记录部"));
+    m_departmentTable->setItem(7, 1, new QTableWidgetItem("108"));
     m_departmentTable->setItem(7, 2, new QTableWidgetItem("010-11223344"));
-    m_departmentTable->setItem(7, 3, new QTableWidgetItem("采血化验"));
-    m_departmentTable->setItem(7, 4, new QTableWidgetItem("曹操"));
+    m_departmentTable->setItem(7, 3, new QTableWidgetItem("记录部哨兵"));
+    m_departmentTable->setItem(7, 4, new QTableWidgetItem("Hokma"));
 
-    m_departmentTable->setItem(8, 0, new QTableWidgetItem("消化科"));
-    m_departmentTable->setItem(8, 1, new QTableWidgetItem("206"));
+    m_departmentTable->setItem(8, 0, new QTableWidgetItem("研发部"));
+    m_departmentTable->setItem(8, 1, new QTableWidgetItem("109"));
     m_departmentTable->setItem(8, 2, new QTableWidgetItem("010-1124444"));
-    m_departmentTable->setItem(8, 3, new QTableWidgetItem("消化疾病诊疗"));
-    m_departmentTable->setItem(8, 4, new QTableWidgetItem("盖伦"));
+    m_departmentTable->setItem(8, 3, new QTableWidgetItem("研发部红茶批发商"));
+    m_departmentTable->setItem(8, 4, new QTableWidgetItem("Binah"));
 
-    m_departmentTable->setItem(9, 0, new QTableWidgetItem("泌尿科"));
-    m_departmentTable->setItem(9, 1, new QTableWidgetItem("301"));
+    m_departmentTable->setItem(9, 0, new QTableWidgetItem("构筑部"));
+    m_departmentTable->setItem(9, 1, new QTableWidgetItem("110"));
     m_departmentTable->setItem(9, 2, new QTableWidgetItem("010-11333344"));
-    m_departmentTable->setItem(9, 3, new QTableWidgetItem("泌尿疾病诊疗"));
-    m_departmentTable->setItem(9, 4, new QTableWidgetItem("安其拉"));
+    m_departmentTable->setItem(9, 3, new QTableWidgetItem("纯真的...自我..."));
+    m_departmentTable->setItem(9, 4, new QTableWidgetItem("Keter"));
 
 
 
@@ -478,7 +478,7 @@ FAQEditDialog::FAQEditDialog(QWidget *parent)
     // 分类选择
     QLabel* categoryLabel = new QLabel("分类:");
     m_comboCategory = new QComboBox;
-    m_comboCategory->addItems({"挂号", "门诊", "检查", "其他"});
+    m_comboCategory->addItems({"面试", "录取", "福利", "其他"});
     
     // 按钮
     QHBoxLayout* buttonLayout = new QHBoxLayout;

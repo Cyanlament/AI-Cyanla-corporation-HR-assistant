@@ -88,7 +88,7 @@ void ManualChatWidget::setupUI()
 
 void ManualChatWidget::loadUsers()
 {
-    QStringList users = {"张三 - 预约问题", "李四 - 医保咨询", "王五 - 检查结果"};
+    QStringList users = {"hanser - 面试预约", "otto - 福利咨询", "血狼破军 - 停职结果"};
     for (const QString& user : users) {
         QListWidgetItem* item = new QListWidgetItem("🔴 " + user);
         m_userList->addItem(item);

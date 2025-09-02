@@ -10,7 +10,7 @@ StaffMainWidget::StaffMainWidget(QWidget *parent)
 void StaffMainWidget::setCurrentUser(const UserInfo& user)
 {
     m_currentUser = user;
-    
+
     // 更新聊天管理器的用户信息
     if (m_chatManager) {
         m_chatManager->setCurrentUser(user);
@@ -47,9 +47,9 @@ void StaffMainWidget::setupUI()
     m_tabWidget->addTab(m_chatManager, "客服聊天");
 
     //modify
-    // m_tabWidget->addTab(m_consultationWidget, "咨询管理");
+    m_tabWidget->addTab(m_consultationWidget, "咨询管理");
     m_tabWidget->addTab(m_statsWidget, "高频问题统计");
-    // m_tabWidget->addTab(m_knowledgeBaseWidget, "知识库");
+    m_tabWidget->addTab(m_knowledgeBaseWidget, "知识库");
     
     m_mainLayout->addWidget(m_tabWidget);
      // m_tabWidget->tabBar()->hide();

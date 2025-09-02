@@ -146,10 +146,10 @@ void SystemStatsWidget::setupOverviewTab()
     };
     
     // 第一行统计卡片
-    QGroupBox* usersCard = createStatsCard("总用户数", "1,247", "👥");
-    QGroupBox* activeCard = createStatsCard("活跃用户", "892", "✅");
-    QGroupBox* chatsCard = createStatsCard("总对话数", "5,431", "💬");
-    QGroupBox* responseCard = createStatsCard("平均响应时间", "2.3秒", "⚡");
+    QGroupBox* usersCard = createStatsCard("总用户数", "13", "👥");
+    QGroupBox* activeCard = createStatsCard("活跃用户", "9", "✅");
+    QGroupBox* chatsCard = createStatsCard("总对话数", "799", "💬");
+    QGroupBox* responseCard = createStatsCard("平均响应时间", "3.25秒", "⚡");
     
     m_overviewLayout->addWidget(usersCard, 0, 0);
     m_overviewLayout->addWidget(activeCard, 0, 1);
@@ -164,13 +164,13 @@ void SystemStatsWidget::setupOverviewTab()
     QLabel* loadLabel = new QLabel("CPU使用率:");
     m_systemLoad = new QProgressBar;
     m_systemLoad->setRange(0, 100);
-    m_systemLoad->setValue(35);
+    m_systemLoad->setValue(25);
     m_systemLoad->setFormat("%p%");
     
     QLabel* memoryLabel = new QLabel("内存使用率:");
     m_memoryUsage = new QProgressBar;
     m_memoryUsage->setRange(0, 100);
-    m_memoryUsage->setValue(68);
+    m_memoryUsage->setValue(48);
     m_memoryUsage->setFormat("%p%");
     
     // 设置进度条样式
@@ -208,9 +208,9 @@ void SystemStatsWidget::setupUserStatsTab()
     QChart* chart = new QChart();
     QPieSeries* series = new QPieSeries();
     
-    series->append("访客", 70.5);
-    series->append("客服", 25.2);
-    series->append("管理员", 4.3);
+    series->append("访客", 61.5);
+    series->append("客服", 23.2);
+    series->append("管理员", 15.3);
     
     // 设置饼图样式
     QPieSlice* visitorSlice = series->slices().at(0);
@@ -240,19 +240,19 @@ void SystemStatsWidget::setupUserStatsTab()
     
     m_userStatsTable->setRowCount(3);
     m_userStatsTable->setItem(0, 0, new QTableWidgetItem("访客"));
-    m_userStatsTable->setItem(0, 1, new QTableWidgetItem("879"));
-    m_userStatsTable->setItem(0, 2, new QTableWidgetItem("623"));
-    m_userStatsTable->setItem(0, 3, new QTableWidgetItem("70.5%"));
+    m_userStatsTable->setItem(0, 1, new QTableWidgetItem("8"));
+    m_userStatsTable->setItem(0, 2, new QTableWidgetItem("6"));
+    m_userStatsTable->setItem(0, 3, new QTableWidgetItem("61.5%"));
     
     m_userStatsTable->setItem(1, 0, new QTableWidgetItem("客服"));
-    m_userStatsTable->setItem(1, 1, new QTableWidgetItem("314"));
-    m_userStatsTable->setItem(1, 2, new QTableWidgetItem("241"));
-    m_userStatsTable->setItem(1, 3, new QTableWidgetItem("25.2%"));
+    m_userStatsTable->setItem(1, 1, new QTableWidgetItem("3"));
+    m_userStatsTable->setItem(1, 2, new QTableWidgetItem("2"));
+    m_userStatsTable->setItem(1, 3, new QTableWidgetItem("23.2%"));
     
     m_userStatsTable->setItem(2, 0, new QTableWidgetItem("管理员"));
-    m_userStatsTable->setItem(2, 1, new QTableWidgetItem("54"));
-    m_userStatsTable->setItem(2, 2, new QTableWidgetItem("28"));
-    m_userStatsTable->setItem(2, 3, new QTableWidgetItem("4.3%"));
+    m_userStatsTable->setItem(2, 1, new QTableWidgetItem("2"));
+    m_userStatsTable->setItem(2, 2, new QTableWidgetItem("1"));
+    m_userStatsTable->setItem(2, 3, new QTableWidgetItem("15.3%"));
     
     m_userStatsTable->horizontalHeader()->setStretchLastSection(true);
     m_userStatsTable->setAlternatingRowColors(true);
@@ -307,11 +307,11 @@ void SystemStatsWidget::setupSystemStatsTab()
     QGridLayout* resourceLayout = new QGridLayout(m_resourceGroup);
     
     QLabel* osLabel = new QLabel("操作系统:");
-    QLabel* osValue = new QLabel("macOS 14.5.0");
+    QLabel* osValue = new QLabel("windows 11");
     QLabel* qtLabel = new QLabel("Qt版本:");
     QLabel* qtValue = new QLabel(QT_VERSION_STR);
     QLabel* uptimeLabel = new QLabel("运行时间:");
-    QLabel* uptimeValue = new QLabel("7天 3小时 25分钟");
+    QLabel* uptimeValue = new QLabel("20天 3小时 25分钟");
     
     resourceLayout->addWidget(osLabel, 0, 0);
     resourceLayout->addWidget(osValue, 0, 1);
@@ -430,10 +430,10 @@ void SystemStatsWidget::onExportReport()
             
             // 写入概览数据
             out << "概览统计\n";
-            out << "总用户数,1247\n";
-            out << "活跃用户,892\n";
-            out << "总对话数,5431\n";
-            out << "平均响应时间,2.3秒\n\n";
+            out << "总用户数,13\n";
+            out << "活跃用户,9\n";
+            out << "总对话数,799\n";
+            out << "平均响应时间,3.25秒\n\n";
             
             QMessageBox::information(this, "导出成功", 
                                    QString("统计报表已导出到:\n%1").arg(fileName));

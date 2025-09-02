@@ -157,13 +157,13 @@ void AdminWindow::onMaintenanceClicked()
 void AdminWindow::onSystemInfoClicked()
 {
     QString systemInfo = QString(
-        "🏥 公司智慧客服系统\n\n"
+        "青蓝公司智慧客服系统\n\n"
         "版本: 1.0.0\n"
         "构建时间: %1\n"
         "Qt版本: %2\n"
         "操作系统: %3\n\n"
-        "开发团队: 公司信息科\n"
-        "技术支持: support@company.com"
+        "开发团队: 公司福利部\n"
+        "技术支持: cyla@company.com"
     ).arg(__DATE__ " " __TIME__)
      .arg(QT_VERSION_STR)
      .arg(QSysInfo::prettyProductName());

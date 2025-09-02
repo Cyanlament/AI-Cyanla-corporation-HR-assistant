@@ -298,15 +298,20 @@ void StatsWidget::loadMockData()
     QSqlQuery checkQuery(m_database);
     checkQuery.exec("SELECT COUNT(*) FROM question_records");
     if (checkQuery.next() && checkQuery.value(0).toInt() > 0) {
-        return; // 已有数据，不需要重复插入
+        QSqlQuery clearQuery(m_database);
+        if (!clearQuery.exec("DELETE FROM question_records")) {
+            qWarning() << "Failed to clear table:" << clearQuery.lastError().text();
+            return;
+        }
+        qDebug() << "Existing data cleared from question_records table";
     }
     
     // 生成模拟的高频问题数据
     QStringList mockQuestions = {
-        "如何预约住院？", "医保卡如何使用？", "住院费用是多少？", "如何修改住院日期？", "检查部门在哪？", "公司的停车收费标准是什么？", "门诊开诊时间是几点？", "挂号需要带什么资料？", "可以使用支付宝支付吗？", "如何获取检查报告？", "药品领取在哪里？", "急诊就诊需要排队吗？", "住院病房在哪里？", "探视规定是什么？", "医保报销的流程是什么？", "如何申请出院证明？", "公司体检项目有哪些？", "化验结果如何解读？", "手术的具体费用包括哪些？", "康复科的治疗项目有哪些？", "儿童门诊在几楼？", "妇科的门诊时间是什么时候？", "如何挂眼科的专家号？", "皮肤科治疗哪些皮肤病？", "中医科的针灸治疗有哪些功效？", "骨科手术后的恢复需要多长时间？", "心血管检查项目包括哪些？", "神经控制部可以治疗头痛吗？"
+        "丰川祥子是什么杯？", "小祥听说你认识明星若叶睦，能给我引荐一下吗？", "大祥你的三技能是打单？？", "丰川祥子你DPS多少？", "惩戒部在哪？", "听说情报部的队长和构筑部的副队长是色彩？真的？？", "抽卡开门时间是几点？", "血狼破军为什么退出黑蓑？", "涛哥是滚木吗？为什么查不到信息？", "如何获取体检报告？", "脑啡肽领取在哪里？上回真是溜爽了", "楼上疯了？毒品都磕", "我的ALEPHEGO在哪里？", "丰川祥子为什么退出crychic？", "医保报销的流程是什么？", "如何申请超大杯证明？", "公司体检项目有哪些？", "同事尸体化验结果如何解读？", "安保部手术的具体费用包括哪些？", "堂吉诃德说话为什么这么唐？", "项目四？", "五级员工具体属性为多少？", "如何保养EGO？", "妮妮的发型是怎么理的？", "怎么离职？", "义体手术后的恢复需要多长时间？", "血狼破军怎么死了？", "为什么要演奏春日影？"
     };
     
-    QStringList categories = {"挂号预约", "就诊咨询", "医保问题", "部门导航", "其他问题"};
+    QStringList categories = {"面试预约", "入职咨询", "公司问题", "部门导航", "其他问题"};
     
     QSqlQuery query(m_database);
     query.prepare("INSERT INTO question_records (user_id, question, keywords, category, timestamp) "
@@ -314,7 +319,7 @@ void StatsWidget::loadMockData()
     
     // 生成随机时间和频次
     QDateTime baseTime = QDateTime::currentDateTime().addDays(-30);
-    
+
     for (int i = 0; i < 1000; ++i) {
         // 某些问题出现频率更高
         QString question;

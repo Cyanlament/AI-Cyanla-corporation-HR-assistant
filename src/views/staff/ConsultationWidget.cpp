@@ -15,9 +15,9 @@ void ConsultationWidget::setupUI()
     // 聊天列表
     m_chatList = new QListWidget;
     m_chatList->setMaximumWidth(250);
-    m_chatList->addItem("访客001 - 咨询挂号");
-    m_chatList->addItem("访客002 - 检查报告");
-    m_chatList->addItem("访客003 - 用药咨询");
+    m_chatList->addItem("hanser - 咨询面试");
+    m_chatList->addItem("yousa - 录取报告");
+    m_chatList->addItem("血狼破军 - 离职请求");
     
     // 聊天区域
     m_chatArea = new QWidget;

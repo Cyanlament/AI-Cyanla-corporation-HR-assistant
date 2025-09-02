@@ -2,5 +2,8 @@
     <qresource prefix="/">
         <file>map.png</file>
         <file>logo.png</file>
+        <file>depart.png</file>
+        <file>net.png</file>
+        <file>Yesod.png</file>
     </qresource>
 </RCC>
