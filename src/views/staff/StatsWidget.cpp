@@ -278,7 +278,7 @@ void StatsWidget::initDatabase()
         return;
     }
     
-    // 创建表结构（模拟）
+    // 创建表结构
     QSqlQuery query(m_database);
     query.exec("CREATE TABLE IF NOT EXISTS question_records ("
               "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -298,15 +298,15 @@ void StatsWidget::loadMockData()
     QSqlQuery checkQuery(m_database);
     checkQuery.exec("SELECT COUNT(*) FROM question_records");
     if (checkQuery.next() && checkQuery.value(0).toInt() > 0) {
-        QSqlQuery clearQuery(m_database);
-        if (!clearQuery.exec("DELETE FROM question_records")) {
-            qWarning() << "Failed to clear table:" << clearQuery.lastError().text();
-            return;
-        }
-        qDebug() << "Existing data cleared from question_records table";
+        // QSqlQuery clearQuery(m_database);
+        // if (!clearQuery.exec("DELETE FROM question_records")) {
+        //     qWarning() << "Failed to clear table:" << clearQuery.lastError().text();
+        //     return;
+        // }
+        // qDebug() << "Existing data cleared from question_records table";
     }
     
-    // 生成模拟的高频问题数据
+
     QStringList mockQuestions = {
         "丰川祥子是什么杯？", "小祥听说你认识明星若叶睦，能给我引荐一下吗？", "大祥你的三技能是打单？？", "丰川祥子你DPS多少？", "惩戒部在哪？", "听说情报部的队长和构筑部的副队长是色彩？真的？？", "抽卡开门时间是几点？", "血狼破军为什么退出黑蓑？", "涛哥是滚木吗？为什么查不到信息？", "如何获取体检报告？", "脑啡肽领取在哪里？上回真是溜爽了", "楼上疯了？毒品都磕", "我的ALEPHEGO在哪里？", "丰川祥子为什么退出crychic？", "医保报销的流程是什么？", "如何申请超大杯证明？", "公司体检项目有哪些？", "同事尸体化验结果如何解读？", "安保部手术的具体费用包括哪些？", "堂吉诃德说话为什么这么唐？", "项目四？", "五级员工具体属性为多少？", "如何保养EGO？", "妮妮的发型是怎么理的？", "怎么离职？", "义体手术后的恢复需要多长时间？", "血狼破军怎么死了？", "为什么要演奏春日影？"
     };
@@ -317,8 +317,8 @@ void StatsWidget::loadMockData()
     query.prepare("INSERT INTO question_records (user_id, question, keywords, category, timestamp) "
                  "VALUES (?, ?, ?, ?, ?)");
     
-    // 生成随机时间和频次
-    QDateTime baseTime = QDateTime::currentDateTime().addDays(-30);
+
+    // QDateTime baseTime = QDateTime::currentDateTime().addDays(-30);
 
     for (int i = 0; i < 1000; ++i) {
         // 某些问题出现频率更高
@@ -332,13 +332,13 @@ void StatsWidget::loadMockData()
         QString userId = QString("user_%1").arg(QRandomGenerator::global()->bounded(1, 200));
         QString category = categories[QRandomGenerator::global()->bounded(categories.size())];
         
-        QDateTime timestamp = baseTime.addSecs(QRandomGenerator::global()->bounded(86400 * 30));
+        // QDateTime timestamp = baseTime.addSecs(QRandomGenerator::global()->bounded(86400 * 30));
         
         query.bindValue(0, userId);
         query.bindValue(1, question);
         query.bindValue(2, extractKeywords(question).join(","));
         query.bindValue(3, category);
-        query.bindValue(4, timestamp.toString(Qt::ISODate));
+        // query.bindValue(4, timestamp.toString(Qt::ISODate));
         query.exec();
     }
 }

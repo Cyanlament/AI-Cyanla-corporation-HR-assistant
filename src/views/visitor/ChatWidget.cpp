@@ -595,12 +595,12 @@ void ChatWidget::getIAMToken()
 
 // 处理Token响应
 void ChatWidget::onTokenReceived(QNetworkReply* reply)
-{/*
+{
     if (reply->error() != QNetworkReply::NoError) {
         qWarning() << "获取Token失败:" << reply->errorString();
         reply->deleteLater();
         return;
-    }*/
+    }
 
     // 从响应头中获取Token
     QByteArray token = reply->rawHeader("X-Subject-Token");
@@ -624,7 +624,7 @@ void ChatWidget::onTokenReceived(QNetworkReply* reply)
 void ChatWidget::speechRecognize(const QByteArray& audioData)
 {
     if (m_token.isEmpty()) {
-        QMessageBox::warning(this, "识别成功", "祝您聊天愉快！");
+        QMessageBox::warning(this, "很遗憾", "Token用完了，想用就去充钱罢");
         return;
     }
 
