@@ -20,6 +20,18 @@
 #include <QGroupBox>
 #include "../../core/DatabaseManager.h"
 #include "../../core/AIApiClient.h"
+#include <QAudioInput>
+#include <QMediaDevices>
+#include <QAudioDevice>
+#include <QAudioSource>
+#include <QBuffer>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QMessageAuthenticationCode>
 
 // 消息类型枚举
 enum class MessageType {
@@ -114,7 +126,27 @@ private:
     // 图片显示相关
     void displayImage(const QString& imagePath);
     void addImageMessage(const QString& imagePath, const QString& altText = "");
+    // 语音识别相关
+    QNetworkAccessManager* m_networkManager;
+    QAudioSource* m_audioSource;
+    QBuffer* m_audioBuffer;
+    bool m_isRecording;
+    QPushButton* m_btnVoice;
 
+    // 华为云认证信息
+    QString m_projectId;
+    QString m_region;
+    QString m_ak;
+    QString m_sk;
+    QString m_token;
+
+    // 私有方法
+    void startRecording();
+    void stopRecording();
+    void getIAMToken();
+    void speechRecognize(const QByteArray& audioData);
+    void onTokenReceived(QNetworkReply* reply);
+    void onSpeechRecognitionResult(QNetworkReply* reply);
     QMap<QString, QString> m_specialResponses; // 特殊响应映射
     // 数据库操作
     void initDatabase();
@@ -157,7 +189,7 @@ private:
     QVBoxLayout* m_inputLayout;
     QTextEdit* m_messageInput;
     QPushButton* m_btnSend;
-    QPushButton* m_btnVoice;     // 语音输入（预留）
+         // 语音输入（预留）
     QPushButton* m_btnEmoji;     // 表情输入（预留）
     
     // AI处理相关

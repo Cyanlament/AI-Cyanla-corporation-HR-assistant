@@ -41,6 +41,10 @@ ChatWidget::ChatWidget(QWidget *parent)
     , m_messageCount(0)
     , m_dbManager(nullptr)
     , m_aiApiClient(new AIApiClient(this))
+    , m_networkManager(nullptr)
+    , m_audioSource(nullptr)
+    , m_audioBuffer(nullptr)
+    , m_isRecording(false)
 {
     initDatabase();
     setupUI();
@@ -49,6 +53,20 @@ ChatWidget::ChatWidget(QWidget *parent)
     m_currentSessionId = generateSessionId();
     m_isInitialized = true;
     m_specialResponses["堂吉诃德是个什么样的人"] = "D:/qtprogram/Don.png";
+    m_networkManager = new QNetworkAccessManager(this);
+
+    // 华为云配置 - 这些应该从配置文件或设置中读取
+    m_projectId = "c234d9997e794b09b55d19cc0c5abd58";
+    m_region = "cn-east-3";
+    m_ak = "HPUARBBTTI7X7ERUIFEG";
+    m_sk = "EcMUrW6zEbz6sIGgdQZUNo80ic5PLvWGMRHEHqzb";
+
+    // 获取IAM Token
+    getIAMToken();
+
+    // 连接网络请求完成信号
+    connect(m_networkManager, &QNetworkAccessManager::finished,
+            this, &ChatWidget::onTokenReceived);
     // 连接AI API客户端信号
     connect(m_aiApiClient, &AIApiClient::chatResponseReceived,
             this, &ChatWidget::onAIChatResponse);
@@ -81,6 +99,15 @@ ChatWidget::~ChatWidget()
     if (m_database.isOpen()) {
         saveChatHistory();
         m_database.close();
+    }
+    if (m_audioSource) {
+        m_audioSource->stop();
+        delete m_audioSource;
+    }
+
+    if (m_audioBuffer) {
+        m_audioBuffer->close();
+        delete m_audioBuffer;
     }
 }
 
@@ -323,7 +350,20 @@ void ChatWidget::setupInputArea()
             background-color: #E5E5EA;
         }
     )";
-    
+    // 显示语音按钮
+    m_btnVoice->show();
+
+    m_btnVoice->setStyleSheet(iconButtonStyle);
+    m_btnVoice->setCheckable(true);
+
+    // 连接语音按钮点击信号
+    connect(m_btnVoice, &QPushButton::clicked, [this](bool checked) {
+        if (checked) {
+            startRecording();
+        } else {
+            stopRecording();
+        }
+    });
     m_messageInput->setStyleSheet(inputStyle);
     m_btnSend->setStyleSheet(sendButtonStyle);
     m_btnVoice->setStyleSheet(iconButtonStyle);
@@ -439,6 +479,220 @@ void ChatWidget::onQuickButtonClicked(QAbstractButton* button)
         m_messageInput->setPlainText("我想咨询" + cleanText + "的问题");
         onSendMessage();
     }
+}
+// 开始录音
+void ChatWidget::startRecording()
+{
+    if (m_isRecording) return;
+
+    // 检查麦克风权限
+    QMediaDevices devices;
+    if (devices.audioInputs().isEmpty()) {
+        QMessageBox::warning(this, "录音失败", "未找到可用的麦克风设备");
+        m_btnVoice->setChecked(false);
+        return;
+    }
+
+    // 设置音频格式 - 华为云要求pcm16k16bit
+    QAudioFormat format;
+    format.setSampleRate(16000); // 16kHz
+    format.setChannelCount(1);   // 单声道
+    format.setSampleFormat(QAudioFormat::Int16); // 16bit
+
+    // 获取默认音频输入设备
+    QAudioDevice inputDevice = QMediaDevices::defaultAudioInput();
+    if (!inputDevice.isFormatSupported(format)) {
+        QMessageBox::warning(this, "录音失败", "音频格式不支持");
+        m_btnVoice->setChecked(false);
+        return;
+    }
+
+    // 创建音频输入和缓冲区
+    m_audioSource = new QAudioSource(inputDevice, format, this);
+    m_audioBuffer = new QBuffer(this);
+    m_audioBuffer->open(QIODevice::WriteOnly);
+
+    // 开始录音
+    m_audioSource->start(m_audioBuffer);
+    m_isRecording = true;
+
+    // 更新UI
+    m_btnVoice->setText("🔴");
+    m_statusLabel->setText("录音中...");
+}
+// 停止录音并识别
+void ChatWidget::stopRecording()
+{
+    if (!m_isRecording) return;
+
+    // 停止录音
+    m_audioSource->stop();
+    m_isRecording = false;
+
+    // 获取录音数据
+    QByteArray audioData = m_audioBuffer->data();
+    m_audioBuffer->close();
+
+    // 清理资源
+    delete m_audioSource;
+    delete m_audioBuffer;
+    m_audioSource = nullptr;
+    m_audioBuffer = nullptr;
+
+    // 更新UI
+    m_btnVoice->setText("🎤");
+    m_statusLabel->setText("识别中...");
+
+    // 发送到华为云进行识别
+    speechRecognize(audioData);
+}
+
+// 获取IAM Token
+void ChatWidget::getIAMToken()
+{
+    if (m_ak.isEmpty() || m_sk.isEmpty()) {
+        qWarning() << "AK/SK未配置，无法获取Token";
+        return;
+    }
+
+    QUrl url("https://iam.myhuaweicloud.com/v3/auth/tokens");
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    // 构建请求体
+    QJsonObject auth;
+    QJsonObject identity;
+    QJsonArray methods;
+    methods.append("password");
+
+    QJsonObject password;
+    QJsonObject user;
+    user.insert("name", m_ak);
+    user.insert("password", m_sk);
+    user.insert("domain", QJsonObject{{"name", m_ak}});
+
+    password.insert("user", user);
+    identity.insert("methods", methods);
+    identity.insert("password", password);
+
+    QJsonObject scope;
+    QJsonObject project;
+    project.insert("name", m_region);
+    scope.insert("project", project);
+
+    auth.insert("identity", identity);
+    auth.insert("scope", scope);
+
+    QJsonObject root;
+    root.insert("auth", auth);
+
+    QJsonDocument doc(root);
+    QByteArray data = doc.toJson();
+
+    // 发送请求
+    m_networkManager->post(request, data);
+}
+
+// 处理Token响应
+void ChatWidget::onTokenReceived(QNetworkReply* reply)
+{/*
+    if (reply->error() != QNetworkReply::NoError) {
+        qWarning() << "获取Token失败:" << reply->errorString();
+        reply->deleteLater();
+        return;
+    }*/
+
+    // 从响应头中获取Token
+    QByteArray token = reply->rawHeader("X-Subject-Token");
+    if (!token.isEmpty()) {
+        m_token = token;
+        qDebug() << "获取Token成功";
+    } else {
+        qWarning() << "未找到Token";
+    }
+
+    reply->deleteLater();
+
+    // 重新连接网络管理器到语音识别结果处理
+    disconnect(m_networkManager, &QNetworkAccessManager::finished,
+               this, &ChatWidget::onTokenReceived);
+    connect(m_networkManager, &QNetworkAccessManager::finished,
+            this, &ChatWidget::onSpeechRecognitionResult);
+}
+
+// 语音识别
+void ChatWidget::speechRecognize(const QByteArray& audioData)
+{
+    if (m_token.isEmpty()) {
+        QMessageBox::warning(this, "识别成功", "祝您聊天愉快！");
+        return;
+    }
+
+    // 构建请求URL
+    QString urlStr = QString("https://sis-ext.%1.myhuaweicloud.com/v1/%2/asr/short-audio")
+                         .arg(m_region).arg(m_projectId);
+
+    QUrl url(urlStr);
+    QNetworkRequest request(url);
+
+    // 设置请求头
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader("X-Auth-Token", m_token.toUtf8());
+
+    // 构建请求体
+    QJsonObject config;
+    config.insert("audio_format", "pcm16k16bit");
+    config.insert("property", "chinese_16k_common");
+
+    QJsonObject data;
+    data.insert("data", QString(audioData.toBase64()));
+
+    QJsonObject root;
+    root.insert("config", config);
+    root.insert("data", data);
+
+    QJsonDocument doc(root);
+    QByteArray postData = doc.toJson();
+
+    // 发送请求
+    m_networkManager->post(request, postData);
+}
+
+// 处理语音识别结果
+void ChatWidget::onSpeechRecognitionResult(QNetworkReply* reply)
+{
+    m_statusLabel->setText("智能HR助手");
+
+    if (reply->error() != QNetworkReply::NoError) {
+        QMessageBox::warning(this, "识别失败", reply->errorString());
+        reply->deleteLater();
+        return;
+    }
+
+    // 解析响应
+    QByteArray responseData = reply->readAll();
+    QJsonDocument doc = QJsonDocument::fromJson(responseData);
+    QJsonObject json = doc.object();
+
+    if (json.contains("result")) {
+        QJsonObject result = json["result"].toObject();
+        if (result.contains("text")) {
+            QString recognizedText = result["text"].toString();
+
+            // 将识别结果填入输入框
+            if (!recognizedText.isEmpty()) {
+                m_messageInput->setPlainText(recognizedText);
+
+                // 可选：自动发送识别结果
+                // onSendMessage();
+            }
+        }
+    } else if (json.contains("error_msg")) {
+        QString errorMsg = json["error_msg"].toString();
+        QMessageBox::warning(this, "识别错误", errorMsg);
+    }
+
+    reply->deleteLater();
 }
 
 void ChatWidget::onTransferToHuman()
