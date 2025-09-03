@@ -6,34 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1476</width>
-    <height>1274</height>
+    <width>1160</width>
+    <height>1385</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="Lib">
-   <property name="geometry">
-    <rect>
-     <x>49</x>
-     <y>11</y>
-     <width>1382</width>
-     <height>1230</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="pixmap">
-    <pixmap>:/map.png</pixmap>
-   </property>
-  </widget>
+  <property name="styleSheet">
+   <string notr="true">QDialog{
+
+border-image: url(:/map.png);
+}</string>
+  </property>
   <widget class="QPushButton" name="Ket">
    <property name="geometry">
     <rect>
-     <x>600</x>
-     <y>60</y>
+     <x>550</x>
+     <y>-140</y>
      <width>271</width>
      <height>81</height>
     </rect>
@@ -46,117 +36,117 @@
    <property name="geometry">
     <rect>
      <x>610</x>
-     <y>160</y>
-     <width>281</width>
-     <height>81</height>
+     <y>110</y>
+     <width>201</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>记录部</string>
    </property>
   </widget>
   <widget class="QPushButton" name="Che">
    <property name="geometry">
     <rect>
-     <x>620</x>
-     <y>340</y>
-     <width>281</width>
-     <height>71</height>
+     <x>610</x>
+     <y>240</y>
+     <width>221</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>福利部</string>
    </property>
   </widget>
   <widget class="QPushButton" name="Geb">
    <property name="geometry">
     <rect>
-     <x>620</x>
-     <y>440</y>
-     <width>271</width>
-     <height>81</height>
+     <x>560</x>
+     <y>310</y>
+     <width>181</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>惩戒部</string>
    </property>
   </widget>
   <widget class="QPushButton" name="Ti">
    <property name="geometry">
     <rect>
-     <x>630</x>
-     <y>540</y>
-     <width>261</width>
-     <height>71</height>
+     <x>610</x>
+     <y>380</y>
+     <width>201</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>中央本部</string>
    </property>
   </widget>
   <widget class="QPushButton" name="Net">
    <property name="geometry">
     <rect>
-     <x>610</x>
-     <y>630</y>
-     <width>291</width>
-     <height>81</height>
+     <x>560</x>
+     <y>450</y>
+     <width>191</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>安保部</string>
    </property>
   </widget>
   <widget class="QPushButton" name="Hod">
    <property name="geometry">
     <rect>
-     <x>620</x>
-     <y>740</y>
-     <width>281</width>
-     <height>71</height>
+     <x>610</x>
+     <y>520</y>
+     <width>221</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>培训部</string>
    </property>
   </widget>
   <widget class="QPushButton" name="Yes">
    <property name="geometry">
     <rect>
-     <x>620</x>
-     <y>820</y>
-     <width>271</width>
-     <height>71</height>
+     <x>570</x>
+     <y>580</y>
+     <width>241</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>情报部</string>
    </property>
   </widget>
   <widget class="QPushButton" name="Mal">
    <property name="geometry">
     <rect>
-     <x>620</x>
-     <y>930</y>
-     <width>291</width>
-     <height>61</height>
+     <x>610</x>
+     <y>640</y>
+     <width>261</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>控制部</string>
    </property>
   </widget>
   <widget class="QPushButton" name="Bin">
    <property name="geometry">
     <rect>
-     <x>620</x>
-     <y>250</y>
-     <width>261</width>
-     <height>71</height>
+     <x>580</x>
+     <y>170</y>
+     <width>181</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>研发部</string>
    </property>
   </widget>
  </widget>

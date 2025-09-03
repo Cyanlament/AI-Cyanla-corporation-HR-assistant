@@ -50,7 +50,7 @@ void VisitorMainWidget::onRequestHumanService(const QString& userId, const QStri
         qDebug() << "准备传递上下文给客服聊天界面";
     }
 }
-
+#include <map.h>
 void VisitorMainWidget::setupUI()
 {
     m_mainLayout = new QVBoxLayout(this);
@@ -66,8 +66,8 @@ void VisitorMainWidget::setupUI()
     m_faqWidget = new FAQWidget;
     m_appointmentWidget = new AppointmentWidget;
 
-    QWidget * dtWgt = new QWidget;
-    dtWgt->setStyleSheet("QWidget { border-image: url(:/map.png);}");
+    Map * dtWgt = new Map;
+    // dtWgt->setStyleSheet("QWidget { border-image: url(:/map.png);}");
     // 添加选项卡
     m_tabWidget->addTab(m_chatWidget, "智能HR");
     m_tabWidget->addTab(m_realChatWidget, "客服咨询");
